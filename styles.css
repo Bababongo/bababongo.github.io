@@ -28,6 +28,8 @@
   --cyan-soft: rgba(92, 200, 255, 0.14);
   --violet-soft: rgba(157, 124, 255, 0.14);
   --green-soft: rgba(125, 211, 168, 0.14);
+  --amber: #E6A552;
+  --amber-soft: rgba(230, 165, 82, 0.16);
 
   /* Type */
   --font-display: "Space Grotesk", "Manrope", system-ui, sans-serif;
@@ -61,6 +63,9 @@ body {
   overflow-x: hidden;
   position: relative;
 }
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { color: #8fd9ff; }
 
 /* ---- Ambient background layers ---- */
 #bg-canvas {
@@ -915,6 +920,121 @@ footer { border-top: 1px solid var(--border); padding: 56px 0 48px; }
   transition: color 0.25s, transform 0.25s;
 }
 .sh-list li:hover .sh-arrow { color: var(--cyan); transform: translateX(3px); }
+
+/* ============================================================
+   TAG / DOT COLOR VARIANTS + SHARED CARD HEADER
+   ============================================================ */
+.tag.violet { color: var(--violet); background: var(--violet-soft); }
+.tag.green  { color: var(--green);  background: var(--green-soft); }
+.tag.amber  { color: var(--amber);  background: var(--amber-soft); }
+
+.card-title { font-family: var(--font-display); font-weight: 600; font-size: 20px; letter-spacing: -0.01em; color: var(--text); }
+.c-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.c-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.c-body { color: var(--text-2); font-size: 15px; line-height: 1.6; margin-bottom: 18px; text-wrap: pretty; }
+.c-body strong { color: var(--text); font-weight: 600; }
+.take { margin-top: 16px; padding-top: 15px; border-top: 1px solid var(--border);
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-3); line-height: 1.55; }
+.take b { color: var(--text-2); font-weight: 500; }
+a.article { display: block; text-decoration: none; color: inherit; }
+
+/* ============================================================
+   CAMPAIGN LOGIC — model-to-measurement loop
+   ============================================================ */
+.loop-intro {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.42;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  max-width: 820px;
+  text-wrap: balance;
+  margin-bottom: 6px;
+}
+.loop-intro .muted { color: var(--text-3); }
+.assay-trace { display: block; width: 100%; max-width: 520px; height: 34px; margin: 6px 0 36px; opacity: 0.6; }
+.assay-trace path { fill: none; stroke: var(--green); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+.assay-trace .base { stroke: var(--border-strong); stroke-width: 1; }
+
+.loop-track { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+.loop-node {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 18px 22px;
+  transition: transform 0.4s var(--ease), border-color 0.4s, background 0.4s;
+}
+.loop-node:hover { transform: translateY(-4px); border-color: var(--border-strong); background: var(--panel-2); }
+.ln-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.ln-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--text-3); }
+.ln-dot { width: 11px; height: 11px; border-radius: 50%; }
+.loop-node h4 { font-family: var(--font-display); font-weight: 600; font-size: 16px; letter-spacing: -0.01em; margin-bottom: 8px; color: var(--text); }
+.loop-node p { color: var(--text-2); font-size: 13.5px; line-height: 1.5; text-wrap: pretty; }
+.loop-node:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -13px; top: 50%;
+  width: 9px; height: 9px;
+  border-top: 2px solid var(--text-3);
+  border-right: 2px solid var(--text-3);
+  transform: translateY(-50%) rotate(45deg);
+  z-index: 2;
+}
+.ln-violet .ln-dot { background: var(--violet); box-shadow: 0 0 0 4px var(--violet-soft); }
+.ln-cyan  .ln-dot { background: var(--cyan);   box-shadow: 0 0 0 4px var(--cyan-soft); }
+.ln-amber .ln-dot { background: var(--amber);  box-shadow: 0 0 0 4px var(--amber-soft); }
+.ln-green .ln-dot { background: var(--green);  box-shadow: 0 0 0 4px var(--green-soft); }
+.loop-return {
+  margin-top: 26px;
+  display: inline-flex; align-items: center; gap: 11px;
+  font-family: var(--font-mono); font-size: 12.5px; color: var(--violet);
+  padding: 10px 16px; border-radius: 999px;
+  background: var(--violet-soft); border: 1px solid rgba(157,124,255,0.25);
+  text-wrap: pretty;
+}
+.loop-return svg { width: 15px; height: 15px; flex: none; }
+
+/* ============================================================
+   PROOF ENGINE / ROLE / RESEARCH GRIDS
+   ============================================================ */
+.proof-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.role-grid  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.research-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+
+/* ============================================================
+   PUBLIC PROJECTS — roadmap
+   ============================================================ */
+.roadmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.rm-card {
+  display: flex; flex-direction: column;
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 26px 26px 24px;
+  transition: transform 0.45s var(--ease), border-color 0.4s, background 0.4s;
+  position: relative; overflow: hidden;
+}
+.rm-card:hover { transform: translateY(-4px); border-color: var(--border-strong); background: var(--panel-2); }
+.rm-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.rm-code { font-family: var(--font-display); font-weight: 600; font-size: 24px; color: transparent; -webkit-text-stroke: 1px var(--border-strong); line-height: 1; }
+.rm-card h3 { font-family: var(--font-display); font-weight: 600; font-size: 18.5px; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 10px; }
+.rm-card p { color: var(--text-2); font-size: 14px; line-height: 1.55; margin-bottom: 16px; flex: 1; text-wrap: pretty; }
+.rm-card .project-link { margin-top: 16px; align-self: flex-start; }
+.status-planned    { color: var(--text-3); background: rgba(255,255,255,0.04); border: 1px dashed var(--border-strong); }
+.status-shipped    { color: var(--green);  background: var(--green-soft); }
+.status-inprogress { color: var(--violet); background: var(--violet-soft); }
+.roadmap-note { margin-top: 24px; font-family: var(--font-mono); font-size: 12.5px; color: var(--text-3); display: inline-flex; align-items: center; gap: 10px; text-wrap: pretty; }
+.roadmap-note b { color: var(--text-2); font-weight: 500; }
+
+/* responsive for new blocks */
+@media (max-width: 980px) {
+  .loop-track { grid-template-columns: repeat(3, 1fr); }
+  .loop-node:not(:last-child)::after { display: none; }
+  .roadmap { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 760px) {
+  .loop-track, .proof-grid, .role-grid, .research-grid, .roadmap { grid-template-columns: 1fr; }
+}
 
 /* ============================================================
    RESPONSIVE

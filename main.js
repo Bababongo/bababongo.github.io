@@ -112,7 +112,7 @@
     // ---- Model-to-bench loop: 4 directional arcs (Design / Build / Test / Learn) ----
     var loopR = 212;
     var loopCols = ["#5CC8FF", "#9D7CFF", "#7DD3A8", "#9D7CFF"];
-    var stageNames = ["DESIGN", "BUILD", "TEST", "LEARN"];
+    var stageNames = ["MODEL", "VARIANT", "ASSAY", "DATA"];
     function polar(r, a) { return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
     // arrow marker def
     var mk = document.createElementNS(NS, "marker");
