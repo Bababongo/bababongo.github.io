@@ -1,5 +1,5 @@
 /* ============================================================
-   Eze Ukabiala — interactions & generative visuals
+   Eze Ukabiala: interactions & generative visuals
    ============================================================ */
 (function () {
   "use strict";
@@ -148,7 +148,7 @@
       svg.appendChild(label);
     }
 
-    // protein backbone ribbon — a smooth winding bezier
+    // protein backbone ribbon: a smooth winding bezier
     var ribbon = el("path", {
       d: "M 70 320 C 150 250, 130 150, 230 160 S 380 240, 340 320 S 200 410, 270 430 C 330 446, 410 400, 430 330",
       fill: "none", stroke: "url(#ribbon)", "stroke-width": 3.5,
@@ -263,7 +263,7 @@
       return;
     }
 
-    // Manual viewport check — primary mechanism in case IntersectionObserver
+    // Manual viewport check: primary mechanism in case IntersectionObserver
     // misfires (e.g. elements were laid out 0×0 behind a splash/loader overlay
     // during initial setup).
     function manualCheck() {
@@ -297,7 +297,7 @@
       setTimeout(manualCheck, 120);
       setTimeout(manualCheck, 600);
     });
-    // Listen on multiple scroll roots — depending on page wrapping, the
+    // Listen on multiple scroll roots: depending on page wrapping, the
     // scroll container can be window, html, or body.
     var onScroll = function () { manualCheck(); };
     window.addEventListener("scroll", onScroll, { passive: true });
