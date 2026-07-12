@@ -734,7 +734,7 @@ footer { border-top: 1px solid var(--border); padding: 56px 0 48px; }
 .footer-inner { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; flex-wrap: wrap; }
 .footer-name { font-family: var(--font-display); font-weight: 600; font-size: 20px; margin-bottom: 8px; }
 .footer-role { color: var(--text-2); font-size: 14.5px; margin-bottom: 6px; }
-.footer-brand { display: inline-block; font-family: var(--font-mono); font-size: 12.5px; color: var(--cyan); letter-spacing: 0.05em; text-decoration: none; }
+.footer-brand { font-family: var(--font-mono); font-size: 12.5px; color: var(--cyan); letter-spacing: 0.05em; }
 .footer-note { margin-top: 14px; font-size: 12.5px; color: var(--text-3); max-width: 460px; line-height: 1.55; }
 .footer-meta { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); text-align: right; }
 
@@ -1077,3 +1077,85 @@ a.article { display: block; text-decoration: none; color: inherit; }
   * { animation: none !important; scroll-behavior: auto !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ============================================================
+   ROLE FIT — evidence doorways
+   ============================================================ */
+.role-card { display: flex; flex-direction: column; }
+.role-card .role-cta {
+  margin-top: 16px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--cyan);
+  display: inline-flex; align-items: baseline; gap: 8px; line-height: 1.5; text-wrap: pretty;
+}
+.role-card .role-cta .arrow { transition: transform 0.3s var(--ease); }
+.role-card:hover .role-cta .arrow { transform: translateX(4px); }
+.role-lead {
+  background: linear-gradient(135deg, var(--amber-soft), transparent 62%), var(--panel);
+  border-color: rgba(230, 165, 82, 0.4);
+}
+.role-lead .role-cta { color: var(--amber); }
+.role-flag {
+  align-self: flex-start;
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--amber); background: var(--amber-soft); border: 1px solid rgba(230, 165, 82, 0.35);
+  padding: 5px 10px; border-radius: 999px; margin-bottom: 16px;
+}
+
+/* ============================================================
+   KEYSTONE ARTIFACT — "the loop, closed"
+   ============================================================ */
+.keystone {
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(120% 140% at 0% 0%, var(--violet-soft), transparent 55%),
+    radial-gradient(120% 140% at 100% 0%, var(--cyan-soft), transparent 55%),
+    var(--panel);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: clamp(28px, 3.4vw, 46px);
+  margin-bottom: 26px;
+}
+.keystone::before {
+  content: ""; position: absolute; inset: 0; border-radius: var(--radius); padding: 1px;
+  background: linear-gradient(120deg, rgba(157, 124, 255, 0.6), rgba(92, 200, 255, 0.5), rgba(125, 211, 168, 0.4));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  pointer-events: none; opacity: 0.7;
+}
+.keystone-body { position: relative; }
+.keystone-top { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
+.keystone-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); }
+.keystone h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.6vw, 40px); letter-spacing: -0.02em; margin-bottom: 14px; }
+.keystone-lead { color: var(--text-2); font-size: clamp(16px, 1.6vw, 19px); max-width: 680px; margin-bottom: 26px; text-wrap: pretty; }
+.keystone-chain { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 28px; }
+.keystone-chain .kc {
+  font-family: var(--font-mono); font-size: 12.5px; color: var(--text);
+  background: var(--bg-1); border: 1px solid var(--border-strong);
+  padding: 8px 14px; border-radius: 8px;
+}
+.keystone-chain .kc-loop { color: var(--green); border-color: rgba(125, 211, 168, 0.4); border-style: dashed; background: var(--green-soft); }
+.keystone-chain .kc-arrow { color: var(--text-3); font-family: var(--font-mono); }
+.keystone-serves { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 22px; }
+.keystone-serves .ks-serve {
+  position: relative; padding-left: 18px;
+  font-size: 14px; color: var(--text-2); line-height: 1.5; text-wrap: pretty;
+}
+.keystone-serves .ks-serve b { display: block; color: var(--text); font-weight: 600; font-size: 13px; margin-bottom: 3px; }
+.keystone-serves .ks-dot { position: absolute; left: 0; top: 6px; width: 8px; height: 8px; border-radius: 50%; }
+.keystone-note {
+  font-family: var(--font-mono); font-size: 12.5px; color: var(--text-3);
+  border-top: 1px solid var(--border); padding-top: 16px; text-wrap: pretty;
+}
+@media (max-width: 760px) {
+  .keystone-serves { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   ESSAY ROADMAP header
+   ============================================================ */
+.lanes-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 4px; }
+.lanes-kicker { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-2); }
+.lanes-note { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); text-wrap: pretty; }
+
+/* Links awaiting a real URL: keep the look, drop the dead jump-to-top */
+a.link-pending { cursor: default; }

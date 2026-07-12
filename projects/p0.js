@@ -7,6 +7,28 @@
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var NS = "http://www.w3.org/2000/svg";
 
+  /* ---------- Repository link (single fill-in point) ----------
+     Paste the public P0 repository URL here to activate the two
+     "View repository" buttons. Empty = they stay inert (no jump). */
+  var P0_REPO = "https://github.com/Bababongo/p0-zero-shot-fitness";
+  function wireRepo() {
+    var els = document.querySelectorAll("[data-repo-href]");
+    for (var i = 0; i < els.length; i++) {
+      var a = els[i];
+      if (P0_REPO) {
+        a.setAttribute("href", P0_REPO);
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener noreferrer");
+        a.classList.remove("link-pending");
+      } else {
+        a.classList.add("link-pending");
+        if (a.getAttribute("href") === "#" || a.getAttribute("href") === null) {
+          a.addEventListener("click", function (e) { e.preventDefault(); });
+        }
+      }
+    }
+  }
+
   /* ---------- accents ---------- */
   var C = {
     cyan: "#5CC8FF", cyanDim: "#3d8fc0", amber: "#E6A552",
@@ -539,6 +561,7 @@
   }
 
   function boot() {
+    wireRepo();
     initBg();
     renderMetricStrip();
     buildFigures();

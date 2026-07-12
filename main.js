@@ -5,6 +5,66 @@
   "use strict";
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ---------- External links (single fill-in point) ----------
+     Paste real URLs here and every matching link on the site goes
+     live. Leave one empty and that link stays inert (it will NOT
+     jump to the top of the page) until a URL is provided.
+       cv       -> every "Download CV" (nav, hero, contact footer)
+       substack -> every "Read From Model to Mutant" + essay cards
+       linkedin / scholar / github -> the footer contact icons
+     A file path (e.g. "Eze-Ukabiala-CV.pdf") downloads; an https://
+     URL opens in a new tab. */
+  var LINKS = {
+    cv: "",
+    substack: "https://ezeukabiala.substack.com/",
+    linkedin: "",
+    scholar: "",
+    github: "https://github.com/Bababongo"
+  };
+  function wireLink(a, url, isCv) {
+    if (!a) return;
+    if (url) {
+      a.setAttribute("href", url);
+      a.classList.remove("link-pending");
+      if (/^https?:/i.test(url)) {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener noreferrer");
+      } else if (isCv) {
+        a.setAttribute("download", "");
+      }
+    } else {
+      a.classList.add("link-pending");
+      if (a.getAttribute("href") === "#" || a.getAttribute("href") === null) {
+        a.addEventListener("click", function (e) { e.preventDefault(); });
+      }
+    }
+  }
+  function wireLinks() {
+    var i, els;
+    els = document.querySelectorAll("[data-cv]");
+    for (i = 0; i < els.length; i++) wireLink(els[i], LINKS.cv, true);
+    // essay cards -> the publication
+    els = document.querySelectorAll("a.article");
+    for (i = 0; i < els.length; i++) wireLink(els[i], LINKS.substack, false);
+    // "Read From Model to Mutant" buttons
+    els = document.querySelectorAll("a.btn");
+    for (i = 0; i < els.length; i++) {
+      if (els[i].getAttribute("href") === "#" && /from model to mutant/i.test(els[i].textContent || "")) {
+        wireLink(els[i], LINKS.substack, false);
+      }
+    }
+    // footer contact icons (skip the CV one and the real mailto)
+    els = document.querySelectorAll("a.clink");
+    for (i = 0; i < els.length; i++) {
+      var a = els[i];
+      if (a.hasAttribute("data-cv")) continue;
+      var t = (a.textContent || "").toLowerCase();
+      if (t.indexOf("linkedin") !== -1) wireLink(a, LINKS.linkedin, false);
+      else if (t.indexOf("github") !== -1) wireLink(a, LINKS.github, false);
+      else if (t.indexOf("scholar") !== -1) wireLink(a, LINKS.scholar, false);
+    }
+  }
+
   /* ---------- Ambient molecular network (background canvas) ---------- */
   function initBg() {
     var canvas = document.getElementById("bg-canvas");
@@ -338,6 +398,7 @@
   }
 
   function boot() {
+    wireLinks();
     initBg();
     initHeroVisual();
     initNav();
