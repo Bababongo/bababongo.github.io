@@ -1,5 +1,5 @@
 /* ============================================================
-   Eze Ukabiala — interactions & generative visuals
+   Eze Ukabiala: interactions & generative visuals
    ============================================================ */
 (function () {
   "use strict";
@@ -15,10 +15,10 @@
      A file path (e.g. "Eze-Ukabiala-CV.pdf") downloads; an https://
      URL opens in a new tab. */
   var LINKS = {
-    cv: "",
+    cv: "Eze-Ukabiala-CV.pdf",
     substack: "https://ezeukabiala.substack.com/",
-    linkedin: "",
-    scholar: "",
+    linkedin: "https://www.linkedin.com/in/ezechinyere-ukabiala-99a622161",
+    scholar: "https://scholar.google.com/citations?user=4AWH5kQAAAAJ&hl=en",
     github: "https://github.com/Bababongo"
   };
   function wireLink(a, url, isCv) {
@@ -208,7 +208,7 @@
       svg.appendChild(label);
     }
 
-    // protein backbone ribbon — a smooth winding bezier
+    // protein backbone ribbon: a smooth winding bezier
     var ribbon = el("path", {
       d: "M 70 320 C 150 250, 130 150, 230 160 S 380 240, 340 320 S 200 410, 270 430 C 330 446, 410 400, 430 330",
       fill: "none", stroke: "url(#ribbon)", "stroke-width": 3.5,
@@ -303,7 +303,9 @@
     var backdrop = document.querySelector(".mobile-backdrop");
     function setMenu(open) {
       toggle.classList.toggle("open", open);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
       menu.classList.toggle("open", open);
+      menu.setAttribute("aria-hidden", open ? "false" : "true");
       backdrop.classList.toggle("show", open);
       document.body.style.overflow = open ? "hidden" : "";
     }
@@ -323,7 +325,7 @@
       return;
     }
 
-    // Manual viewport check — primary mechanism in case IntersectionObserver
+    // Manual viewport check: primary mechanism in case IntersectionObserver
     // misfires (e.g. elements were laid out 0×0 behind a splash/loader overlay
     // during initial setup).
     function manualCheck() {
@@ -357,7 +359,7 @@
       setTimeout(manualCheck, 120);
       setTimeout(manualCheck, 600);
     });
-    // Listen on multiple scroll roots — depending on page wrapping, the
+    // Listen on multiple scroll roots: depending on page wrapping, the
     // scroll container can be window, html, or body.
     var onScroll = function () { manualCheck(); };
     window.addEventListener("scroll", onScroll, { passive: true });
