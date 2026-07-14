@@ -229,8 +229,8 @@
       </article>
       <article class="card reveal d2">
         <div class="c-head"><span class="c-dot" style="background:var(--green)"></span><h3 class="card-title">Projects</h3></div>
-        <p class="c-body">Public repositories and reproducible builds that turn machine-learning claims into inspectable artifacts.</p>
-        <div class="tags"><span class="tag green">benchmarks</span><span class="tag green">evals</span><span class="tag green">active learning</span><span class="tag green">agents</span></div>
+        <p class="c-body">Public repositories and reproducible builds that turn machine-learning claims into inspectable artifacts: the P0 zero-shot audit and the P1 data-efficiency benchmark, a connected two-project arc.</p>
+        <div class="tags"><span class="tag green">benchmarks</span><span class="tag green">evals</span><span class="tag green">data efficiency</span><span class="tag green">active learning</span></div>
       </article>
     </div>
   </div>
@@ -268,7 +268,7 @@
         <p class="c-body">I turn biological expertise into evaluations, benchmarks, failure modes, and tool feedback for AI systems doing scientific work: what to measure, and where the model earns trust.</p>
         <div class="tags"><span class="tag violet">evals</span><span class="tag violet">agents</span><span class="tag violet">benchmarks</span><span class="tag violet">failure modes</span></div>
         <div class="take"><b>In practice:</b> turning domain expertise into evals, datasets, failure modes, and model feedback.</div>
-        <span class="role-cta">The proof: the P0 audit, eval work, the P5 campaign agent <span class="arrow">&rarr;</span></span>
+        <span class="role-cta">The proof: the P0 audit, the P1 data-efficiency benchmark, the P5 campaign agent <span class="arrow">&rarr;</span></span>
       </a>
     </div>
   </div>
@@ -427,7 +427,7 @@
     <div class="section-head reveal">
       <div class="eyebrow">06 / Public projects</div>
       <h2 class="section-title">Public projects</h2>
-      <p class="section-intro">The essays declare the identity. The projects make it inspectable. Each project turns a model-to-bench capability into a public artifact: an evaluation, a benchmark, a design pipeline, or a closed-loop campaign. One artifact sits above the ladder.</p>
+      <p class="section-intro">The essays declare the identity. The projects make it inspectable. The public build has moved from roadmap to real artifacts: two connected projects that turn a model-to-bench question into inspectable proof. One artifact sits above the ladder.</p>
     </div>
 
     <article class="keystone reveal" id="keystone">
@@ -454,20 +454,69 @@
       </div>
     </article>
 
-    <div class="roadmap">
-      <a class="rm-card reveal rm-link" href="projects/p0-zero-shot-fitness.html" style="color:var(--text);text-decoration:none">
-        <div class="rm-top"><span class="rm-code">P0</span><span class="pub-status status-shipped">Shipped v1.1</span></div>
-        <h3>Interrogate the model: zero-shot fitness</h3>
-        <p>A biological failure-mode audit for protein language models. Zero-shot ESM-2 scoring on TEM-1 and VIM-2 beta-lactamase DMS data, read by residue slice, matched null controls, and mechanism-relevant regions.</p>
-        <div class="tags"><span class="tag">pLMs</span><span class="tag">ProteinGym</span><span class="tag">ESM-2</span><span class="tag">VIM-2</span><span class="tag">matched nulls</span></div>
+    <p class="projects-summary reveal">My current public build focuses on mechanism-aware evaluation for protein language models. In P0, I built a four-enzyme zero-shot fitness benchmark showing that ESM-2 scale improves global mutation ranking, while mechanism-local claims require careful residue-slice controls. In P1, I extended that benchmark into a label-efficiency study that asks how many experimental fitness measurements are needed to improve on zero-shot predictions, and which labels are most valuable to measure next.</p>
+
+    <div class="tier-head reveal">
+      <span class="tier-kicker">Shipped artifacts</span>
+      <span class="tier-note">Two connected projects, built in the open: diagnose zero-shot reliability first, then design a smarter labeling strategy.</span>
+    </div>
+    <div class="artifact-row">
+      <a class="rm-card featured reveal rm-link" href="projects/p0-zero-shot-fitness.html">
+        <div class="rm-top"><span class="rm-code">P0</span><span class="rm-badges"><span class="rm-rating">8.3 / 10</span><span class="pub-status status-shipped">Portfolio-complete v1</span></span></div>
+        <h3>Mechanism-sliced zero-shot fitness</h3>
+        <p class="rm-sub">A four-enzyme biological failure-mode audit for protein language models.</p>
+        <p class="rm-copy">I built a reproducible Python benchmark that scores enzyme DMS mutations with ESM-2 and asks where inside enzymes the model works. Across TEM-1, VIM-2, AMIE, and beta-glucosidase, ESM-2 35M improves global mutation ranking, but mechanism-slice effects are enzyme-specific and require matched controls.</p>
+        <div class="echips"><span class="echip">4 enzymes</span><span class="echip">19,013 mutants</span><span class="echip">ESM-2 8M &rarr; 35M</span><span class="echip">matched nulls</span><span class="echip">Savio GPU runs</span><span class="echip">CLI · tests · CSV · JSON · SVG</span></div>
         <span class="rm-cta">Read the case study <span class="arrow">&rarr;</span></span>
       </a>
-      <article class="rm-card reveal d1">
-        <div class="rm-top"><span class="rm-code">P1</span><span class="pub-status status-planned">Planned</span></div>
-        <h3>The data-efficiency curve</h3>
-        <p>Train supervised sequence-to-function models on public benchmarks and measure how few labels are needed to beat zero-shot.</p>
-        <div class="tags"><span class="tag">low-N learning</span><span class="tag">uncertainty</span><span class="tag">calibration</span><span class="tag">supervised models</span></div>
-      </article>
+      <a class="rm-card featured reveal d1 rm-link" href="projects/p1-data-efficiency.html">
+        <div class="rm-top"><span class="rm-code">P1</span><span class="rm-badges"><span class="rm-rating">7.4 / 10</span><span class="pub-status status-inprogress">Strong prototype</span></span></div>
+        <h3>Data-efficiency curves for protein fitness learning</h3>
+        <p class="rm-sub">How many experimental labels does it take to beat zero-shot?</p>
+        <p class="rm-copy">I built a benchmark that starts from P0 zero-shot ESM scores, then asks how many measured mutation labels are needed before supervised correction improves performance. Around 384 labels, residual correction begins to beat zero-shot on real enzyme datasets, but label value depends on selection strategy, mechanism region, and landscape coverage.</p>
+        <div class="echips"><span class="echip">384-label regime</span><span class="echip">residual correction</span><span class="echip">true ESM delta embeddings</span><span class="echip">mechanism slices</span><span class="echip">iterative acquisition</span><span class="echip">diversity lesson</span></div>
+        <span class="rm-cta">Read the case study <span class="arrow">&rarr;</span></span>
+      </a>
+    </div>
+
+    <div class="arc reveal">
+      <div class="arc-head">
+        <div class="arc-kicker">The research arc</div>
+        <h3>From zero-shot diagnosis to label-efficient correction</h3>
+        <p>My current protein ML work asks a sequential question: first, where does the model deserve trust, and second, which experimental labels are worth buying to improve it?</p>
+      </div>
+      <div class="arc-flow">
+        <div class="arc-node an-cyan">
+          <span class="arc-tag">P0 · Diagnose</span>
+          <h4>Zero-shot diagnosis</h4>
+          <p>P0 scores mutations with ESM-2 and asks where inside enzymes the model works, where it fails, and which residue-zone claims survive matched controls.</p>
+        </div>
+        <div class="arc-arrow">&rarr;</div>
+        <div class="arc-node an-violet">
+          <span class="arc-tag">P1 · Correct</span>
+          <h4>Residual correction</h4>
+          <p>P1 hides most labels, trains correction models, and asks how many measured fitness values are needed before supervised learning improves on zero-shot prediction.</p>
+        </div>
+        <div class="arc-arrow">&rarr;</div>
+        <div class="arc-node an-amber">
+          <span class="arc-tag">Next · Acquire</span>
+          <h4>Mechanism-aware acquisition</h4>
+          <p>The next step is to decide which labels are worth buying when assay budget is finite, while preserving diversity and mechanism coverage.</p>
+        </div>
+      </div>
+      <div class="evidence-strip">
+        <div class="ev"><span class="ev-num">2</span><span class="ev-label">connected projects</span></div>
+        <div class="ev"><span class="ev-num">4</span><span class="ev-label">enzymes in P0</span></div>
+        <div class="ev"><span class="ev-num">19,013</span><span class="ev-label">single mutants scored</span></div>
+        <div class="ev"><span class="ev-num">384</span><span class="ev-label">key P1 label budget</span></div>
+      </div>
+    </div>
+
+    <div class="tier-head reveal" style="margin-top:44px">
+      <span class="tier-kicker">Planned roadmap</span>
+      <span class="tier-note">The next artifacts in the ladder, stated honestly as future work.</span>
+    </div>
+    <div class="roadmap planned">
       <article class="rm-card reveal d2">
         <div class="rm-top"><span class="rm-code">P2</span><span class="pub-status status-planned">Planned</span></div>
         <h3>Active learning loop</h3>
@@ -496,7 +545,7 @@
 
     <div class="roadmap-note reveal">
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#6B7689" stroke-width="1.3"/><path d="M8 5v3.5l2.2 1.3" stroke="#6B7689" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span>A public roadmap, stated honestly. Status labels move from <b>planned</b> to <b>in progress</b> to <b>shipped</b> as each artifact goes live.</span>
+      <span>A public roadmap, stated honestly. Status labels move from <b>planned</b> to <b>strong prototype</b> to <b>portfolio-complete</b> as each artifact goes live.</span>
     </div>
   </div>
 </section>
@@ -674,7 +723,7 @@
     <div>
       <div class="footer-name">Ezechinyere "Eze" Ukabiala</div>
       <div class="footer-role">AI protein-engineering campaign scientist · AI systems for experimental biology</div>
-      <a href="https://ezeukabiala.substack.com/" target="_blank" rel="noopener noreferrer" class="footer-brand">From Model to Mutant</a>
+      <div class="footer-brand">From Model to Mutant</div>
       <div class="footer-note">Some project details are intentionally generalized because the work is active and unpublished. The site reveals how I think, not what I found.</div>
     </div>
     <div class="footer-meta">

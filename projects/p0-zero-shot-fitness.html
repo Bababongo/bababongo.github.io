@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>P0. Mechanism-Stratified Zero-Shot Protein Fitness · Eze Ukabiala</title>
-<meta name="description" content="P0, zero-shot fitness, shipped v1.1. A zero-shot ESM-2 benchmark on TEM-1 and VIM-2 beta-lactamases that asks not only whether protein language model scores correlate with experimental fitness, but where that correlation changes across catalytic residues, metal-binding residues, active-site neighborhoods, and the rest of the protein. A biological failure-mode audit for protein language models." />
+<title>P0. Interrogating a Protein Language Model Where Enzyme Chemistry Matters · Eze Ukabiala</title>
+<meta name="description" content="P0, mechanism-sliced zero-shot fitness, portfolio-complete v1. A four-enzyme (TEM-1, VIM-2, AMIE, beta-glucosidase) zero-shot ESM-2 benchmark that asks not only whether protein language model scores correlate with experimental fitness, but where that correlation changes across catalytic residues, ligand-contact regions, and the rest of the protein, tested against matched-position null controls. A biological failure-mode audit for protein language models." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -19,15 +19,15 @@
 <!-- Open Graph / social share -->
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Eze Ukabiala" />
-<meta property="og:title" content="P0. Mechanism-Stratified Zero-Shot Protein Fitness" />
-<meta property="og:description" content="A zero-shot ESM-2 benchmark on TEM-1 and VIM-2 beta-lactamases that asks where protein language model correlation changes across catalytic residues, metal-binding residues, active-site neighborhoods, and the rest of the protein." />
+<meta property="og:title" content="P0. Interrogating a Protein Language Model Where Enzyme Chemistry Matters" />
+<meta property="og:description" content="A zero-shot ESM-2 benchmark on TEM-1 beta-lactamase that asks not whether protein language model scores correlate with fitness, but where that correlation changes across catalytic residues, ligand-contact regions, and the rest of the protein. A biological failure-mode audit." />
 <meta property="og:url" content="https://bababongo.github.io/projects/p0-zero-shot-fitness.html" />
 <meta property="og:image" content="https://bababongo.github.io/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="P0. Mechanism-Stratified Zero-Shot Protein Fitness" />
-<meta name="twitter:description" content="A biological failure-mode audit for protein language models: zero-shot ESM-2 on TEM-1 and VIM-2 beta-lactamases, read by residue slice." />
+<meta name="twitter:title" content="P0. Interrogating a Protein Language Model Where Enzyme Chemistry Matters" />
+<meta name="twitter:description" content="A biological failure-mode audit for protein language models: zero-shot ESM-2 on TEM-1 beta-lactamase, read by residue slice." />
 <meta name="twitter:image" content="https://bababongo.github.io/og-image.png" />
 </head>
 <body>
@@ -68,11 +68,11 @@
     <div class="crumb">
       <a href="../index.html#projects">Projects</a>
       <span class="sep">/</span>
-      <span class="here">P0. Interrogate the model</span>
+      <span class="here">P0. Mechanism-sliced zero-shot fitness</span>
     </div>
     <div class="nav-actions">
       <a href="https://github.com/Bababongo/p0-zero-shot-fitness" data-repo-href class="btn btn-ghost">View repository
-        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M6 3H3v10h10v-3M9 3h4v4M13 3 7 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3H3v10h10v-3M9 3h4v4M13 3 7 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
   </div>
@@ -94,18 +94,18 @@
 <section class="cs-section cs-hero" id="top" data-screen-label="Hero">
   <div class="wrap">
     <div class="hero-eyebrow-row reveal">
-      <span class="k">P0</span><span>·</span><span>zero-shot fitness</span><span>·</span><span class="shipped">shipped v1.1</span>
+      <span class="k">P0</span><span>·</span><span>mechanism-sliced zero-shot fitness</span><span>·</span><span class="shipped">portfolio-complete v1</span>
     </div>
     <h1 class="reveal">Interrogating a Protein Language Model <span class="grad">Where Enzyme Chemistry Matters</span></h1>
     <p class="subhero reveal d1">A protein language model can look good on average while still being least trustworthy at the residues an enzyme engineer cares about most. P0 turns that suspicion into a measurable benchmark.</p>
     <p class="thesis reveal d1">A model score is not biological truth. It is <span class="em">a hypothesis about which measurements are worth buying.</span></p>
 
     <div class="chips reveal d2">
-      <span class="chip"><span class="ck">Systems</span> TEM-1 and VIM-2 beta-lactamases</span>
-      <span class="chip"><span class="ck">Datasets</span> ProteinGym BLAT_ECOLX + A4GRB6_PSEAI</span>
-      <span class="chip"><span class="ck">Variants</span> 4,783 TEM-1 + 5,004 VIM-2 single mutants</span>
-      <span class="chip"><span class="ck">Model</span> ESM-2 masked-marginal scoring</span>
-      <span class="chip"><span class="ck">Status</span> two-enzyme extension</span>
+      <span class="chip"><span class="ck">Enzymes</span> TEM-1 · VIM-2 · AMIE · beta-glucosidase</span>
+      <span class="chip"><span class="ck">Variants</span> 19,013 single mutants</span>
+      <span class="chip"><span class="ck">Model</span> ESM-2 8M and 35M masked-marginal</span>
+      <span class="chip"><span class="ck">Controls</span> matched-position null</span>
+      <span class="chip"><span class="ck">Status</span> portfolio-complete v1</span>
       <span class="chip"><span class="ck">Artifact</span> Python package, CLI, tests, CI, Savio scripts</span>
     </div>
 
@@ -115,7 +115,7 @@
       <div class="hd-flow">
         <div class="hd-stage">
           <div class="st-k">Input</div>
-          <div class="st-t">Enzyme DMS landscapes</div>
+          <div class="st-t">TEM-1 DMS landscape</div>
           <div class="hd-glyph">
             <svg viewBox="0 0 150 68" aria-hidden="true">
               <g>
@@ -138,8 +138,8 @@
                 <rect x="74" y="46" width="16" height="16" rx="2" fill="#5CC8FF" opacity="0.58"/>
                 <rect x="92" y="46" width="16" height="16" rx="2" fill="#5CC8FF" opacity="0.25"/>
                 <text x="118" y="20" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="9">fitness</text>
-                <text x="118" y="38" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="9">TEM-1</text>
-                <text x="118" y="56" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="9">VIM-2</text>
+                <text x="118" y="38" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="9">4,783</text>
+                <text x="118" y="56" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="9">variants</text>
               </g>
             </svg>
           </div>
@@ -219,11 +219,11 @@
 <section class="cs-section tight" data-screen-label="Key results">
   <div class="wrap">
     <div class="cs-head reveal" style="margin-bottom:32px">
-      <div class="cs-eyebrow">TEM-1 seed result</div>
-      <h2>The completed TEM-1 scale check</h2>
+      <div class="cs-eyebrow">Key result</div>
+      <h2>Four numbers, read three ways</h2>
     </div>
     <div class="metric-strip" id="metric-strip" data-screen-label="Metric strip"></div>
-    <p class="body-copy reveal" style="margin-top:22px;max-width:820px;color:var(--text-3);font-size:14px">This strip shows the completed TEM-1 seed result. VIM-2 appears later as the first extension result. Top-5 enrichment is a small top-k metric and should not dominate interpretation.</p>
+    <p class="body-copy reveal" style="margin-top:22px;max-width:820px;color:var(--text-3);font-size:14px">Top-5 enrichment is a small top-k metric. It is reported for completeness and should not dominate interpretation.</p>
   </div>
 </section>
 
@@ -235,10 +235,9 @@
       <h2>The result in one minute</h2>
     </div>
     <div class="reveal">
-      <p class="lead">P0 evaluates whether a protein language model predicts experimental mutation effects equally well across different biological regions of enzymes. The seed case scored 4,783 TEM-1 beta-lactamase single mutants with ESM-2 and compared model scores to experimental fitness.</p>
-      <p class="lead">I then expanded the benchmark to VIM-2, a metallo-beta-lactamase, to ask whether the same residue-slice pattern survives a different catalytic mechanism. VIM-2 ESM-2 8M reached 0.4305 overall Spearman, 0.3702 on the curated metal-binding/catalytic site, and 0.6128 in the active-site neighborhood.</p>
-      <p class="lead">The result is nuanced. Exact catalytic or metal-site residues are positive but statistically delicate. Broader mechanism-adjacent neighborhoods show stronger model signal, including matched-position null evidence that the neighborhood result is not just a tiny-slice artifact.</p>
-      <p class="lead"><strong>The lesson:</strong> model evaluation should not stop at aggregate performance. It should ask where the model works, where it fails, and whether those failure modes line up with the biology that matters.</p>
+      <p class="lead">P0 evaluates whether a protein language model predicts experimental mutation effects equally well across different biological regions of an enzyme. Across four enzymes &mdash; TEM-1, VIM-2, AMIE, and beta-glucosidase &mdash; I scored 19,013 single amino-acid substitutions with ESM-2 (8M and 35M) and compared model scores to experimental DMS fitness, using matched-position null controls to test each residue-slice claim. TEM-1 is shown here in depth as the worked example.</p>
+      <p class="lead">The result was nuanced. ESM-2 captured meaningful zero-shot signal, and scaling from 8M to 35M parameters improved aggregate mutation ranking on every enzyme. But mechanism-slice behavior was enzyme-specific: only TEM-1's active-site neighborhood cleared its matched-position null (p = 0.012), while VIM-2, AMIE, and beta-glucosidase mechanism slices stayed inside null expectations.</p>
+      <p class="lead"><strong>The lesson:</strong> model evaluation should not stop at aggregate performance. It should ask where the model works, where it fails, and whether residue-zone claims survive matched controls.</p>
     </div>
 
     <div class="proof-cards reveal d1" style="margin-top:40px">
@@ -251,11 +250,6 @@
         <div class="pc-dot" style="background:var(--cyan)"></div>
         <h4>Scale helped</h4>
         <p>ESM-2 35M improved over ESM-2 8M across most slices.</p>
-      </div>
-      <div class="pcard">
-        <div class="pc-dot" style="background:var(--violet)"></div>
-        <h4>Second enzyme added</h4>
-        <p>VIM-2 tests whether the TEM-1 pattern begins to transfer from serine beta-lactamase chemistry to metal-dependent beta-lactamase chemistry.</p>
       </div>
       <div class="pcard">
         <div class="pc-dot" style="background:var(--amber)"></div>
@@ -289,10 +283,10 @@
         <h3 class="fig-title">From DMS data to biological failure-mode audit</h3>
       </div>
       <div class="pipe" data-screen-label="Pipeline">
-        <div class="pipe-node" data-reveal="The public deep-mutational-scanning datasets that ground the benchmark in measured biology.">
+        <div class="pipe-node" data-reveal="The public deep-mutational-scanning dataset that grounds the benchmark in measured biology.">
           <div class="pipe-step">01</div>
-          <h4>ProteinGym enzyme DMS</h4>
-          <div class="pipe-sub">TEM-1 seed case plus VIM-2 extension</div>
+          <h4>ProteinGym TEM-1 DMS</h4>
+          <div class="pipe-sub">4,783 single amino-acid substitutions</div>
         </div>
         <div class="pipe-node" data-reveal="Every substitution is checked against the wild-type residue before it is scored.">
           <div class="pipe-step">02</div>
@@ -320,7 +314,7 @@
           <div class="pipe-sub">where the model earns experimental trust</div>
         </div>
       </div>
-      <figcaption class="fig-caption"><span class="fnum">Fig. 1</span>The benchmark asks a biological question, not only a modeling question: does zero-shot fitness prediction behave differently across regions of enzymes with different mechanistic roles?</figcaption>
+      <figcaption class="fig-caption"><span class="fnum">Fig. 1</span>The benchmark asks a biological question, not only a modeling question: does zero-shot fitness prediction behave differently across regions of an enzyme with different mechanistic roles?</figcaption>
     </figure>
   </div>
 </section>
@@ -335,13 +329,13 @@
       <h2>The system</h2>
     </div>
     <div class="datacard reveal d1" style="margin-bottom:26px">
-      <div class="dc-row"><div class="dc-k">Seed protein</div><div class="dc-v">TEM-1 beta-lactamase</div></div>
-      <div class="dc-row"><div class="dc-k">Seed dataset</div><div class="dc-v"><span class="mono">ProteinGym BLAT_ECOLX_Firnberg_2014</span>, 4,783 single mutants</div></div>
-      <div class="dc-row"><div class="dc-k">Extension protein</div><div class="dc-v">VIM-2 metallo-beta-lactamase</div></div>
-      <div class="dc-row"><div class="dc-k">Extension dataset</div><div class="dc-v"><span class="mono">ProteinGym A4GRB6_PSEAI_Chen_2020</span>, 5,004 single mutants</div></div>
+      <div class="dc-row"><div class="dc-k">Protein</div><div class="dc-v">TEM-1 beta-lactamase</div></div>
+      <div class="dc-row"><div class="dc-k">Dataset</div><div class="dc-v"><span class="mono">ProteinGym BLAT_ECOLX_Firnberg_2014</span></div></div>
+      <div class="dc-row"><div class="dc-k">Assay context</div><div class="dc-v">growth under ampicillin selection</div></div>
       <div class="dc-row"><div class="dc-k">Fitness target</div><div class="dc-v">ProteinGym <span class="mono">DMS_score</span></div></div>
+      <div class="dc-row"><div class="dc-k">Variants analyzed</div><div class="dc-v">4,783 single amino-acid substitutions</div></div>
     </div>
-    <p class="body-copy reveal d1">TEM-1 beta-lactamase is a useful first benchmark because it has public DMS data and known active-site biology. VIM-2 is the next useful stress test because it keeps the beta-lactamase problem family while changing the catalytic mechanism from serine-based chemistry to metal-dependent chemistry.</p>
+    <p class="body-copy reveal d1">TEM-1 beta-lactamase is a useful first benchmark because it has public DMS data and known active-site biology. That allows the evaluation to compare model scores against measured fitness while asking whether model behavior changes across mechanistic regions.</p>
   </div>
 </section>
 
@@ -370,7 +364,6 @@
       </div>
     </div>
     <p class="limit-note reveal d1" style="margin-top:24px">The exact active-site group is intentionally narrow and biologically meaningful, but statistically small. The broader groups test whether the model captures constraints around the functional environment, not only the catalytic core.</p>
-    <p class="limit-note reveal d1" style="margin-top:14px">For VIM-2, I added curated metal-binding/catalytic-site labels and an active-site-neighborhood slice. The structure-derived ligand-contact labels are the next annotation upgrade, not yet claimed as finished.</p>
   </div>
 </section>
 
@@ -401,8 +394,7 @@
     <div class="cs-head reveal">
       <div class="cs-eyebrow">05 / The results</div>
       <h2>The results</h2>
-      <p class="lead" style="margin-top:6px">In the TEM-1 seed case, overall Spearman improved from 0.4113 with ESM-2 8M to 0.5548 with ESM-2 35M. Exact UniProt active-site performance improved from 0.3023 to 0.4596, but remained below the non-active-site background. Broader ligand-contact and active-site-neighborhood slices reached 0.7127 and 0.7027 with ESM-2 35M.</p>
-      <p class="lead" style="margin-top:18px">The VIM-2 extension now gives the project its first generalization test: ESM-2 8M reaches 0.4305 overall, 0.3702 on curated metal-binding/catalytic residues, and 0.6128 in the active-site neighborhood. That neighborhood result is higher than matched random residue-position controls.</p>
+      <p class="lead" style="margin-top:6px">The figures below show TEM-1 in depth; the four-enzyme summary follows. For TEM-1, overall Spearman improved from 0.4113 with ESM-2 8M to 0.5548 with ESM-2 35M. Exact UniProt active-site performance also improved, from 0.3023 to 0.4596, but remained below the non-active-site background. Broader ligand-contact and active-site-neighborhood slices showed stronger signal, reaching 0.7127 and 0.7027 with ESM-2 35M.</p>
     </div>
 
     <!-- FIGURE 2 -->
@@ -538,46 +530,6 @@
       <figcaption class="fig-caption"><span class="fnum">Fig. 5</span>The larger ESM-2 model improves performance across most slices. But the point is not only that scale helps. The point is that biologically meaningful slices reveal where that improvement matters.</figcaption>
     </figure>
 
-    <figure class="figure reveal">
-      <div class="fig-head">
-        <span class="fig-num">Extension result</span>
-        <h3 class="fig-title">VIM-2 tests whether the pattern survives a different beta-lactamase mechanism</h3>
-        <p class="body-copy" style="margin-top:12px;font-size:15px">VIM-2 is a metallo-beta-lactamase. It gives P0 a second enzyme without jumping to an unrelated biology problem. The current VIM-2 result uses ESM-2 8M; ESM-2 35M and structure-derived ligand-contact labels are next.</p>
-      </div>
-      <div class="proof-cards" style="margin-bottom:24px">
-        <div class="pcard">
-          <div class="pc-dot" style="background:var(--cyan)"></div>
-          <h4>Overall signal</h4>
-          <p>ESM-2 8M reaches 0.4305 Spearman on 5,004 VIM-2 single mutants.</p>
-        </div>
-        <div class="pcard">
-          <div class="pc-dot" style="background:var(--amber)"></div>
-          <h4>Exact metal site</h4>
-          <p>The curated metal-binding/catalytic-site slice is positive but lower than the outside group.</p>
-        </div>
-        <div class="pcard">
-          <div class="pc-dot" style="background:var(--green)"></div>
-          <h4>Neighborhood signal</h4>
-          <p>The active-site-neighborhood slice reaches 0.6128 and is higher than matched random residue-position controls.</p>
-        </div>
-      </div>
-      <div class="table-wrap" data-screen-label="VIM-2 result table">
-        <table class="sci">
-          <caption>VIM-2 extension. ESM-2 8M residue-slice result</caption>
-          <thead>
-            <tr><th>Slice</th><th>Spearman</th><th>Outside group</th><th>Variants</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="grp">Overall</td><td>0.4305</td><td>-</td><td>5,004</td></tr>
-            <tr><td class="grp">Curated metal-binding site</td><td>0.3702</td><td>0.4123</td><td>113</td></tr>
-            <tr><td class="grp">Active-site neighborhood</td><td><span class="best">0.6128</span></td><td>0.3936</td><td>448</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <figcaption class="fig-caption"><span class="fnum">VIM-2</span>The important update is not that one new number is impressive. It is that the benchmark now has a path from one polished case study toward a mechanism-stratified enzyme panel.</figcaption>
-      <div class="fig-teach amber"><span>This is the intellectual upgrade: <b>the project is moving from "does this work on TEM-1?" to "is there a repeatable active-site-neighborhood pattern across enzyme mechanisms?"</b></span></div>
-    </figure>
-
     <!-- FIGURE 6 - MUTATION CLASS -->
     <figure class="figure reveal">
       <div class="fig-head">
@@ -592,15 +544,51 @@
     <div class="reveal" style="margin-top:22px">
       <div class="table-wrap" data-screen-label="Supplementary table">
         <table class="sci">
-          <caption>TEM-1 seed case. Residue-slice comparison across scorers (Spearman correlation, outside-group Spearman, n)</caption>
+          <caption>Table 1. Residue-slice comparison across scorers (Spearman correlation, outside-group Spearman, n)</caption>
           <thead>
             <tr><th>Group</th><th>Spearman</th><th>Outside group</th><th>Variants</th></tr>
           </thead>
           <tbody id="sci-table-body"></tbody>
         </table>
       </div>
-      <p class="body-copy" style="margin-top:14px;color:var(--text-3);font-size:13px">Bootstrap 95% confidence intervals for ESM-2 35M are encoded as whiskers in Figure 3. Values are exact outputs from the P0 comparison run.</p>
+      <p class="body-copy" style="margin-top:14px;color:var(--text-3);font-size:13px">Bootstrap 95% confidence intervals for ESM-2 35M are encoded as whiskers in Figure 3. Values are exact outputs from the TEM-1 P0 comparison run.</p>
     </div>
+
+    <!-- FOUR-ENZYME AUDIT -->
+    <div class="cs-head reveal" style="margin-top:64px">
+      <div class="cs-eyebrow" style="color:var(--amber)">The four-enzyme audit</div>
+      <h2 style="font-size:clamp(24px,3.2vw,38px)">The same benchmark, read across four enzymes</h2>
+      <p class="lead" style="margin-top:6px">TEM-1 above is the worked example. Portfolio-complete v1 spans four enzymes and 19,013 single mutants, scored with ESM-2 8M and 35M, with matched-position null controls testing each residue-slice claim.</p>
+    </div>
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Four-enzyme results">
+        <table class="sci">
+          <caption>Table 2. Four-enzyme results at ESM-2 35M (Spearman by region), with matched-position null read</caption>
+          <thead><tr><th>Enzyme</th><th>Overall</th><th>Exact site</th><th>AS neighborhood</th><th class="txt">Matched-null read</th></tr></thead>
+          <tbody>
+            <tr><td class="grp">TEM-1</td><td>0.5548</td><td>0.4596</td><td><span class="best">0.7027</span></td><td class="txt">Neighborhood clears null, p = 0.012</td></tr>
+            <tr><td class="grp">VIM-2</td><td>0.5280</td><td>0.3449</td><td>0.6133</td><td class="txt">Inside null, p = 0.142</td></tr>
+            <tr><td class="grp">AMIE</td><td>0.4082</td><td>0.0911</td><td>0.4335</td><td class="txt">Inside null, p = 0.778</td></tr>
+            <tr><td class="grp">Beta-glucosidase</td><td>0.4481</td><td>0.5105</td><td>0.4327</td><td class="txt">Inside null, p = 0.984</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="reveal d1" style="margin-top:22px">
+      <div class="table-wrap" data-screen-label="Scaling across enzymes">
+        <table class="sci">
+          <caption>Table 3. Scaling from ESM-2 8M to 35M (overall Spearman)</caption>
+          <thead><tr><th>Dataset</th><th>8M overall</th><th>35M overall</th><th>Change</th></tr></thead>
+          <tbody>
+            <tr><td class="grp">TEM-1</td><td>0.4113</td><td>0.5548</td><td><span class="delta">+0.1435</span></td></tr>
+            <tr><td class="grp">VIM-2</td><td>0.4305</td><td>0.5280</td><td><span class="delta">+0.0975</span></td></tr>
+            <tr><td class="grp">AMIE</td><td>0.3264</td><td>0.4082</td><td><span class="delta">+0.0818</span></td></tr>
+            <tr><td class="grp">Beta-glucosidase</td><td>0.1442</td><td>0.4481</td><td><span class="delta">+0.3039</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="limit-note reveal d1" style="margin-top:24px">Do not read this as a simple active-site failure story. The mature result: aggregate performance improves with scale on every enzyme, but mechanism-local behavior is enzyme-specific and requires matched controls. Only TEM-1's active-site neighborhood clears its matched-position null (p = 0.012); VIM-2, AMIE, and beta-glucosidase mechanism slices remain inside null expectations. The best claim P0 supports: <strong>ESM-2 scale improves aggregate DMS ranking, but mechanism-slice behavior is enzyme-specific.</strong></p>
   </div>
 </section>
 
@@ -613,7 +601,7 @@
       <div class="cs-eyebrow">06 / Interpretation</div>
       <h2>What the result means</h2>
     </div>
-    <p class="lead reveal">The strongest result is not a single number. It is the shape of the evaluation. ESM-2 captures meaningful constraints in TEM-1, and scaling helps. VIM-2 shows that the next question is now panel-level: whether broader active-site-neighborhood signal repeats across enzyme mechanisms after controlling for slice size and residue-position effects. The benchmark therefore moves the question from "does the model work?" to "where does the model earn trust, and does that trust transfer?"</p>
+    <p class="lead reveal">The strongest result is not a single number. It is the shape of the evaluation. ESM-2 captures meaningful constraints across all four enzymes, and scaling from 8M to 35M helps everywhere. But mechanism-slice behavior is enzyme-specific, and residue-zone claims only count when they clear a matched-position null. Aggregate performance hides the biological structure of the model's behavior. Exact catalytic residues are a small and uncertain slice. Broader active-site environments show strong signal. Mutation classes behave differently. The benchmark therefore moves the question from "does the model work?" to "where does the model earn trust?"</p>
   </div>
 </section>
 
@@ -634,7 +622,7 @@
       <div class="pcard">
         <div class="pc-dot" style="background:var(--amber)"></div>
         <h4>Biological evaluation</h4>
-        <p>The question was framed around enzyme mechanism, active-site neighborhoods, and metal-site biology, not only machine-learning performance.</p>
+        <p>The question was framed around enzyme mechanism, not only machine-learning performance.</p>
       </div>
       <div class="pcard">
         <div class="pc-dot" style="background:var(--cyan)"></div>
@@ -644,7 +632,7 @@
       <div class="pcard">
         <div class="pc-dot" style="background:var(--cyan)"></div>
         <h4>Model behavior audit</h4>
-        <p>The model is evaluated by slice, uncertainty, mutation class, matched null controls, and biological interpretation.</p>
+        <p>The model is evaluated by slice, uncertainty, mutation class, and biological interpretation.</p>
       </div>
       <div class="pcard">
         <div class="pc-dot" style="background:var(--green)"></div>
@@ -694,11 +682,11 @@
           <div class="ap-title g">supporting folders</div>
           <div class="tree">
             <div class="row"><span class="dir">data/proteingym/</span></div>
-            <div class="row indent"><span class="desc">TEM-1 and VIM-2 data, FASTA files, annotations, structure labels</span></div>
+            <div class="row indent"><span class="desc">TEM-1 data, FASTA, annotations, structure labels</span></div>
             <div class="row"><span class="dir">results/</span></div>
             <div class="row indent"><span class="desc">metrics, scored variants, plots, comparison JSON</span></div>
             <div class="row"><span class="dir">scripts/</span></div>
-            <div class="row indent"><span class="desc">structure contacts, panel registry, and metric comparison</span></div>
+            <div class="row indent"><span class="desc">structure contacts and metric comparison</span></div>
             <div class="row"><span class="dir">hpc/</span></div>
             <div class="row indent"><span class="desc">Savio runbook and SLURM scripts</span></div>
             <div class="row"><span class="dir">tests/</span></div>
@@ -719,10 +707,9 @@
           p0-zero-shot-fitness
         </div>
         <div class="repo-badges">
-          <span class="rbadge green">shipped v1.1</span>
-          <span class="rbadge green">tests: 18 passed</span>
-          <span class="rbadge cyan">TEM-1 ESM-2 35M completed</span>
-          <span class="rbadge cyan">VIM-2 ESM-2 8M completed</span>
+          <span class="rbadge green">portfolio-complete v1</span>
+          <span class="rbadge cyan">4 enzymes · 19,013 mutants</span>
+          <span class="rbadge cyan">Savio ESM-2 35M run completed</span>
           <span class="rbadge">outputs: JSON, CSV, SVG, writeup</span>
         </div>
       </div>
@@ -731,10 +718,8 @@
         <div class="acell"><span class="adot"></span>CLI</div>
         <div class="acell"><span class="adot"></span>ESM-2 scorer</div>
         <div class="acell"><span class="adot"></span>residue annotations</div>
-        <div class="acell"><span class="adot"></span>matched null controls</div>
         <div class="acell"><span class="adot"></span>metrics</div>
         <div class="acell"><span class="adot"></span>plots</div>
-        <div class="acell"><span class="adot"></span>enzyme panel registry</div>
         <div class="acell"><span class="adot"></span>tests</div>
         <div class="acell"><span class="adot"></span>GitHub Actions</div>
         <div class="acell"><span class="adot"></span>Savio run scripts</div>
@@ -767,11 +752,11 @@
             <li>biologically framed model evaluation</li>
             <li>public DMS benchmark use</li>
             <li>validated residue annotation</li>
-            <li>TEM-1 structure-derived ligand-contact labels</li>
-            <li>VIM-2 second-enzyme baseline</li>
+            <li>structure-derived ligand-contact labels</li>
             <li>zero-shot ESM-2 scoring</li>
             <li>subgroup metrics and confidence intervals</li>
-            <li>matched residue-position null controls</li>
+            <li>matched-position null controls</li>
+            <li>four-enzyme audit across enzyme families</li>
             <li>mutation-class analysis</li>
             <li>production-style Python</li>
             <li>CLI and tests</li>
@@ -784,15 +769,15 @@
           <h4><span style="width:9px;height:9px;border-radius:50%;background:var(--text-3);display:inline-block"></span>P0 does not prove</h4>
           <ul>
             <li>ESM-2 generally fails at all catalytic residues</li>
-            <li>two beta-lactamases represent all enzymes</li>
+            <li>four enzymes represent all enzyme families</li>
+            <li>mechanism slices universally clear matched-position nulls</li>
             <li>ligand-contact performance generalizes across all structures</li>
             <li>zero-shot scoring replaces experimental validation</li>
             <li>this is a finished enzyme-design platform</li>
-            <li>this is a production foundation model</li>
           </ul>
         </div>
       </div>
-      <figcaption class="fig-caption"><span class="fnum">Fig. 8</span>Good scientific communication includes the boundary of the claim. P0 is a shipped evaluation layer, not a completed design platform.</figcaption>
+      <figcaption class="fig-caption"><span class="fnum">Fig. 8</span>Good scientific communication includes the boundary of the claim. P0 is a portfolio-complete evaluation layer, not a completed design platform.</figcaption>
     </figure>
 
     <div class="reveal d1" style="margin-top:44px">
@@ -801,13 +786,11 @@
         <h2 style="font-size:clamp(22px,2.6vw,32px)">What this does not claim</h2>
       </div>
       <ul class="limit-list">
-        <li>two beta-lactamases, not a broad enzyme panel</li>
-        <li>two assay contexts, not every functional readout</li>
+        <li>four enzymes, not all enzyme families</li>
+        <li>mixed assay contexts</li>
         <li>one sequence-only model family</li>
         <li>active-site-only group is small</li>
         <li>ligand-contact group comes from one inhibitor-bound structure</li>
-        <li>VIM-2 ESM-2 35M has not been run yet</li>
-        <li>VIM-2 structure-derived ligand-contact labels are still next</li>
         <li>DMS fitness is not pure catalytic chemistry</li>
         <li>no structure-aware baseline yet</li>
         <li>no prospective design campaign yet</li>
@@ -827,12 +810,13 @@
       <h2>Next scientific steps</h2>
     </div>
     <div class="steps reveal d1">
-      <div class="step"><span class="sn">1</span><p>Add structure-derived VIM-2 ligand/contact labels.</p></div>
-      <div class="step"><span class="sn">2</span><p>Run ESM-2 35M on VIM-2.</p></div>
-      <div class="step"><span class="sn">3</span><p>Add SARS-CoV-2 Mpro as the first non-beta-lactamase enzyme.</p></div>
-      <div class="step"><span class="sn">4</span><p>Add conservation-, solvent-accessibility-, and mutation-class-matched controls.</p></div>
-      <div class="step"><span class="sn">5</span><p>Compare residue-slice behavior across enzyme classes.</p></div>
-      <div class="step"><span class="sn">6</span><p>Turn P0 into a polished article and carousel.</p></div>
+      <div class="step"><span class="sn">1</span><p>Run ESM-2 150M.</p></div>
+      <div class="step"><span class="sn">2</span><p>Add ESM-1v.</p></div>
+      <div class="step"><span class="sn">3</span><p>Add MSA-based baseline if setup allows.</p></div>
+      <div class="step"><span class="sn">4</span><p>Expand beyond the current four-enzyme panel.</p></div>
+      <div class="step"><span class="sn">5</span><p>Test contact-label robustness across multiple ligand-bound structures.</p></div>
+      <div class="step"><span class="sn">6</span><p>Compare residue-slice behavior across enzyme classes.</p></div>
+      <div class="step"><span class="sn">7</span><p>Turn P0 into a polished article and carousel.</p></div>
     </div>
   </div>
 </section>
@@ -844,8 +828,8 @@
       <div class="cs-eyebrow">11 / The takeaway</div>
       <h2>The takeaway</h2>
     </div>
-    <p class="lead reveal">P0 is a benchmark for asking whether protein language model performance changes near catalytic, metal-binding, and mechanism-relevant regions of enzymes.</p>
-    <p class="lead reveal d1">The main lesson is simple: overall model performance is not enough. In AI biology, the interesting question is where the model works, where it fails, whether those failure modes line up with the biology a scientist actually cares about, and whether that pattern transfers beyond one enzyme.</p>
+    <p class="lead reveal">P0 is a benchmark for asking whether protein language model performance changes near catalytic and mechanism-relevant regions of an enzyme.</p>
+    <p class="lead reveal d1">The main lesson is simple: overall model performance is not enough. In AI biology, the interesting question is where the model works, where it fails, and whether those failure modes line up with the biology a scientist actually cares about.</p>
   </div>
 </section>
 
@@ -853,14 +837,14 @@
 <section class="cs-section cs-cta" data-screen-label="Call to action">
   <div class="wrap-narrow">
     <h2 class="reveal">The model score is the beginning of the question, not the end of the experiment.</h2>
-    <p class="final-line reveal d1">P0 is now two beta-lactamases, two assay contexts, and one sequence-only model family. It is an evaluation layer, built with biological judgment, not a finished design platform.</p>
+    <p class="final-line reveal d1">P0 is four enzymes, mixed assay contexts, and one sequence-only model family. It is an evaluation layer, built with biological judgment, not a finished design platform.</p>
     <div class="cta-actions reveal d1">
       <a href="https://github.com/Bababongo/p0-zero-shot-fitness" data-repo-href class="btn btn-primary">View repository
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
       <a href="../index.html#projects" class="btn btn-ghost">Back to projects</a>
-      <a href="https://ezeukabiala.substack.com/" target="_blank" rel="noopener" class="btn-text">Read From Model to Mutant
-        <svg class="arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <a href="https://ezeukabiala.substack.com/" target="_blank" rel="noopener noreferrer" class="btn-text">Read From Model to Mutant
+        <svg class="arrow" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
   </div>
@@ -873,7 +857,7 @@
     <div>
       <div class="footer-name">Ezechinyere "Eze" Ukabiala</div>
       <div class="footer-role">AI protein-engineering campaign scientist · AI systems for experimental biology</div>
-      <div class="footer-brand">P0. Interrogate the model · zero-shot fitness · shipped v1.1</div>
+      <div class="footer-brand">P0. Mechanism-sliced zero-shot fitness · portfolio-complete v1</div>
       <div class="footer-note">This case study reports a model-evaluation artifact built on public data. Unpublished thesis details, exact designs, and active project results are intentionally withheld while the work is active.</div>
     </div>
     <div class="footer-meta">

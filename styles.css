@@ -1219,3 +1219,65 @@ button:focus-visible,
   .ks-status-dot { animation: none; }
   .skip-link { transition: none; }
 }
+
+/* ============================================================
+   PUBLIC PROJECTS: shipped-artifact tier, research arc, evidence strip
+   (extends the roadmap card system; keeps the same visual language)
+   ============================================================ */
+.projects-summary { color: var(--text-2); font-size: clamp(15px, 1.5vw, 17px); line-height: 1.62; max-width: 880px; margin: 26px 0 2px; padding-left: 18px; border-left: 2px solid var(--border-strong); text-wrap: pretty; }
+.projects-summary strong { color: var(--text); font-weight: 600; }
+
+.tier-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin: 40px 0 18px; }
+.tier-kicker { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan); }
+.tier-note { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); text-wrap: pretty; }
+
+/* two shipped cards, richer than the planned roadmap cards */
+.artifact-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.rm-card.featured { background: radial-gradient(140% 120% at 0% 0%, rgba(92,200,255,0.06), transparent 55%), var(--panel); border-color: var(--border-strong); padding: 30px 30px 26px; }
+.rm-card.featured .rm-top { margin-bottom: 14px; }
+.rm-badges { display: inline-flex; align-items: center; gap: 10px; }
+.rm-rating { font-family: var(--font-mono); font-size: 12px; color: var(--text-2); letter-spacing: 0.02em; }
+.rm-card .rm-sub { font-family: var(--font-display); font-weight: 500; font-size: 15px; color: var(--text-2); letter-spacing: -0.01em; margin: -2px 0 14px; line-height: 1.4; flex: none; }
+.rm-card .rm-copy { flex: none; margin-bottom: 18px; }
+.echips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: auto; }
+.echip { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.02em; color: var(--text-2); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.015); }
+.rm-card.featured .rm-cta { margin-top: 18px; }
+
+/* research arc: sober P0 -> P1 -> next framework */
+.arc { margin-top: 22px; border: 1px solid var(--border); border-radius: var(--radius); background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent 55%), var(--panel); padding: clamp(26px, 3vw, 40px); }
+.arc-head { max-width: 760px; margin-bottom: 30px; }
+.arc-kicker { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan); display: inline-flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.arc-kicker::before { content: ""; width: 26px; height: 1px; background: linear-gradient(90deg, var(--cyan), transparent); }
+.arc-head h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(22px, 2.6vw, 32px); letter-spacing: -0.02em; line-height: 1.12; margin-bottom: 14px; text-wrap: balance; }
+.arc-head p { color: var(--text-2); font-size: clamp(15px, 1.5vw, 17px); line-height: 1.6; max-width: 700px; text-wrap: pretty; }
+.arc-flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: stretch; gap: 0; }
+.arc-node { border: 1px solid var(--border); border-top-width: 2px; background: var(--bg-1); border-radius: 12px; padding: 22px 22px 24px; min-width: 0; }
+.arc-node.an-cyan { border-top-color: var(--cyan); }
+.arc-node.an-violet { border-top-color: var(--violet); }
+.arc-node.an-amber { border-top-color: var(--amber); }
+.arc-node .arc-tag { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; }
+.arc-node.an-cyan .arc-tag { color: var(--cyan); }
+.arc-node.an-violet .arc-tag { color: var(--violet); }
+.arc-node.an-amber .arc-tag { color: var(--amber); }
+.arc-node h4 { font-family: var(--font-display); font-weight: 600; font-size: 17px; letter-spacing: -0.01em; color: var(--text); margin: 12px 0 10px; }
+.arc-node p { color: var(--text-2); font-size: 13.5px; line-height: 1.55; text-wrap: pretty; }
+.arc-arrow { display: grid; place-items: center; padding: 0 clamp(12px, 1.6vw, 22px); color: var(--text-3); font-family: var(--font-mono); font-size: 20px; }
+
+/* quiet evidence strip: scientific evidence, not vanity metrics */
+.evidence-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px; padding-top: 26px; border-top: 1px solid var(--border); }
+.ev { display: flex; flex-direction: column; gap: 7px; }
+.ev-num { font-family: var(--font-display); font-weight: 600; font-size: clamp(28px, 3.4vw, 40px); letter-spacing: -0.02em; color: var(--text); line-height: 1; font-variant-numeric: tabular-nums; }
+.ev-label { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em; color: var(--text-3); }
+
+/* planned roadmap: four future cards in a calmer 2x2 */
+.roadmap.planned { grid-template-columns: repeat(2, 1fr); }
+
+@media (max-width: 900px) {
+  .artifact-row { grid-template-columns: 1fr; }
+  .arc-flow { grid-template-columns: 1fr; gap: 12px; }
+  .arc-arrow { padding: 4px 0; transform: rotate(90deg); }
+  .evidence-strip { grid-template-columns: repeat(2, 1fr); gap: 24px 14px; }
+}
+@media (max-width: 760px) {
+  .roadmap.planned { grid-template-columns: 1fr; }
+}

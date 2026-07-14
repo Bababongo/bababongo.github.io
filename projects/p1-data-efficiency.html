@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>P1. Data-Efficiency Curves for Protein Fitness Learning · Eze Ukabiala</title>
+<meta name="description" content="P1, data-efficiency curves, strong prototype. A label-efficiency benchmark that starts from P0 zero-shot ESM scores, hides most experimental fitness labels, and asks how many measured labels are needed before supervised residual correction improves on zero-shot prediction. Around 384 labels, correction begins to beat zero-shot on real enzyme datasets." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="p0.css" />
+<link rel="stylesheet" href="p1.css" />
+
+<link rel="canonical" href="https://bababongo.github.io/projects/p1-data-efficiency.html" />
+<meta name="author" content="Ezechinyere Ukabiala" />
+<meta name="theme-color" content="#070A12" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='5' fill='%23070A12'/><path d='M5 19c4-2 4-6 7-7s7-5 7-7' fill='none' stroke='%235CC8FF' stroke-width='1.6' stroke-linecap='round'/><path d='M5 5c4 2 4 6 7 7s7 5 7 7' fill='none' stroke='%239D7CFF' stroke-width='1.6' stroke-linecap='round'/><circle cx='12' cy='12' r='1.6' fill='%237DD3A8'/></svg>" />
+
+<!-- Open Graph / social share -->
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Eze Ukabiala" />
+<meta property="og:title" content="P1. Data-Efficiency Curves for Protein Fitness Learning" />
+<meta property="og:description" content="How many experimental labels does it take to beat zero-shot? A label-efficiency benchmark that starts from P0 zero-shot ESM scores and asks when supervised residual correction becomes worth the assay budget." />
+<meta property="og:url" content="https://bababongo.github.io/projects/p1-data-efficiency.html" />
+<meta property="og:image" content="https://bababongo.github.io/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="P1. Data-Efficiency Curves for Protein Fitness Learning" />
+<meta name="twitter:description" content="A label-efficiency benchmark: how many measured labels are needed before supervised correction beats zero-shot ESM scoring, and which labels are worth buying." />
+<meta name="twitter:image" content="https://bababongo.github.io/og-image.png" />
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<template id="__bundler_thumbnail" data-bg-color="#070A12">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#070A12"/>
+    <line x1="240" y1="470" x2="960" y2="470" stroke="rgba(107,118,137,0.6)" stroke-width="3" stroke-dasharray="10 12"/>
+    <path d="M260 640 C 420 610, 520 560, 620 470 S 820 320, 940 250" fill="none" stroke="#5CC8FF" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="260" cy="640" r="14" fill="#5CC8FF"/>
+    <circle cx="620" cy="470" r="16" fill="#9D7CFF"/>
+    <circle cx="940" cy="250" r="14" fill="#7DD3A8"/>
+    <text x="628" y="530" fill="#9D7CFF" font-family="monospace" font-size="34">384</text>
+  </svg>
+</template>
+
+<!-- Ambient layers (shared visual identity) -->
+<canvas id="bg-canvas"></canvas>
+<div class="bg-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+<div class="grain"></div>
+
+<!-- NAV -->
+<header class="nav cs-nav">
+  <div class="nav-inner">
+    <a href="../index.html#home" class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 19c4-2 4-6 7-7s7-5 7-7" stroke="#5CC8FF" stroke-width="1.6" stroke-linecap="round"/><path d="M5 5c4 2 4 6 7 7s7 5 7 7" stroke="#9D7CFF" stroke-width="1.6" stroke-linecap="round"/><circle cx="5" cy="5" r="1.7" fill="#5CC8FF"/><circle cx="19" cy="19" r="1.7" fill="#9D7CFF"/><circle cx="12" cy="12" r="1.5" fill="#7DD3A8"/></svg>
+      </span>
+      <span class="brand-name">Eze Ukabiala<span> / campaign scientist</span></span>
+    </a>
+    <div class="crumb">
+      <a href="../index.html#projects">Projects</a>
+      <span class="sep">/</span>
+      <span class="here">P1. Data-efficiency curves</span>
+    </div>
+    <div class="nav-actions">
+      <a href="https://github.com/Bababongo/p1-data-efficiency" data-repo-href class="btn btn-ghost">View repository
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3H3v10h10v-3M9 3h4v4M13 3 7 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- STICKY SECTION RAIL -->
+<nav class="rail" aria-label="Section navigation">
+  <a href="#result"><span class="tick"></span>Result</a>
+  <a href="#connect"><span class="tick"></span>P0 to P1</a>
+  <a href="#correction"><span class="tick"></span>Correction</a>
+  <a href="#results"><span class="tick"></span>Results</a>
+  <a href="#embeddings"><span class="tick"></span>Embeddings</a>
+  <a href="#acquisition"><span class="tick"></span>Acquisition</a>
+  <a href="#artifact"><span class="tick"></span>Artifact</a>
+</nav>
+
+<main class="cs-main" id="main">
+
+<!-- ============================ HERO ============================ -->
+<section class="cs-section cs-hero" id="top" data-screen-label="Hero">
+  <div class="wrap">
+    <div class="hero-eyebrow-row reveal">
+      <span class="k">P1</span><span>·</span><span>data-efficiency curves</span><span>·</span><span class="proto">strong prototype</span>
+    </div>
+    <h1 class="reveal">How many experimental labels does it take to <span class="grad">beat zero-shot?</span></h1>
+    <p class="subhero reveal d1">A label-efficiency benchmark that starts from P0 zero-shot ESM scores, hides most experimental fitness labels, and asks when supervised correction becomes worth the assay budget.</p>
+    <p class="thesis reveal d1">Zero-shot gives the first prior. Experimental labels teach the correction. <span class="em">The campaign question is which labels are worth buying.</span></p>
+
+    <div class="chips reveal d2">
+      <span class="chip"><span class="ck">Status</span> strong prototype</span>
+      <span class="chip"><span class="ck">Key budget</span> 384 labels</span>
+      <span class="chip"><span class="ck">Inputs</span> P0 zero-shot ESM scores</span>
+      <span class="chip"><span class="ck">Models</span> residual correction</span>
+      <span class="chip"><span class="ck">Features</span> mutation, mechanism, property, true ESM delta</span>
+      <span class="chip"><span class="ck">Loop</span> iterative acquisition</span>
+    </div>
+
+    <div class="hero-actions reveal d2" style="margin-top:34px">
+      <a href="../index.html#projects" class="btn btn-primary">Back to projects
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8H4M8 4 4 8l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="https://github.com/Bababongo/p1-data-efficiency" data-repo-href class="btn btn-ghost">View repository
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3H3v10h10v-3M9 3h4v4M13 3 7 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    <!-- Hero diagram: zero-shot prior -> measured labels -> residual correction -->
+    <div class="hero-diagram reveal d2" data-screen-label="Hero diagram">
+      <div class="hd-caption">From zero-shot prior to label-efficient correction</div>
+      <div class="hd-flow">
+        <div class="hd-stage">
+          <div class="st-k">Input</div>
+          <div class="st-t">P0 zero-shot ESM scores</div>
+          <div class="hd-glyph">
+            <svg viewBox="0 0 150 68" aria-hidden="true">
+              <g>
+                <rect x="2" y="6"  width="120" height="8" rx="2" fill="#5CC8FF" opacity="0.85"/>
+                <rect x="2" y="20" width="96"  height="8" rx="2" fill="#5CC8FF" opacity="0.6"/>
+                <rect x="2" y="34" width="70"  height="8" rx="2" fill="#5CC8FF" opacity="0.45"/>
+                <rect x="2" y="48" width="48"  height="8" rx="2" fill="#5CC8FF" opacity="0.3"/>
+                <text x="132" y="12" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="8">rank</text>
+              </g>
+            </svg>
+          </div>
+          <div class="st-k" style="color:var(--cyan)">prior ranking</div>
+        </div>
+
+        <div class="hd-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+        <div class="hd-stage">
+          <div class="st-k">Reveal</div>
+          <div class="st-t">A finite label budget</div>
+          <div class="hd-glyph">
+            <svg viewBox="0 0 150 68" aria-hidden="true">
+              <g>
+                <rect x="2"  y="8"  width="13" height="13" rx="2" fill="#5CC8FF" opacity="0.9"/>
+                <rect x="19" y="8"  width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
+                <rect x="36" y="8"  width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
+                <rect x="53" y="8"  width="13" height="13" rx="2" fill="#7DD3A8" opacity="0.85"/>
+                <rect x="70" y="8"  width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
+                <rect x="2"  y="25" width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
+                <rect x="19" y="25" width="13" height="13" rx="2" fill="#5CC8FF" opacity="0.9"/>
+                <rect x="36" y="25" width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
+                <rect x="53" y="25" width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
+                <rect x="70" y="25" width="13" height="13" rx="2" fill="#7DD3A8" opacity="0.85"/>
+                <rect x="2"  y="42" width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
+                <rect x="19" y="42" width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
+                <rect x="36" y="42" width="13" height="13" rx="2" fill="#5CC8FF" opacity="0.9"/>
+                <rect x="53" y="42" width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
+                <rect x="70" y="42" width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
+                <text x="92" y="30" fill="#9D7CFF" font-family="'IBM Plex Mono',monospace" font-size="13">384</text>
+                <text x="92" y="44" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="8">measured</text>
+              </g>
+            </svg>
+          </div>
+          <div class="st-k" style="color:var(--violet)">measured labels</div>
+        </div>
+
+        <div class="hd-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+        <div class="hd-stage">
+          <div class="st-k">Model</div>
+          <div class="st-t">Residual correction</div>
+          <div class="hd-glyph">
+            <svg viewBox="0 0 150 68" aria-hidden="true">
+              <g font-family="'IBM Plex Mono',monospace">
+                <text x="75" y="26" text-anchor="middle" fill="#A7B0C0" font-size="12">pred = zs + &#916;</text>
+                <path d="M8 54 C 40 52, 60 50, 80 44 S 120 30, 142 22" fill="none" stroke="#7DD3A8" stroke-width="1.8"/>
+                <path d="M8 54 H142" stroke="rgba(107,118,137,0.5)" stroke-width="1" stroke-dasharray="3 4"/>
+                <text x="122" y="62" fill="#7DD3A8" font-size="8">learned</text>
+              </g>
+            </svg>
+          </div>
+          <div class="st-k" style="color:var(--green)">label-efficient prediction</div>
+        </div>
+      </div>
+
+      <div class="hd-loop">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3" stroke="#9D7CFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Acquisition loop: which labels are worth buying next feeds back into the measured set, under a finite assay budget.
+      </div>
+      <div class="hd-tags">
+        <span class="hd-tag c">zero-shot prior</span>
+        <span class="hd-tag g">measured labels</span>
+        <span class="hd-tag c">residual correction</span>
+        <span class="hd-tag a">mechanism slices</span>
+        <span class="hd-tag g">acquisition</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ RESULT IN ONE MINUTE ============================ -->
+<section class="cs-section" id="result" data-screen-label="The result in one minute">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">Summary</div>
+      <h2>The result in one minute</h2>
+    </div>
+    <div class="reveal">
+      <p class="lead">P1 extends P0 from model evaluation into experimental-design logic. P0 asks where zero-shot ESM scoring is reliable. P1 asks how many measured labels are needed before a supervised correction model can improve on that zero-shot score.</p>
+      <p class="lead">Around 384 measured labels, residual correction begins to reliably beat zero-shot scoring on real enzyme datasets. But the gain is not automatic at tiny label counts, and naive model-guided acquisition can underperform when it loses diversity.</p>
+    </div>
+    <p class="prominent violet reveal d1">Labels help, but label value depends on <span class="em">budget, selection strategy, mechanism region, and coverage of the mutation landscape.</span></p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ FROM P0 TO P1 ============================ -->
+<section class="cs-section" id="connect" data-screen-label="From P0 to P1">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">01 / The connection</div>
+      <h2>From P0 to P1</h2>
+      <p class="lead" style="margin-top:6px">P0 produced the raw material: every variant carries an experimental fitness, a zero-shot ESM score, and residue-group labels. P1 asks what those experimental labels are worth.</p>
+    </div>
+    <div class="flow reveal d1">
+      <div class="flow-row">
+        <div class="fl-step"><span class="fl-n">01</span><span class="fl-k">P0 scores mutations</span></div>
+        <div class="fl-v">Each variant gets experimental fitness, a zero-shot ESM score, and residue-group labels.</div>
+      </div>
+      <div class="flow-row">
+        <div class="fl-step"><span class="fl-n">02</span><span class="fl-k">P1 hides most labels</span></div>
+        <div class="fl-v">The benchmark simulates having only 24, 96, 384, or 1000 measured labels.</div>
+      </div>
+      <div class="flow-row">
+        <div class="fl-step"><span class="fl-n">03</span><span class="fl-k">P1 trains correction models</span></div>
+        <div class="fl-v">The model learns what the experiment teaches that zero-shot ESM missed.</div>
+      </div>
+      <div class="flow-row">
+        <div class="fl-step"><span class="fl-n">04</span><span class="fl-k">P1 evaluates acquisition</span></div>
+        <div class="fl-v">Different label-buying strategies are compared on held-out mutations.</div>
+      </div>
+    </div>
+    <p class="limit-note reveal d1">P1 treats experimental labels as a finite campaign resource, not as an unlimited training set.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ RESIDUAL CORRECTION ============================ -->
+<section class="cs-section" id="correction" data-screen-label="Residual correction">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">02 / Residual correction</div>
+      <h2>Residual correction</h2>
+    </div>
+    <div class="formula reveal d1">
+      <div class="eq">prediction <span class="op">=</span> <span class="term-mut">zero-shot score</span> <span class="op">+</span> <span class="term-wt">learned experimental correction</span></div>
+      <div class="fkey">
+        <span><b class="kc">zero-shot score</b>: the P0 ESM-2 prior, free before any assay</span>
+        <span><b class="ka">learned correction</b>: what measured labels add on top</span>
+      </div>
+    </div>
+    <p class="body-copy reveal d1" style="margin-top:22px">The most important P1 model family starts with the ESM zero-shot score, then learns a correction from a small number of measured labels. This is stronger than throwing away the pretrained model, because it asks exactly what experimental data adds beyond zero-shot prediction.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ FEATURES + STRATEGIES ============================ -->
+<section class="cs-section" id="features" data-screen-label="Features and strategies">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">03 / Inputs and choices</div>
+      <h2>What the correction model sees, and which labels it buys</h2>
+    </div>
+
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Feature groups">
+        <table class="sci">
+          <caption>Table 1. Feature groups given to the correction model</caption>
+          <thead>
+            <tr><th>Feature group</th><th class="txt">Examples</th><th class="txt">Why it matters</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="grp">Mutation features</td><td class="txt">wild-type residue, mutant residue, position, mutation class</td><td class="txt">Basic interpretable signal.</td></tr>
+            <tr><td class="grp">Mechanism features</td><td class="txt">active site, binding pocket, neighborhood, distance proxy</td><td class="txt">Connects ML to enzyme mechanism.</td></tr>
+            <tr><td class="grp">Property embeddings</td><td class="txt">deterministic amino-acid property vectors</td><td class="txt">Simple embedding baseline.</td></tr>
+            <tr><td class="grp">True ESM delta embeddings</td><td class="txt">mutant-minus-wild-type ESM-2 residue embeddings</td><td class="txt">Tests whether learned PLM representations improve label efficiency.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="reveal d1" style="margin-top:22px">
+      <div class="table-wrap" data-screen-label="Label-selection strategies">
+        <table class="sci">
+          <caption>Table 2. Which labels are worth buying? Label-selection strategies</caption>
+          <thead>
+            <tr><th>Strategy</th><th class="txt">Meaning</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="term v">random</td><td class="txt">Randomly sample variants.</td></tr>
+            <tr><td class="term v">score_diverse</td><td class="txt">Cover the zero-shot score range.</td></tr>
+            <tr><td class="term v">mechanism_enriched</td><td class="txt">Prefer mechanism-sensitive residues.</td></tr>
+            <tr><td class="term v">mechanism_balanced</td><td class="txt">Round-robin across mechanism and background regions.</td></tr>
+            <tr><td class="term v">model_top</td><td class="txt">Acquire variants the current model predicts to be best.</td></tr>
+            <tr><td class="term v">mechanism_model_top</td><td class="txt">Acquire high-predicted variants while prioritizing mechanism regions.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="callout reveal d1">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" stroke="#9D7CFF" stroke-width="1.4" stroke-linecap="round"/><circle cx="12" cy="12" r="3" stroke="#9D7CFF" stroke-width="1.4"/></svg>
+      <span>P1 is closer to campaign design than simple model training. It simulates <b>which variants a scientist should measure next</b> when assay budget is finite.</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ MAIN RESULTS AT 384 LABELS ============================ -->
+<section class="cs-section" id="results" data-screen-label="Main results at 384 labels">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">04 / The results</div>
+      <h2>Label budgets, and when correction starts to pay</h2>
+      <p class="lead" style="margin-top:6px">A supervised correction layer is useless with too few labels and useful once the budget is large enough. On real enzyme data, the turn happens around a few hundred measured labels.</p>
+    </div>
+
+    <!-- FIGURE 1 - fixture sanity -->
+    <figure class="figure reveal">
+      <div class="fig-head">
+        <span class="fig-num">Figure 1</span>
+        <h3 class="fig-title">Tiny label budgets are unstable</h3>
+      </div>
+      <div class="fig-legend">
+        <span class="leg"><span class="sw line" style="background:var(--gray)"></span>zero-shot reference</span>
+        <span class="leg"><span class="sw cyan"></span>hybrid model (zero-shot + correction)</span>
+      </div>
+      <div class="fig-plot" data-fig="fixture"></div>
+      <figcaption class="fig-caption"><span class="fnum">Fig. 1</span>In the fixture sanity check, the hybrid model only becomes useful once there are enough labels for the correction layer to learn. Tiny label budgets are unstable: at 4 labels it collapses, at 24 it passes zero-shot.</figcaption>
+      <div class="fig-teach"><span>The correction layer does not fail because the idea is wrong. It fails because <b>there is not yet enough measured data to learn from.</b></span></div>
+    </figure>
+
+    <!-- FIGURE 2 - real P0 inputs at 384 -->
+    <figure class="figure reveal">
+      <div class="fig-head">
+        <span class="fig-num">Figure 2</span>
+        <h3 class="fig-title">At 384 labels, residual correction starts beating zero-shot</h3>
+        <p class="body-copy" style="margin-top:12px;font-size:15px">ESM-2 zero-shot baseline versus residual correction with property embeddings and with true ESM delta embeddings, on real P0 enzyme data at a 384-label budget.</p>
+      </div>
+      <div class="fig-legend">
+        <span class="leg"><span class="sw gray"></span>zero-shot</span>
+        <span class="leg"><span class="sw" style="background:var(--cyan-dim)"></span>residual + property embedding</span>
+        <span class="leg"><span class="sw cyan"></span>residual + true ESM embedding</span>
+      </div>
+      <div class="fig-plot" data-fig="main384"></div>
+      <figcaption class="fig-caption"><span class="fnum">Fig. 2</span>At 384 labels, residual correction models begin to beat zero-shot on real enzyme datasets. True ESM delta embeddings produce modest additional global gains over the property-embedding baseline.</figcaption>
+    </figure>
+
+    <!-- supplementary table for Fig 2 -->
+    <div class="reveal" style="margin-top:22px">
+      <div class="table-wrap" data-screen-label="384-label table">
+        <table class="sci">
+          <caption>Table 3. Spearman at 384 labels (real P0 inputs)</caption>
+          <thead>
+            <tr><th>Dataset</th><th class="txt">Selection</th><th>Zero-shot</th><th>Residual mechanism</th><th>+ property</th><th>+ true ESM</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="grp">TEM-1</td><td class="txt">random</td><td>0.559</td><td>0.590</td><td>0.606</td><td><span class="best">0.622</span></td></tr>
+            <tr><td class="grp">TEM-1</td><td class="txt">score_diverse</td><td>0.559</td><td>&mdash;</td><td>0.597</td><td><span class="best">0.612</span></td></tr>
+            <tr><td class="grp">VIM-2</td><td class="txt">random</td><td>0.418</td><td>0.491</td><td>0.510</td><td><span class="best">0.513</span></td></tr>
+            <tr><td class="grp">VIM-2</td><td class="txt">score_diverse</td><td>0.418</td><td>&mdash;</td><td>0.513</td><td><span class="best">0.515</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="body-copy" style="margin-top:14px;color:var(--text-3);font-size:13px">Residual-mechanism-only values are reported for the random selection; score_diverse rows use the embedding correction models. Values are exact outputs from the P1 real-data run.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ TRUE ESM EMBEDDINGS + MECHANISM SLICES ============================ -->
+<section class="cs-section" id="embeddings" data-screen-label="True ESM embedding results">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">05 / Learned representations</div>
+      <h2>ESM delta embeddings help most when the question is local</h2>
+      <p class="lead" style="margin-top:6px">True ESM delta embeddings do not radically change global performance. Their value shows up when the evaluation asks a biology-local question, inside mechanism-sensitive regions.</p>
+    </div>
+
+    <figure class="figure reveal" data-screen-label="Figure 3">
+      <div class="fig-head">
+        <span class="fig-num">Figure 3</span>
+        <h3 class="fig-title">Global gains are modest; mechanism-slice gains are stronger</h3>
+      </div>
+      <div class="panels">
+        <div class="panel">
+          <div class="panel-label">Panel A · global result at 384 labels</div>
+          <h4>True ESM embeddings add a small global delta</h4>
+          <div class="table-wrap">
+            <table class="sci">
+              <thead>
+                <tr><th>Dataset</th><th class="txt">Selection</th><th>Zero-shot</th><th>Property</th><th>True ESM</th><th>ESM delta</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="grp">TEM-1</td><td class="txt">random</td><td>0.559</td><td>0.606</td><td>0.622</td><td><span class="delta">+0.016</span></td></tr>
+                <tr><td class="grp">TEM-1</td><td class="txt">score_diverse</td><td>0.559</td><td>0.597</td><td>0.612</td><td><span class="delta">+0.015</span></td></tr>
+                <tr><td class="grp">VIM-2</td><td class="txt">random</td><td>0.418</td><td>0.510</td><td>0.513</td><td><span class="delta">+0.003</span></td></tr>
+                <tr><td class="grp">VIM-2</td><td class="txt">score_diverse</td><td>0.418</td><td>0.513</td><td>0.515</td><td><span class="delta">+0.002</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-label v">Panel B · mechanism-slice result at 384 labels</div>
+          <h4>Correction is strongest inside mechanism-sensitive regions</h4>
+          <div class="fig-legend">
+            <span class="leg"><span class="sw amber"></span>mean Spearman, best selection per region</span>
+            <span class="leg"><span class="sw" style="background:var(--green);height:2px;width:18px"></span>delta vs zero-shot (right)</span>
+          </div>
+          <div class="fig-plot" data-fig="mechslice"></div>
+        </div>
+      </div>
+      <figcaption class="fig-caption"><span class="fnum">Fig. 3</span>True ESM delta embeddings do not radically change global performance, but they strengthen mechanism-specific correction. Learned representations are most useful when the evaluation asks a biology-local question, such as the binding pocket (TEM-1, +0.153) or the active site (VIM-2, +0.154).</figcaption>
+      <div class="fig-teach amber"><span>The same lesson as P0, seen from the other side: <b>mechanism-local structure is where the interesting signal lives</b>, and where learned representations earn their keep.</span></div>
+    </figure>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ ITERATIVE ACQUISITION ============================ -->
+<section class="cs-section" id="acquisition" data-screen-label="Iterative acquisition result">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">06 / Acquisition</div>
+      <h2>Naive model-guided acquisition can lose to diversity</h2>
+      <p class="lead" style="margin-top:6px">The agentic-looking strategies did not win. When the model only buys variants it already predicts to be best, it over-exploits narrow regions and loses the diversity it needs to keep learning.</p>
+    </div>
+
+    <figure class="figure reveal">
+      <div class="fig-head">
+        <span class="fig-num">Figure 4</span>
+        <h3 class="fig-title">Diversity-preserving acquisition outperforms naive model-guided selection</h3>
+      </div>
+      <div class="fig-legend">
+        <span class="leg"><span class="sw cyan"></span>diversity-preserving (random, score_diverse)</span>
+        <span class="leg"><span class="sw amber"></span>mechanism_balanced</span>
+        <span class="leg"><span class="sw gray"></span>naive model-guided (model_top, mechanism_model_top)</span>
+      </div>
+      <div class="fig-plot" data-fig="acq"></div>
+      <figcaption class="fig-caption"><span class="fnum">Fig. 4</span>Naive model-guided acquisition over-exploits narrow regions and loses diversity, trailing random and score-diverse sampling on both Spearman and top-k enrichment. Good enzyme-engineering acquisition must manage exploitation, diversity, and mechanism coverage at the same time.</figcaption>
+      <div class="fig-teach"><span>This is the sharpest result in P1, and it points at the next project: <b>acquisition that buys information, not confidence.</b></span></div>
+    </figure>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ SCIENTIFIC LESSON ============================ -->
+<section class="cs-section" id="lesson" data-screen-label="The scientific lesson">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">07 / The scientific lesson</div>
+      <h2>The scientific lesson</h2>
+    </div>
+    <p class="lead reveal">The lesson is not that active learning failed. The lesson is that naive acquisition is not campaign design. If the model only buys variants it already thinks are best, it can lose coverage of the landscape it needs to learn. In enzyme engineering, useful acquisition has to preserve diversity, cover mechanism-sensitive regions, and still exploit what the model has learned.</p>
+    <p class="prominent reveal d1">The next experiment is not simply the highest-scoring variant. <span class="em">It is the variant that teaches the campaign what it needs to know next.</span></p>
+  </div>
+</section>
+
+<section class="cs-section tight" data-screen-label="Pull quote">
+  <div class="wrap-narrow">
+    <p class="pullq reveal">Labels are a budget. <span class="dim">The question is not how many you can run, but which ones are worth buying.</span></p>
+  </div>
+</section>
+
+<!-- ============================ WHAT P1 PROVES ============================ -->
+<section class="cs-section" id="proves" data-screen-label="What P1 proves">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">08 / What P1 proves</div>
+      <h2>What P1 proves</h2>
+    </div>
+    <div class="proof-cards reveal d1">
+      <div class="pcard">
+        <div class="pc-dot" style="background:var(--cyan)"></div>
+        <h4>Zero-shot is a useful prior</h4>
+        <p>The pretrained model provides a real starting point before assay labels are available.</p>
+      </div>
+      <div class="pcard">
+        <div class="pc-dot" style="background:var(--cyan)"></div>
+        <h4>Labels become useful at sufficient budget</h4>
+        <p>Supervised correction is weak at tiny label counts but becomes useful around 384 labels.</p>
+      </div>
+      <div class="pcard">
+        <div class="pc-dot" style="background:var(--amber)"></div>
+        <h4>Embeddings help locally</h4>
+        <p>True ESM embeddings produce modest global gains and stronger mechanism-slice gains.</p>
+      </div>
+      <div class="pcard">
+        <div class="pc-dot" style="background:var(--violet)"></div>
+        <h4>Label selection matters</h4>
+        <p>The value of a label depends on selection strategy, biological region, and landscape coverage.</p>
+      </div>
+      <div class="pcard">
+        <div class="pc-dot" style="background:var(--violet)"></div>
+        <h4>Naive active learning can fail</h4>
+        <p>Model-guided acquisition can underperform random or score-diverse sampling when it loses diversity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ WHAT P1 DOES NOT PROVE YET ============================ -->
+<section class="cs-section" id="limits" data-screen-label="What P1 does not prove yet">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">09 / The boundary of the claim</div>
+      <h2>What P1 does not prove yet</h2>
+    </div>
+    <ul class="limit-list reveal d1">
+      <li>that 384 labels is universal across enzymes</li>
+      <li>a full real-data panel: AMIE and beta-glucosidase are not yet included</li>
+      <li>diversity-constrained model-guided acquisition</li>
+      <li>explicit uncertainty-aware acquisition</li>
+      <li>cost-per-label or plate-size-aware economics</li>
+      <li>a finished active-learning platform: this is a strong prototype</li>
+    </ul>
+    <p class="limit-note reveal d1">The project is strong because it exposes the next problem clearly: label acquisition has to be diversity-aware, mechanism-aware, and uncertainty-aware.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ THE ARTIFACT ============================ -->
+<section class="cs-section" id="artifact" data-screen-label="The artifact">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">10 / The artifact</div>
+      <h2>A benchmark package, not a loose notebook</h2>
+      <p class="lead" style="margin-top:6px">P1 is a pyproject-based Python package with separated data loading, modeling, selection, evaluation, and orchestration, plus Savio workflows for the true ESM delta embeddings.</p>
+    </div>
+
+    <div class="modmap reveal d1" data-screen-label="Module map">
+      <div class="mod">
+        <div class="mod-k">CLI</div>
+        <div class="mod-files">src/p1_data_efficiency/cli.py</div>
+        <div class="mod-desc">Runs fixture, real-data, embedding, and acquisition benchmarks.</div>
+      </div>
+      <div class="mod">
+        <div class="mod-k">Data and features</div>
+        <div class="mod-files">data.py · io.py · features.py · embeddings.py</div>
+        <div class="mod-desc">Loads P0 outputs and builds mutation, mechanism, and embedding features.</div>
+      </div>
+      <div class="mod">
+        <div class="mod-k">Models</div>
+        <div class="mod-files">models.py · linear.py</div>
+        <div class="mod-desc">Ridge-style supervised baselines and residual correction models.</div>
+      </div>
+      <div class="mod">
+        <div class="mod-k">Selection</div>
+        <div class="mod-files">selection.py · acquisition.py</div>
+        <div class="mod-desc">One-shot and iterative label-selection policies.</div>
+      </div>
+      <div class="mod">
+        <div class="mod-k">Evaluation</div>
+        <div class="mod-files">evaluation.py · metrics.py · economics.py</div>
+        <div class="mod-desc">Repeated splits, label-value curves, mechanism economics.</div>
+      </div>
+      <div class="mod">
+        <div class="mod-k">HPC</div>
+        <div class="mod-files">scripts/build_esm2_variant_embeddings.py · hpc/*.slurm</div>
+        <div class="mod-desc">True ESM-2 delta embedding generation on Savio.</div>
+      </div>
+    </div>
+
+    <div class="artifact reveal d1" style="margin-top:22px" data-screen-label="Artifact panel">
+      <div class="artifact-top">
+        <div class="repo-name">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M9 19c-4 1.5-4-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.2 3.3 5.1 3.6 5.1 3.6a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 3.7 10c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21" stroke="#5CC8FF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          p1-data-efficiency
+        </div>
+        <div class="repo-badges">
+          <span class="rbadge" style="color:var(--violet);border-color:rgba(157,124,255,0.3);background:var(--violet-soft)">strong prototype</span>
+          <span class="rbadge cyan">true ESM delta embeddings on Savio</span>
+          <span class="rbadge">outputs: CSV, JSON, SVG</span>
+        </div>
+      </div>
+      <div class="artifact-grid">
+        <div class="acell"><span class="adot"></span>pyproject package</div>
+        <div class="acell"><span class="adot"></span>CLI workflow</div>
+        <div class="acell"><span class="adot"></span>deterministic fixtures</div>
+        <div class="acell"><span class="adot"></span>test suite</div>
+        <div class="acell"><span class="adot"></span>residual correction models</div>
+        <div class="acell"><span class="adot"></span>selection policies</div>
+        <div class="acell"><span class="adot"></span>label-value curves</div>
+        <div class="acell"><span class="adot"></span>mechanism economics</div>
+        <div class="acell"><span class="adot"></span>Savio ESM-2 workflows</div>
+        <div class="acell"><span class="adot"></span>CSV / JSON / SVG outputs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ HIGHEST-VALUE UPGRADES ============================ -->
+<section class="cs-section" id="upgrades" data-screen-label="Highest-value next upgrades">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">11 / Highest-value next upgrades</div>
+      <h2>Highest-value next upgrades</h2>
+    </div>
+    <div class="steps reveal d1">
+      <div class="step"><span class="sn">1</span><p>Standardize P1 against final P0 35M outputs.</p></div>
+      <div class="step"><span class="sn">2</span><p>Add beta-glucosidase and AMIE to the P1 real-data panel.</p></div>
+      <div class="step"><span class="sn">3</span><p>Build diversity-constrained model-guided acquisition.</p></div>
+      <div class="step"><span class="sn">4</span><p>Add uncertainty-aware acquisition.</p></div>
+      <div class="step"><span class="sn">5</span><p>Add explicit cost-per-label or plate-size-aware economics.</p></div>
+      <div class="step"><span class="sn">6</span><p>Report global performance and mechanism-slice rescue separately.</p></div>
+    </div>
+    <div class="callout reveal d1" style="margin-top:26px">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 2v6M12 22v-6M4.9 4.9l4.2 4.2M19.1 19.1l-4.2-4.2M2 12h6M22 12h-6M4.9 19.1l4.2-4.2M19.1 4.9l-4.2 4.2" stroke="#9D7CFF" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <span><b>Best next move: build diversity-constrained acquisition.</b> That directly answers the sharpest lesson from P1: naive model-guided selection can lose because it buys confidence instead of information.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CTA ============================ -->
+<section class="cs-section cs-cta" data-screen-label="Call to action">
+  <div class="wrap-narrow">
+    <h2 class="reveal">Zero-shot tells you where to start. The campaign is deciding which labels to buy next.</h2>
+    <p class="final-line reveal d1">P1 is a strong prototype: it shows that labels help once the budget is large enough, and that naive model-guided acquisition can lose to diversity. It is not a finished active-learning platform.</p>
+    <div class="cta-actions reveal d1">
+      <a href="../index.html#projects" class="btn btn-primary">Back to projects
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8H4M8 4 4 8l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="https://github.com/Bababongo/p1-data-efficiency" data-repo-href class="btn btn-ghost">View repository</a>
+      <a href="https://ezeukabiala.substack.com/" target="_blank" rel="noopener noreferrer" class="btn-text">Read From Model to Mutant
+        <svg class="arrow" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div>
+      <div class="footer-name">Ezechinyere "Eze" Ukabiala</div>
+      <div class="footer-role">AI protein-engineering campaign scientist · AI systems for experimental biology</div>
+      <div class="footer-brand">P1. Data-efficiency curves · strong prototype</div>
+      <div class="footer-note">This case study reports a label-efficiency benchmark built on the P0 outputs and public enzyme data. It is a strong prototype, not a finished active-learning platform. Unpublished thesis details and active project results are intentionally withheld.</div>
+    </div>
+    <div class="footer-meta">
+      © 2026 · A living scientific identity<br />
+      UC Berkeley / UCSF Bioengineering
+    </div>
+  </div>
+</footer>
+
+<script src="p1.js"></script>
+</body>
+</html>

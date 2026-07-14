@@ -652,6 +652,9 @@ table.sci tbody tr:hover td { background: rgba(255,255,255,0.018); }
 table.sci .scorer-band td:first-child { color: var(--cyan); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding-top: 18px; }
 table.sci td .hi { color: var(--amber); }
 table.sci td .best { color: var(--cyan); }
+table.sci td .delta { color: var(--green); }
+table.sci td.txt, table.sci th.txt { text-align: left; white-space: normal; font-family: var(--font-body); }
+table.sci td.txt { color: var(--text-2); font-size: 13px; }
 
 /* ============================================================
    ARTIFACT PANEL
