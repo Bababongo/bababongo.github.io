@@ -1,6 +1,8 @@
 /* ============================================================
-   P0 · zero-shot fitness - case-study interactions + figures
+   P0 · mechanism-sliced model-family evaluation
    Self-contained. Reuses the site's visual identity.
+   Figures: model-family comparison (ESM-2 / MSA / ProteinMPNN)
+   and the VIM-2 ProteinMPNN centerpiece (mechanism-local slices).
    ============================================================ */
 (function () {
   "use strict";
@@ -8,8 +10,9 @@
   var NS = "http://www.w3.org/2000/svg";
 
   /* ---------- Repository link (single fill-in point) ----------
-     Paste the public P0 repository URL here to activate the two
-     "View repository" buttons. Empty = they stay inert (no jump). */
+     Best-guess public repo slug, following the site's GitHub handle
+     (github.com/Bababongo). If the real P0 repo slug differs, update
+     P0_REPO; an empty string leaves the "View repository" buttons inert. */
   var P0_REPO = "https://github.com/Bababongo/p0-zero-shot-fitness";
   function wireRepo() {
     var els = document.querySelectorAll("[data-repo-href]");
@@ -48,76 +51,38 @@
     t.textContent = s;
     return t;
   }
+  function wrapLabel(s, max) {
+    var words = s.split(" "), lines = [], cur = "";
+    words.forEach(function (w) {
+      if ((cur + " " + w).trim().length > max) { if (cur) lines.push(cur); cur = w; }
+      else cur = (cur + " " + w).trim();
+    });
+    if (cur) lines.push(cur);
+    return lines;
+  }
 
   /* ============================================================
-     DATA (exact values from the P0 comparison run)
+     DATA (exact values from the final P0 model-family comparison)
      ============================================================ */
-  var GROUPS = {
-    overall:      { name: "Overall", kind: "bg" },
-    active:       { name: "UniProt active site", kind: "mech" },
-    nonactive:    { name: "Non-active site", kind: "bg" },
-    binding:      { name: "UniProt substrate-binding site", kind: "mech" },
-    ligand:       { name: "PDB 1M40 ligand contact, 5 A", kind: "mech" },
-    neighborhood: { name: "Active-site neighborhood", kind: "mech" },
-    outsideNbhd:  { name: "Outside active-site neighborhood", kind: "bg" }
-  };
 
-  // Figure 2 / metric strip - overall comparison
-  var OVERALL = [
-    { scorer: "Placeholder", spearman: 0.0430, active: 0.1231, nonactive: 0.0342, top5: 0.5247, color: C.gray },
-    { scorer: "ESM-2 8M",    spearman: 0.4113, active: 0.3023, nonactive: 0.4042, top5: 2.6237, color: C.cyanDim },
-    { scorer: "ESM-2 35M",   spearman: 0.5548, active: 0.4596, nonactive: 0.5428, top5: 2.0990, color: C.cyan }
+  // Model-family overall Spearman across the four enzymes.
+  // ProteinMPNN was run on the three target-aligned structures
+  // (VIM-2, AMIE, beta-glucosidase); TEM-1 has no aligned profile yet.
+  var FAMILY = [
+    { ds: "TEM-1",            esm: 0.5548, msa: 0.4247, mpnn: null   },
+    { ds: "VIM-2",            esm: 0.5280, msa: 0.4931, mpnn: 0.6259 },
+    { ds: "AMIE",             esm: 0.4082, msa: 0.4306, mpnn: 0.3457 },
+    { ds: "Beta-glucosidase", esm: 0.4481, msa: 0.5615, mpnn: 0.3618 }
   ];
 
-  // Figure 3 - ESM-2 35M slices with bootstrap 95% CI
-  var SLICES = [
-    { key: "overall",      value: 0.5548, ci: [0.5340, 0.5757], n: 4783 },
-    { key: "active",       value: 0.4596, ci: [0.2268, 0.6418], n: 57 },
-    { key: "nonactive",    value: 0.5428, ci: [0.5195, 0.5641], n: 4726 },
-    { key: "binding",      value: 0.4965, ci: [0.2318, 0.7061], n: 55 },
-    { key: "ligand",       value: 0.7127, ci: [0.6464, 0.7695], n: 277 },
-    { key: "neighborhood", value: 0.7027, ci: [0.6508, 0.7503], n: 461 },
-    { key: "outsideNbhd",  value: 0.5188, ci: [0.4944, 0.5424], n: 4322 }
-  ];
-
-  // Figure 5 - scaling 8M -> 35M
-  var SLOPE = [
-    { key: "overall",      a: 0.4113, b: 0.5548 },
-    { key: "active",       a: 0.3023, b: 0.4596 },
-    { key: "nonactive",    a: 0.4042, b: 0.5428 },
-    { key: "binding",      a: 0.4383, b: 0.4965 },
-    { key: "ligand",       a: 0.6076, b: 0.7127 },
-    { key: "neighborhood", a: 0.6453, b: 0.7027 }
-  ];
-
-  // Figure 6 - mutation-class breakdown (ESM-2 35M)
-  var MUTCLASS = [
-    { cls: "charge_preserving",                 n: 277,  spearman: 0.5343, fit: 0.6771, score: -1.7223 },
-    { cls: "class_changing",                    n: 3050, spearman: 0.5730, fit: 0.5065, score: -3.0481 },
-    { cls: "hydrophobic_or_special_preserving", n: 1179, spearman: 0.4702, fit: 0.4541, score: -2.7983 },
-    { cls: "polar_preserving",                  n: 277,  spearman: 0.6319, fit: 0.6127, score: -2.8855 }
-  ];
-
-  // Table 1 - residue-slice comparison across scorers (spearman / outside / variants)
-  var TABLE = [
-    { scorer: "Placeholder", rows: [
-      { g: "UniProt active site", s: 0.1231, o: 0.0342, n: 57 },
-      { g: "UniProt substrate-binding site", s: -0.0350, o: 0.0368, n: 55 },
-      { g: "PDB 1M40 ligand contact, 5 A", s: 0.1777, o: 0.0361, n: 277 },
-      { g: "Active-site neighborhood", s: 0.2916, o: 0.0278, n: 461 }
-    ]},
-    { scorer: "ESM-2 8M", rows: [
-      { g: "UniProt active site", s: 0.3023, o: 0.4042, n: 57 },
-      { g: "UniProt substrate-binding site", s: 0.4383, o: 0.3992, n: 55 },
-      { g: "PDB 1M40 ligand contact, 5 A", s: 0.6076, o: 0.3997, n: 277 },
-      { g: "Active-site neighborhood", s: 0.6453, o: 0.3752, n: 461 }
-    ]},
-    { scorer: "ESM-2 35M", rows: [
-      { g: "UniProt active site", s: 0.4596, o: 0.5428, n: 57 },
-      { g: "UniProt substrate-binding site", s: 0.4965, o: 0.5453, n: 55 },
-      { g: "PDB 1M40 ligand contact, 5 A", s: 0.7127, o: 0.5344, n: 277 },
-      { g: "Active-site neighborhood", s: 0.7027, o: 0.5188, n: 461 }
-    ]}
+  // Centerpiece: VIM-2 ProteinMPNN, read by biological region.
+  // Ordered high to low so the mechanism-local drop is a clean staircase.
+  var VIM2 = [
+    { label: "Overall",                  value: 0.6259, kind: "measure" },
+    { label: "Non-metal background",     value: 0.6197, kind: "bg" },
+    { label: "Active-site neighborhood", value: 0.5078, kind: "mech" },
+    { label: "Metal-site shell",         value: 0.4495, kind: "mech" },
+    { label: "Curated metal site",       value: 0.2583, kind: "mechlow" }
   ];
 
   /* ============================================================
@@ -131,9 +96,8 @@
       show: function (html, ev) {
         tip.innerHTML = html;
         var r = plot.getBoundingClientRect();
-        var x = ev.clientX - r.left;
-        var y = ev.clientY - r.top;
-        tip.style.left = Math.max(60, Math.min(r.width - 60, x)) + "px";
+        var x = ev.clientX - r.left, y = ev.clientY - r.top;
+        tip.style.left = Math.max(70, Math.min(r.width - 70, x)) + "px";
         tip.style.top = (y - 14) + "px";
         tip.classList.add("show");
       },
@@ -142,268 +106,120 @@
   }
 
   /* ============================================================
-     METRIC STRIP
+     FIGURE - model-family grouped bars (ESM-2 / MSA / ProteinMPNN)
      ============================================================ */
-  function renderMetricStrip() {
-    var host = document.getElementById("metric-strip");
-    if (!host) return;
-    var metrics = [
-      { name: "Overall Spearman", sub: "vs experimental fitness", key: "spearman" },
-      { name: "Active-site-only", sub: "UniProt catalytic core", key: "active" },
-      { name: "Non-active-site", sub: "background residues", key: "nonactive" },
-      { name: "Top-5 enrichment", sub: "small top-k metric", key: "top5" }
-    ];
-    metrics.forEach(function (m) {
-      var max = Math.max.apply(null, OVERALL.map(function (d) { return d[m.key]; }));
-      var card = document.createElement("div");
-      card.className = "metric";
-      var rows = OVERALL.map(function (d) {
-        var w = Math.max(2, (d[m.key] / max) * 100);
-        var cls = d.scorer === "Placeholder" ? "gray" : (d.scorer === "ESM-2 8M" ? "cyan-dim" : "cyan");
-        var hi = d.scorer === "ESM-2 35M" ? " hi" : "";
-        return '<div class="m-row">' +
-          '<span class="m-scorer' + hi + '">' + d.scorer.replace("ESM-2 ", "") + '</span>' +
-          '<span class="m-track"><span class="m-fill ' + cls + '" style="width:' + w.toFixed(1) + '%"></span></span>' +
-          '<span class="m-val">' + fmt4(d[m.key]) + '</span></div>';
-      }).join("");
-      card.innerHTML = '<div class="m-name">' + m.name + '</div><div class="m-sub">' + m.sub + '</div>' + rows;
-      host.appendChild(card);
-    });
-  }
-
-  /* ============================================================
-     FIGURE 2 / 6 - vertical bar charts
-     ============================================================ */
-  function renderBars(plot, opts) {
-    var W = 620, H = 360, mL = 84, mR = 24, mT = 24, mB = opts.tallLabels ? 74 : 52;
+  function renderFamily(plot) {
+    var tip = makeTip(plot);
+    var W = 700, H = 404, mL = 62, mR = 18, mT = 28, mB = 78;
     var pw = W - mL - mR, ph = H - mT - mB;
     var svg = el("svg", { viewBox: "0 0 " + W + " " + H });
-    var g = el("g", {});
-    svg.appendChild(g);
-    var yMax = opts.yMax, ticks = opts.yTicks;
+    var g = el("g", {}); svg.appendChild(g);
+    var yMax = 0.7, yTicks = [0, 0.2, 0.4, 0.6];
     function yPix(v) { return mT + ph - (v / yMax) * ph; }
 
-    // gridlines + y ticks
-    ticks.forEach(function (t) {
+    yTicks.forEach(function (t) {
       var y = yPix(t);
       g.appendChild(el("line", { class: "grid-line", x1: mL, y1: y, x2: mL + pw, y2: y }));
-      g.appendChild(txt(mL - 12, y + 4, opts.yFmt ? opts.yFmt(t) : (t === 0 ? "0" : t.toFixed(1)), "tick-label tnum", "end"));
+      g.appendChild(txt(mL - 12, y + 4, t === 0 ? "0" : t.toFixed(1), "tick-label tnum", "end"));
     });
-    // axes
     g.appendChild(el("line", { class: "axis-line", x1: mL, y1: mT, x2: mL, y2: mT + ph }));
     g.appendChild(el("line", { class: "axis-line", x1: mL, y1: mT + ph, x2: mL + pw, y2: mT + ph }));
-    // y axis title
-    var yt = txt(0, 0, opts.yTitle, "axis-title", "middle");
-    yt.setAttribute("transform", "translate(20," + (mT + ph / 2) + ") rotate(-90)");
+    var yt = txt(0, 0, "Overall Spearman", "axis-title", "middle");
+    yt.setAttribute("transform", "translate(18," + (mT + ph / 2) + ") rotate(-90)");
     g.appendChild(yt);
 
-    var n = opts.data.length;
-    var band = pw / n;
-    var bw = Math.min(opts.maxBar || 92, band * 0.56);
-    opts.data.forEach(function (d, i) {
-      var cx = mL + band * (i + 0.5);
-      var y = yPix(d.value);
-      var h = mT + ph - y;
-      var row = el("g", { class: "plot-row" });
-      var rect = el("rect", { class: "bar-rect", x: cx - bw / 2, y: y, width: bw, height: Math.max(0, h), rx: 4, fill: d.color });
-      row.appendChild(rect);
-      // value label above
-      row.appendChild(txt(cx, y - 9, fmt4(d.value), "bar-val", "middle"));
-      // category label(s) below
-      var lines = d.label.split("\n");
-      lines.forEach(function (ln, li) {
-        row.appendChild(txt(cx, mT + ph + 20 + li * 14, ln, li === 0 ? "cat-label" : "cat-sub", "middle"));
-      });
-      g.appendChild(row);
-      if (opts.tip) {
+    var series = [
+      { k: "esm",  name: "ESM-2 35M",        color: C.cyan },
+      { k: "msa",  name: "MSA conservation", color: C.green },
+      { k: "mpnn", name: "ProteinMPNN",      color: C.violet }
+    ];
+    var nG = FAMILY.length, band = pw / nG, bw = Math.min(30, (band * 0.66) / 3), gapb = 6;
+    FAMILY.forEach(function (d, gi) {
+      var gx = mL + band * (gi + 0.5);
+      var groupW = bw * 3 + gapb * 2;
+      var start = gx - groupW / 2;
+      series.forEach(function (s, si) {
+        var v = d[s.k];
+        var x = start + si * (bw + gapb);
+        if (v == null) {
+          var na = txt(x + bw / 2, mT + ph - 8, "n/a", "cat-sub", "middle");
+          na.setAttribute("fill", C.text3);
+          g.appendChild(na);
+          g.appendChild(el("line", { x1: x + 3, y1: mT + ph - 2, x2: x + bw - 3, y2: mT + ph - 2, stroke: "rgba(255,255,255,0.14)", "stroke-width": 1.4, "stroke-dasharray": "2 3" }));
+          return;
+        }
+        var y = yPix(v), h = mT + ph - y;
+        var row = el("g", { class: "plot-row" });
+        row.appendChild(el("rect", { class: "bar-rect", x: x, y: y, width: bw, height: Math.max(0, h), rx: 3, fill: s.color }));
+        var vl = txt(x + bw / 2, y - 7, v.toFixed(3), "bar-val", "middle");
+        vl.setAttribute("font-size", "9.5");
+        row.appendChild(vl);
+        g.appendChild(row);
         row.style.cursor = "default";
-        row.addEventListener("mousemove", function (ev) { opts.tip.show(opts.tipHtml(d), ev); });
-        row.addEventListener("mouseleave", function () { opts.tip.hide(); });
-      }
+        row.addEventListener("mousemove", function (ev) {
+          tip.show('<div>' + d.ds + '</div><div><span class="tt-k">' + s.name + '</span> <span class="tt-v">' + fmt4(v) + '</span></div>', ev);
+        });
+        row.addEventListener("mouseleave", function () { tip.hide(); });
+      });
+      g.appendChild(txt(gx, mT + ph + 22, d.ds, "cat-label", "middle"));
     });
-    // x axis title
-    if (opts.xTitle) g.appendChild(txt(mL + pw / 2, H - 6, opts.xTitle, "axis-title", "middle"));
+    g.appendChild(txt(mL + band * 0.5, mT + ph + 38, "ProteinMPNN not run", "cat-sub", "middle"));
+    g.appendChild(txt(mL + pw / 2, H - 6, "Enzyme DMS dataset", "axis-title", "middle"));
     plot.appendChild(svg);
   }
 
   /* ============================================================
-     FIGURE 3 - horizontal slice bars + CI whiskers
+     FIGURE - VIM-2 ProteinMPNN centerpiece (horizontal, by region)
      ============================================================ */
-  function renderSlices(plot) {
+  function renderVim2(plot) {
     var tip = makeTip(plot);
-    var W = 720, mL = 208, mR = 66, mT = 10, mB = 46;
-    var rowH = 44, gap = 8;
-    var n = SLICES.length;
-    var ph = n * rowH;
-    var H = mT + ph + mB;
-    var pw = W - mL - mR;
-    var xMax = 0.8, xticks = [0, 0.2, 0.4, 0.6, 0.8];
+    var W = 740, mL = 244, mR = 76, mT = 14, mB = 48;
+    var rowH = 54, gap = 13;
+    var n = VIM2.length, ph = n * rowH, H = mT + ph + mB, pw = W - mL - mR;
+    var xMax = 0.7, xticks = [0, 0.2, 0.4, 0.6];
     var svg = el("svg", { viewBox: "0 0 " + W + " " + H });
-    var g = el("g", {});
-    svg.appendChild(g);
+    var g = el("g", {}); svg.appendChild(g);
     function xPix(v) { return mL + (v / xMax) * pw; }
+    function col(k) { return k === "measure" ? C.cyan : (k === "bg" ? C.gray : C.amber); }
 
-    // vertical gridlines + x ticks
     xticks.forEach(function (t) {
       var x = xPix(t);
       g.appendChild(el("line", { class: "grid-line", x1: x, y1: mT, x2: x, y2: mT + ph }));
-      g.appendChild(txt(x, mT + ph + 20, t.toFixed(1), "tick-label tnum", "middle"));
+      g.appendChild(txt(x, mT + ph + 20, t === 0 ? "0" : t.toFixed(1), "tick-label tnum", "middle"));
     });
     g.appendChild(el("line", { class: "axis-line", x1: mL, y1: mT, x2: mL, y2: mT + ph }));
-    g.appendChild(txt(mL + pw / 2, H - 8, "Spearman correlation with experimental fitness", "axis-title", "middle"));
+    g.appendChild(txt(mL + pw / 2, H - 8, "ProteinMPNN Spearman with VIM-2 DMS fitness", "axis-title", "middle"));
 
-    SLICES.forEach(function (d, i) {
-      var grp = GROUPS[d.key];
-      var color = grp.kind === "mech" ? C.amber : C.gray;
-      var cy = mT + rowH * i + rowH / 2;
-      var barH = rowH - gap * 2;
+    VIM2.forEach(function (d, i) {
+      var cy = mT + rowH * i + rowH / 2, barH = rowH - gap * 2;
+      var color = col(d.kind);
+      var op = d.kind === "bg" ? 0.58 : (d.kind === "mechlow" ? 0.95 : 0.82);
       var row = el("g", { class: "plot-row" });
-      // track
       row.appendChild(el("rect", { x: mL, y: cy - barH / 2, width: pw, height: barH, rx: 3, fill: "rgba(255,255,255,0.02)" }));
-      // bar
-      row.appendChild(el("rect", { class: "bar-rect", x: mL, y: cy - barH / 2, width: Math.max(1, xPix(d.value) - mL), height: barH, rx: 3, fill: color, "fill-opacity": grp.kind === "mech" ? 0.85 : 0.6 }));
-      // CI whisker
-      var lo = xPix(d.ci[0]), hi = xPix(d.ci[1]);
-      row.appendChild(el("line", { class: "ci-line", x1: lo, y1: cy, x2: hi, y2: cy }));
-      row.appendChild(el("line", { class: "ci-cap", x1: lo, y1: cy - 5, x2: lo, y2: cy + 5 }));
-      row.appendChild(el("line", { class: "ci-cap", x1: hi, y1: cy - 5, x2: hi, y2: cy + 5 }));
-      // value marker dot
-      row.appendChild(el("circle", { cx: xPix(d.value), cy: cy, r: 3, fill: C.text }));
-      // group label (left)
-      var nameParts = wrapLabel(grp.name, 26);
-      nameParts.forEach(function (ln, li) {
-        row.appendChild(txt(mL - 14, cy + 4 - (nameParts.length - 1) * 7 + li * 14, ln, "cat-label", "end"));
+      row.appendChild(el("rect", { class: "bar-rect", x: mL, y: cy - barH / 2, width: Math.max(1, xPix(d.value) - mL), height: barH, rx: 3, fill: color, "fill-opacity": op }));
+      var mech = (d.kind === "mech" || d.kind === "mechlow");
+      var parts = wrapLabel(d.label, 22);
+      var baseY = cy + 4 - (parts.length - 1) * 8 - (mech ? 6 : 0);
+      parts.forEach(function (ln, li) {
+        row.appendChild(txt(mL - 14, baseY + li * 15, ln, "cat-label", "end"));
       });
-      // value + n (right)
-      row.appendChild(txt(W - 8, cy - 2, fmt4(d.value), "bar-val", "end"));
-      row.appendChild(txt(W - 8, cy + 12, "n = " + commas(d.n), "n-label", "end"));
+      if (mech) row.appendChild(txt(mL - 14, baseY + parts.length * 15 - 2, "mechanism-relevant", "mech-flag", "end"));
+      var vv = txt(W - 8, cy + 5, fmt4(d.value), "bar-val", "end");
+      vv.setAttribute("font-size", "14");
+      row.appendChild(vv);
       g.appendChild(row);
       row.style.cursor = "default";
       row.addEventListener("mousemove", function (ev) {
-        tip.show(
-          '<div>' + grp.name + '</div>' +
-          '<div><span class="tt-k">Spearman</span> <span class="tt-v">' + fmt4(d.value) + '</span></div>' +
-          '<div><span class="tt-k">95% CI</span> ' + fmt4(d.ci[0]) + " to " + fmt4(d.ci[1]) + '</div>' +
-          '<div><span class="tt-k">n</span> ' + commas(d.n) + '</div>', ev);
+        tip.show('<div>VIM-2 ProteinMPNN</div><div>' + d.label + '</div>' +
+          '<div><span class="tt-k">Spearman</span> <span class="tt-v">' + fmt4(d.value) + '</span></div>', ev);
       });
       row.addEventListener("mouseleave", function () { tip.hide(); });
     });
     plot.appendChild(svg);
   }
 
-  function wrapLabel(s, max) {
-    var words = s.split(" "), lines = [], cur = "";
-    words.forEach(function (w) {
-      if ((cur + " " + w).trim().length > max) { if (cur) lines.push(cur); cur = w; }
-      else cur = (cur + " " + w).trim();
-    });
-    if (cur) lines.push(cur);
-    return lines;
-  }
-
   /* ============================================================
-     FIGURE 5 - slope chart
-     ============================================================ */
-  function renderSlope(plot) {
-    var tip = makeTip(plot);
-    var W = 720, H = 430, mT = 30, mB = 46;
-    var xA = 250, xB = 452;
-    var yMin = 0.28, yMax = 0.75;
-    var pt = mT, pb = H - mB;
-    function yPix(v) { return pb - ((v - yMin) / (yMax - yMin)) * (pb - pt); }
-    var svg = el("svg", { viewBox: "0 0 " + W + " " + H });
-    var g = el("g", {});
-    svg.appendChild(g);
-
-    // y gridlines
-    [0.3, 0.4, 0.5, 0.6, 0.7].forEach(function (t) {
-      var y = yPix(t);
-      g.appendChild(el("line", { class: "grid-line", x1: 60, y1: y, x2: W - 60, y2: y }));
-      g.appendChild(txt(48, y + 4, t.toFixed(1), "tick-label tnum", "end"));
-    });
-    // category axis verticals
-    g.appendChild(el("line", { class: "axis-line", x1: xA, y1: pt - 8, x2: xA, y2: pb }));
-    g.appendChild(el("line", { class: "axis-line", x1: xB, y1: pt - 8, x2: xB, y2: pb }));
-    g.appendChild(txt(xA, pb + 22, "ESM-2 8M", "cat-label", "middle"));
-    g.appendChild(txt(xB, pb + 22, "ESM-2 35M", "cat-label", "middle"));
-    g.appendChild(txt(xA + (xB - xA) / 2, H - 8, "Model size", "axis-title", "middle"));
-    var yt = txt(0, 0, "Spearman correlation", "axis-title", "middle");
-    yt.setAttribute("transform", "translate(18," + ((pt + pb) / 2) + ") rotate(-90)");
-    g.appendChild(yt);
-
-    // de-collide right labels
-    var right = SLOPE.map(function (d) { return { key: d.key, y: yPix(d.b), b: d.b }; }).sort(function (a, b) { return a.y - b.y; });
-    declutter(right, 15);
-    var left = SLOPE.map(function (d) { return { key: d.key, y: yPix(d.a), a: d.a }; }).sort(function (a, b) { return a.y - b.y; });
-    declutter(left, 14);
-    var rMap = {}, lMap = {};
-    right.forEach(function (r) { rMap[r.key] = r.y; });
-    left.forEach(function (l) { lMap[l.key] = l.y; });
-
-    SLOPE.forEach(function (d) {
-      var grp = GROUPS[d.key];
-      var color = d.key === "overall" ? C.cyan : (grp.kind === "mech" ? C.amber : C.gray);
-      var yaR = yPix(d.a), ybR = yPix(d.b);
-      var row = el("g", { class: "plot-row" });
-      row.appendChild(el("line", { class: "slope-line", x1: xA, y1: yaR, x2: xB, y2: ybR, stroke: color, "stroke-opacity": 0.85 }));
-      row.appendChild(el("circle", { class: "slope-dot", cx: xA, cy: yaR, r: 4.5, fill: color }));
-      row.appendChild(el("circle", { class: "slope-dot", cx: xB, cy: ybR, r: 4.5, fill: color }));
-      // left value
-      var lv = txt(xA - 12, lMap[d.key] + 4, fmt4(d.a), "slope-val", "end");
-      lv.setAttribute("fill", C.text2);
-      g.appendChild(lv);
-      // right value + group name
-      var rn = txt(xB + 14, rMap[d.key] + 4, fmt4(d.b) + "  " + shortName(grp.name), "slope-val", "start");
-      rn.setAttribute("fill", color);
-      g.appendChild(rn);
-      g.appendChild(row);
-      row.style.cursor = "default";
-      row.addEventListener("mousemove", function (ev) {
-        tip.show('<div>' + grp.name + '</div>' +
-          '<div><span class="tt-k">8M</span> ' + fmt4(d.a) + '  <span class="tt-k">35M</span> <span class="tt-v">' + fmt4(d.b) + '</span></div>' +
-          '<div><span class="tt-k">delta</span> +' + (d.b - d.a).toFixed(4) + '</div>', ev);
-      });
-      row.addEventListener("mouseleave", function () { tip.hide(); });
-    });
-    plot.appendChild(svg);
-  }
-
-  function shortName(name) {
-    return name
-      .replace("UniProt ", "").replace("PDB 1M40 ", "")
-      .replace("Active-site neighborhood", "neighborhood")
-      .replace("substrate-binding site", "substrate-binding")
-      .replace("ligand contact, 5 A", "ligand contact");
-  }
-  function declutter(items, minGap) {
-    for (var i = 1; i < items.length; i++) {
-      if (items[i].y - items[i - 1].y < minGap) items[i].y = items[i - 1].y + minGap;
-    }
-  }
-
-  /* ============================================================
-     TABLE 1
-     ============================================================ */
-  function renderTable() {
-    var body = document.getElementById("sci-table-body");
-    if (!body) return;
-    var html = "";
-    TABLE.forEach(function (band) {
-      html += '<tr class="scorer-band"><td colspan="4">' + band.scorer + '</td></tr>';
-      band.rows.forEach(function (r) {
-        var best = band.scorer === "ESM-2 35M" && r.g.indexOf("ligand") !== -1;
-        html += '<tr>' +
-          '<td class="grp">' + r.g + '</td>' +
-          '<td>' + (best ? '<span class="best">' + fmt4(r.s) + '</span>' : fmt4(r.s)) + '</td>' +
-          '<td>' + fmt4(r.o) + '</td>' +
-          '<td>' + commas(r.n) + '</td></tr>';
-      });
-    });
-    body.innerHTML = html;
-  }
-
-  /* ============================================================
-     FIGURE 1 - pipeline hover explain
+     PIPELINE hover explain
      ============================================================ */
   function initPipeline() {
     var pipe = document.querySelector(".pipe");
@@ -525,47 +341,15 @@
      BUILD FIGURES
      ============================================================ */
   function buildFigures() {
-    var f2 = document.querySelector('[data-fig="overall"]');
-    if (f2) {
-      var tip2 = makeTip(f2);
-      renderBars(f2, {
-        data: OVERALL.map(function (d) { return { label: d.scorer, value: d.spearman, color: d.color }; }),
-        yMax: 0.6, yTicks: [0, 0.2, 0.4, 0.6], yTitle: "Spearman", xTitle: "Scorer",
-        tip: tip2, tipHtml: function (d) {
-          return '<div>' + d.label + '</div><div><span class="tt-k">Spearman</span> <span class="tt-v">' + fmt4(d.value) + '</span></div>';
-        }
-      });
-    }
-    var f3 = document.querySelector('[data-fig="slices"]');
-    if (f3) renderSlices(f3);
-    var f5 = document.querySelector('[data-fig="slope"]');
-    if (f5) renderSlope(f5);
-    var f6 = document.querySelector('[data-fig="mutclass"]');
-    if (f6) {
-      var tip6 = makeTip(f6);
-      renderBars(f6, {
-        data: MUTCLASS.map(function (d) {
-          return { label: d.cls.replace(/_/g, " ").replace("hydrophobic or special preserving", "hydrophobic /\nspecial pres."), value: d.spearman, color: C.amber, _d: d };
-        }),
-        yMax: 0.7, yTicks: [0, 0.2, 0.4, 0.6], yTitle: "Spearman", xTitle: "Mutation class", tallLabels: true, maxBar: 84,
-        tip: tip6, tipHtml: function (d) {
-          var x = d._d;
-          return '<div>' + x.cls + '</div>' +
-            '<div><span class="tt-k">Spearman</span> <span class="tt-v">' + fmt4(x.spearman) + '</span></div>' +
-            '<div><span class="tt-k">n</span> ' + commas(x.n) + '</div>' +
-            '<div><span class="tt-k">mean fitness</span> ' + fmt4(x.fit) + '</div>' +
-            '<div><span class="tt-k">mean score</span> ' + fmt4(x.score) + '</div>';
-        }
-      });
-    }
+    var f;
+    if ((f = document.querySelector('[data-fig="family"]'))) renderFamily(f);
+    if ((f = document.querySelector('[data-fig="vim2"]'))) renderVim2(f);
   }
 
   function boot() {
     wireRepo();
     initBg();
-    renderMetricStrip();
     buildFigures();
-    renderTable();
     initPipeline();
     initNav();
     initReveal();

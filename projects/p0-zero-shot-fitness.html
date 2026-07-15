@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>P0. Interrogating a Protein Language Model Where Enzyme Chemistry Matters · Eze Ukabiala</title>
-<meta name="description" content="P0, mechanism-sliced zero-shot fitness, portfolio-complete v1. A four-enzyme (TEM-1, VIM-2, AMIE, beta-glucosidase) zero-shot ESM-2 benchmark that asks not only whether protein language model scores correlate with experimental fitness, but where that correlation changes across catalytic residues, ligand-contact regions, and the rest of the protein, tested against matched-position null controls. A biological failure-mode audit for protein language models." />
+<title>P0. Evaluating Protein Models Where Enzyme Chemistry Happens · Eze Ukabiala</title>
+<meta name="description" content="P0, mechanism-sliced model evaluation, completed portfolio artifact. A benchmark comparing ESM-2, MSA conservation, and ProteinMPNN on four enzyme DMS datasets (TEM-1, VIM-2, AMIE, beta-glucosidase, 19,013 single mutants) that asks whether global mutation ranking hides catalytic, metal-site, and active-site-neighborhood failure modes. The cleanest result: on VIM-2, ProteinMPNN is strongest overall but weak at curated metal-site residues." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -19,15 +19,15 @@
 <!-- Open Graph / social share -->
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Eze Ukabiala" />
-<meta property="og:title" content="P0. Interrogating a Protein Language Model Where Enzyme Chemistry Matters" />
-<meta property="og:description" content="A zero-shot ESM-2 benchmark on TEM-1 beta-lactamase that asks not whether protein language model scores correlate with fitness, but where that correlation changes across catalytic residues, ligand-contact regions, and the rest of the protein. A biological failure-mode audit." />
+<meta property="og:title" content="P0. Evaluating Protein Models Where Enzyme Chemistry Happens" />
+<meta property="og:description" content="A mechanism-sliced benchmark comparing ESM-2, MSA conservation, and ProteinMPNN on enzyme DMS datasets. Global mutation ranking and mechanism-local behavior can diverge: on VIM-2, ProteinMPNN is strongest overall but weak at curated metal-site residues." />
 <meta property="og:url" content="https://bababongo.github.io/projects/p0-zero-shot-fitness.html" />
 <meta property="og:image" content="https://bababongo.github.io/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="P0. Interrogating a Protein Language Model Where Enzyme Chemistry Matters" />
-<meta name="twitter:description" content="A biological failure-mode audit for protein language models: zero-shot ESM-2 on TEM-1 beta-lactamase, read by residue slice." />
+<meta name="twitter:title" content="P0. Evaluating Protein Models Where Enzyme Chemistry Happens" />
+<meta name="twitter:description" content="A mechanism-sliced model-family benchmark: ESM-2, MSA conservation, and ProteinMPNN on enzyme DMS data, read where the biology happens." />
 <meta name="twitter:image" content="https://bababongo.github.io/og-image.png" />
 </head>
 <body>
@@ -38,12 +38,13 @@
     <rect width="1200" height="800" fill="#070A12"/>
     <line x1="300" y1="600" x2="900" y2="600" stroke="rgba(255,255,255,0.14)" stroke-width="3"/>
     <line x1="300" y1="240" x2="300" y2="600" stroke="rgba(255,255,255,0.14)" stroke-width="3"/>
-    <rect x="360" y="470" width="90" height="130" rx="6" fill="#6B7689"/>
-    <rect x="520" y="360" width="90" height="240" rx="6" fill="#5CC8FF"/>
-    <rect x="680" y="300" width="90" height="300" rx="6" fill="#E6A552"/>
-    <circle cx="405" cy="200" r="10" fill="#E6A552"/>
-    <circle cx="565" cy="200" r="10" fill="#5CC8FF"/>
-    <circle cx="725" cy="200" r="10" fill="#9D7CFF"/>
+    <rect x="360" y="360" width="70" height="240" rx="6" fill="#5CC8FF"/>
+    <rect x="470" y="330" width="70" height="270" rx="6" fill="#7DD3A8"/>
+    <rect x="580" y="300" width="70" height="300" rx="6" fill="#9D7CFF"/>
+    <rect x="760" y="470" width="90" height="130" rx="6" fill="#E6A552"/>
+    <circle cx="405" cy="200" r="10" fill="#5CC8FF"/>
+    <circle cx="505" cy="200" r="10" fill="#7DD3A8"/>
+    <circle cx="615" cy="200" r="10" fill="#9D7CFF"/>
   </svg>
 </template>
 
@@ -68,9 +69,10 @@
     <div class="crumb">
       <a href="../index.html#projects">Projects</a>
       <span class="sep">/</span>
-      <span class="here">P0. Mechanism-sliced zero-shot fitness</span>
+      <span class="here">P0. Mechanism-sliced zero-shot protein fitness</span>
     </div>
     <div class="nav-actions">
+      <!-- repo href filled by p0.js (P0_REPO); best-guess slug, marked in code -->
       <a href="https://github.com/Bababongo/p0-zero-shot-fitness" data-repo-href class="btn btn-ghost">View repository
         <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3H3v10h10v-3M9 3h4v4M13 3 7 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
@@ -80,12 +82,13 @@
 
 <!-- STICKY SECTION RAIL -->
 <nav class="rail" aria-label="Section navigation">
-  <a href="#question"><span class="tick"></span>Question</a>
-  <a href="#method"><span class="tick"></span>Method</a>
-  <a href="#results"><span class="tick"></span>Results</a>
-  <a href="#interpretation"><span class="tick"></span>Interpretation</a>
+  <a href="#result"><span class="tick"></span>Result</a>
+  <a href="#datasets"><span class="tick"></span>Datasets</a>
+  <a href="#models"><span class="tick"></span>Models</a>
+  <a href="#findings"><span class="tick"></span>Findings</a>
+  <a href="#verdict"><span class="tick"></span>Conclusion</a>
+  <a href="#claims"><span class="tick"></span>Claims</a>
   <a href="#artifact"><span class="tick"></span>Artifact</a>
-  <a href="#limits"><span class="tick"></span>Limits</a>
 </nav>
 
 <main class="cs-main" id="main">
@@ -94,28 +97,28 @@
 <section class="cs-section cs-hero" id="top" data-screen-label="Hero">
   <div class="wrap">
     <div class="hero-eyebrow-row reveal">
-      <span class="k">P0</span><span>·</span><span>mechanism-sliced zero-shot fitness</span><span>·</span><span class="shipped">portfolio-complete v1</span>
+      <span class="k">P0</span><span>·</span><span>mechanism-sliced model evaluation</span><span>·</span><span class="shipped">completed portfolio artifact</span>
     </div>
-    <h1 class="reveal">Interrogating a Protein Language Model <span class="grad">Where Enzyme Chemistry Matters</span></h1>
-    <p class="subhero reveal d1">A protein language model can look good on average while still being least trustworthy at the residues an enzyme engineer cares about most. P0 turns that suspicion into a measurable benchmark.</p>
-    <p class="thesis reveal d1">A model score is not biological truth. It is <span class="em">a hypothesis about which measurements are worth buying.</span></p>
+    <h1 class="reveal">Evaluating protein models <span class="grad">where enzyme chemistry happens</span></h1>
+    <p class="subhero reveal d1">A mechanism-sliced benchmark comparing ESM-2, MSA conservation, and ProteinMPNN on enzyme DMS datasets, asking whether global mutation ranking hides catalytic, metal-site, and active-site-neighborhood failure modes.</p>
+    <p class="thesis reveal d1">A model can rank enzyme mutations well overall while <span class="em">behaving differently at the residues that make the enzyme work.</span></p>
 
     <div class="chips reveal d2">
-      <span class="chip"><span class="ck">Enzymes</span> TEM-1 · VIM-2 · AMIE · beta-glucosidase</span>
+      <span class="chip"><span class="ck">Datasets</span> 4 enzyme DMS</span>
       <span class="chip"><span class="ck">Variants</span> 19,013 single mutants</span>
-      <span class="chip"><span class="ck">Model</span> ESM-2 8M and 35M masked-marginal</span>
-      <span class="chip"><span class="ck">Controls</span> matched-position null</span>
-      <span class="chip"><span class="ck">Status</span> portfolio-complete v1</span>
-      <span class="chip"><span class="ck">Artifact</span> Python package, CLI, tests, CI, Savio scripts</span>
+      <span class="chip"><span class="ck">Models</span> ESM-2 · MSA conservation · ProteinMPNN</span>
+      <span class="chip"><span class="ck">Controls</span> matched position and covariate</span>
+      <span class="chip"><span class="ck">Tests</span> 42 passed</span>
+      <span class="chip"><span class="ck">Compute</span> HPC workflows</span>
     </div>
 
-    <!-- Hero diagram: model to evaluation -->
+    <!-- Hero diagram: enzyme DMS -> three model signals -> mechanism-sliced evaluation -->
     <div class="hero-diagram reveal d2" data-screen-label="Hero diagram">
-      <div class="hd-caption">From model to biological evaluation</div>
+      <div class="hd-caption">From enzyme DMS to mechanism-sliced model evaluation</div>
       <div class="hd-flow">
         <div class="hd-stage">
           <div class="st-k">Input</div>
-          <div class="st-t">TEM-1 DMS landscape</div>
+          <div class="st-t">Enzyme DMS landscapes</div>
           <div class="hd-glyph">
             <svg viewBox="0 0 150 68" aria-hidden="true">
               <g>
@@ -137,124 +140,101 @@
                 <rect x="56" y="46" width="16" height="16" rx="2" fill="#5CC8FF" opacity="0.30"/>
                 <rect x="74" y="46" width="16" height="16" rx="2" fill="#5CC8FF" opacity="0.58"/>
                 <rect x="92" y="46" width="16" height="16" rx="2" fill="#5CC8FF" opacity="0.25"/>
-                <text x="118" y="20" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="9">fitness</text>
-                <text x="118" y="38" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="9">4,783</text>
+                <text x="118" y="20" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="9">4 enzymes</text>
+                <text x="118" y="38" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="9">19,013</text>
                 <text x="118" y="56" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="9">variants</text>
               </g>
             </svg>
           </div>
-          <div class="st-k" style="color:var(--cyan)">DMS fitness</div>
+          <div class="st-k" style="color:var(--cyan)">measured fitness</div>
         </div>
 
         <div class="hd-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
 
         <div class="hd-stage">
-          <div class="st-k">Model</div>
-          <div class="st-t">ESM-2 masked-marginal scoring</div>
+          <div class="st-k">Model signals</div>
+          <div class="st-t">Three biological priors</div>
           <div class="hd-glyph">
             <svg viewBox="0 0 150 68" aria-hidden="true">
-              <g font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle">
-                <rect x="4"   y="24" width="18" height="20" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)"/>
-                <text x="13" y="38" fill="#A7B0C0">M</text>
-                <rect x="26"  y="24" width="18" height="20" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)"/>
-                <text x="35" y="38" fill="#A7B0C0">K</text>
-                <rect x="48"  y="20" width="18" height="28" rx="3" fill="none" stroke="#5CC8FF" stroke-width="1.5" stroke-dasharray="3 3"/>
-                <text x="57" y="15" fill="#5CC8FF" font-size="9">mask</text>
-                <text x="57" y="39" fill="#5CC8FF">?</text>
-                <rect x="70"  y="24" width="18" height="20" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)"/>
-                <text x="79" y="38" fill="#A7B0C0">A</text>
-                <rect x="92"  y="24" width="18" height="20" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)"/>
-                <text x="101" y="38" fill="#A7B0C0">L</text>
-                <rect x="114" y="24" width="18" height="20" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)"/>
-                <text x="123" y="38" fill="#A7B0C0">G</text>
-                <text x="66" y="62" fill="#6B7689" font-size="9" text-anchor="middle">log-likelihood ratio</text>
+              <g font-family="'IBM Plex Mono',monospace" font-size="8.5">
+                <rect x="2" y="7"  width="92" height="12" rx="2" fill="#5CC8FF" opacity="0.85"/>
+                <text x="100" y="16" fill="#5CC8FF">ESM-2</text>
+                <rect x="2" y="28" width="74" height="12" rx="2" fill="#7DD3A8" opacity="0.85"/>
+                <text x="100" y="37" fill="#7DD3A8">MSA</text>
+                <rect x="2" y="49" width="58" height="12" rx="2" fill="#9D7CFF" opacity="0.85"/>
+                <text x="100" y="58" fill="#9D7CFF">MPNN</text>
               </g>
             </svg>
           </div>
-          <div class="st-k" style="color:var(--cyan)">model score</div>
+          <div class="st-k">sequence · family · structure</div>
         </div>
 
         <div class="hd-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
 
         <div class="hd-stage">
           <div class="st-k">Evaluation</div>
-          <div class="st-t">Residue-slice audit</div>
+          <div class="st-t">Mechanism-sliced audit</div>
           <div class="hd-glyph">
             <svg viewBox="0 0 150 68" aria-hidden="true">
               <g font-family="'IBM Plex Mono',monospace" font-size="8">
-                <rect x="2" y="6"  width="86" height="10" rx="2" fill="#E6A552" opacity="0.9"/>
-                <rect x="2" y="6"  width="86" height="10" rx="2" fill="none"/>
-                <line x1="80" y1="3" x2="80" y2="19" stroke="rgba(167,176,192,0.6)"/>
-                <rect x="2" y="21" width="60" height="10" rx="2" fill="#E6A552" opacity="0.55"/>
-                <line x1="52" y1="18" x2="52" y2="34" stroke="rgba(167,176,192,0.6)"/>
-                <rect x="2" y="36" width="66" height="10" rx="2" fill="#6B7689"/>
-                <rect x="2" y="51" width="40" height="10" rx="2" fill="#6B7689" opacity="0.7"/>
-                <text x="96" y="14" fill="#E6A552">ligand</text>
-                <text x="96" y="29" fill="#E6A552">active</text>
-                <text x="96" y="44" fill="#6B7689">non-AS</text>
-                <text x="96" y="59" fill="#6B7689">outside</text>
+                <rect x="2" y="6"  width="86" height="10" rx="2" fill="#5CC8FF" opacity="0.7"/>
+                <rect x="2" y="21" width="70" height="10" rx="2" fill="#6B7689"/>
+                <rect x="2" y="36" width="52" height="10" rx="2" fill="#E6A552" opacity="0.85"/>
+                <rect x="2" y="51" width="30" height="10" rx="2" fill="#E6A552"/>
+                <text x="96" y="14" fill="#5CC8FF">overall</text>
+                <text x="96" y="29" fill="#6B7689">background</text>
+                <text x="96" y="44" fill="#E6A552">neighborhood</text>
+                <text x="96" y="59" fill="#E6A552">catalytic</text>
               </g>
             </svg>
           </div>
-          <div class="st-k" style="color:var(--amber)">residue slice</div>
+          <div class="st-k" style="color:var(--amber)">where biology happens</div>
         </div>
       </div>
 
       <div class="hd-loop">
         <svg viewBox="0 0 16 16" fill="none"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3" stroke="#9D7CFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Interpretation loop: uncertainty and failure modes feed back into which measurements earn experimental trust.
+        Mechanism-aware interpretation: matched controls decide where each model signal earns trust, weakens, or becomes ambiguous.
       </div>
       <div class="hd-tags">
-        <span class="hd-tag c">DMS fitness</span>
-        <span class="hd-tag c">model score</span>
-        <span class="hd-tag a">residue slice</span>
-        <span class="hd-tag g">uncertainty</span>
-        <span class="hd-tag g">failure mode</span>
+        <span class="hd-tag c">sequence context</span>
+        <span class="hd-tag g">family conservation</span>
+        <span class="hd-tag" style="color:var(--violet);border-color:rgba(157,124,255,0.28)">fixed backbone</span>
+        <span class="hd-tag a">mechanism slice</span>
+        <span class="hd-tag g">matched controls</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================ METRIC STRIP ============================ -->
-<section class="cs-section tight" data-screen-label="Key results">
-  <div class="wrap">
-    <div class="cs-head reveal" style="margin-bottom:32px">
-      <div class="cs-eyebrow">Key result</div>
-      <h2>Four numbers, read three ways</h2>
-    </div>
-    <div class="metric-strip" id="metric-strip" data-screen-label="Metric strip"></div>
-    <p class="body-copy reveal" style="margin-top:22px;max-width:820px;color:var(--text-3);font-size:14px">Top-5 enrichment is a small top-k metric. It is reported for completeness and should not dominate interpretation.</p>
-  </div>
-</section>
-
-<!-- ============================ EXECUTIVE SUMMARY ============================ -->
-<section class="cs-section" data-screen-label="The result in one minute">
+<!-- ============================ 1MIN RESULT ============================ -->
+<section class="cs-section" id="result" data-screen-label="The result in one minute">
   <div class="wrap">
     <div class="cs-head reveal">
       <div class="cs-eyebrow">Summary</div>
       <h2>The result in one minute</h2>
     </div>
     <div class="reveal">
-      <p class="lead">P0 evaluates whether a protein language model predicts experimental mutation effects equally well across different biological regions of an enzyme. Across four enzymes &mdash; TEM-1, VIM-2, AMIE, and beta-glucosidase &mdash; I scored 19,013 single amino-acid substitutions with ESM-2 (8M and 35M) and compared model scores to experimental DMS fitness, using matched-position null controls to test each residue-slice claim. TEM-1 is shown here in depth as the worked example.</p>
-      <p class="lead">The result was nuanced. ESM-2 captured meaningful zero-shot signal, and scaling from 8M to 35M parameters improved aggregate mutation ranking on every enzyme. But mechanism-slice behavior was enzyme-specific: only TEM-1's active-site neighborhood cleared its matched-position null (p = 0.012), while VIM-2, AMIE, and beta-glucosidase mechanism slices stayed inside null expectations.</p>
-      <p class="lead"><strong>The lesson:</strong> model evaluation should not stop at aggregate performance. It should ask where the model works, where it fails, and whether residue-zone claims survive matched controls.</p>
+      <p class="lead">P0 is a mechanism-sliced zero-shot protein fitness benchmark. It evaluates ESM-2, MSA conservation, and ProteinMPNN on public enzyme DMS datasets, then asks whether model performance changes near catalytic, metal-binding, ligand-contact, and active-site-neighborhood residues.</p>
+      <p class="lead">The result is not a simple foundation-model-wins story. ESM-2 gives useful global signal on multiple enzymes, but MSA conservation wins globally on AMIE and beta-glucosidase. ProteinMPNN is strongest overall on VIM-2, but weak at curated metal-site residues. Across the project, global mutation ranking and mechanism-local behavior can diverge.</p>
     </div>
+    <p class="prominent cyan reveal d1">P0 turns a vague concern, that protein models may fail near catalytic chemistry, into a <span class="em">concrete, reproducible, mechanism-sliced evaluation benchmark.</span></p>
 
-    <div class="proof-cards reveal d1" style="margin-top:40px">
+    <div class="proof-cards reveal d1" style="margin-top:36px">
       <div class="pcard">
         <div class="pc-dot" style="background:var(--cyan)"></div>
-        <h4>The model worked</h4>
-        <p>ESM-2 showed meaningful zero-shot signal on TEM-1 beta-lactamase DMS data.</p>
+        <h4>ESM-2 gives global signal</h4>
+        <p>Useful zero-shot ranking on all four enzymes, but exact catalytic sites are not uniformly strong.</p>
       </div>
       <div class="pcard">
-        <div class="pc-dot" style="background:var(--cyan)"></div>
-        <h4>Scale helped</h4>
-        <p>ESM-2 35M improved over ESM-2 8M across most slices.</p>
+        <div class="pc-dot" style="background:var(--green)"></div>
+        <h4>MSA can win</h4>
+        <p>Classical family conservation beats ESM-2 globally on AMIE and beta-glucosidase in this benchmark.</p>
       </div>
       <div class="pcard">
-        <div class="pc-dot" style="background:var(--amber)"></div>
-        <h4>Average hid structure</h4>
-        <p>Residue-slice analysis revealed different behavior across catalytic, ligand-contact, neighborhood, and background regions.</p>
+        <div class="pc-dot" style="background:var(--violet)"></div>
+        <h4>Structure has limits</h4>
+        <p>ProteinMPNN is strongest overall on VIM-2, yet weakest at the curated metal-site residues.</p>
       </div>
     </div>
   </div>
@@ -262,588 +242,492 @@
 
 <div class="divider"></div>
 
-<!-- ============================ 01 THE QUESTION ============================ -->
-<section class="cs-section" id="question" data-screen-label="The question">
+<!-- ============================ DATASETS ============================ -->
+<section class="cs-section" id="datasets" data-screen-label="Four enzyme DMS datasets">
   <div class="wrap">
     <div class="cs-head reveal">
-      <div class="cs-eyebrow">01 / The question</div>
-      <h2>The question</h2>
+      <div class="cs-eyebrow">01 / The panel</div>
+      <h2>Four enzyme DMS datasets</h2>
+      <p class="lead" style="margin-top:6px">Public deep-mutational-scanning landscapes that span four distinct enzyme mechanisms, so the benchmark can ask whether model behavior changes across chemistries, not only within one protein.</p>
     </div>
-    <p class="thesis reveal" style="max-width:30ch;border-left-color:var(--violet);font-size:clamp(21px,2.6vw,32px)">Do protein language models fail differently on catalytic and mechanism-relevant residues than on the rest of the protein?</p>
-    <p class="body-copy reveal d1">This question matters because protein engineering rarely cares about average residues. It cares about the parts of a protein that determine whether a molecule binds, folds, reacts, expresses, or can be measured. A model can rank mutations well overall and still be weakest where chemistry matters most.</p>
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Dataset table">
+        <table class="sci">
+          <caption>Table 1. Enzyme DMS datasets and their main biological labels</caption>
+          <thead>
+            <tr><th>Dataset</th><th class="txt">Enzyme</th><th class="txt">Mechanism class</th><th>Single mutants</th><th class="txt">Main biological labels</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="pth">BLAT_ECOLX_Firnberg_2014</td><td class="txt">TEM-1 beta-lactamase</td><td class="txt">Serine beta-lactam hydrolysis</td><td>4,783</td><td class="txt">UniProt catalytic site, substrate-binding site, PDB ligand contact, active-site neighborhood</td></tr>
+            <tr><td class="pth">A4GRB6_PSEAI_Chen_2020</td><td class="txt">VIM-2 metallo-beta-lactamase</td><td class="txt">Zinc-dependent beta-lactam hydrolysis</td><td>5,004</td><td class="txt">curated metal-binding site, 5ACX/WL3 inhibitor contact, metal-site shell, active-site neighborhood</td></tr>
+            <tr><td class="pth">AMIE_PSEAE_Wrenbeck_2017</td><td class="txt">AMIE aliphatic amidase</td><td class="txt">Amidase or nitrilase-like hydrolysis</td><td>6,227</td><td class="txt">UniProt catalytic triad, catalytic shell, active-site neighborhood</td></tr>
+            <tr><td class="pth">Q59976_STRSQ_Romero_2015</td><td class="txt">Beta-glucosidase</td><td class="txt">Glycoside hydrolysis</td><td>2,999</td><td class="txt">curated catalytic site, catalytic shell, active-site neighborhood</td></tr>
+            <tr><td class="grp"><strong>Total</strong></td><td class="txt"></td><td class="txt"></td><td><span class="best">19,013</span></td><td class="txt">evaluated single mutants</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="limit-note">The panel spans serine beta-lactam hydrolysis, zinc-dependent beta-lactam hydrolysis, amidase chemistry, and glycoside hydrolysis. This lets P0 ask whether model behavior changes across enzyme mechanisms, not only within one protein.</p>
+    </div>
   </div>
 </section>
 
-<!-- ============================ FIGURE 1 - PIPELINE ============================ -->
-<section class="cs-section tight" data-screen-label="Figure 1 pipeline">
+<div class="divider"></div>
+
+<!-- ============================ MODELS ============================ -->
+<section class="cs-section" id="models" data-screen-label="Three model signals">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">02 / The models</div>
+      <h2>Three model signals, three biological priors</h2>
+      <p class="lead" style="margin-top:6px">Each model family scores the same mutation differently because each encodes a different prior: sequence context, evolutionary family, or fixed-backbone structure.</p>
+    </div>
+    <div class="signal-cards reveal d1">
+      <div class="signal-card">
+        <div class="sc-top"><h4>ESM-2</h4><span class="sc-kind">sequence-context signal</span></div>
+        <div class="sc-eq">score = log P(<span class="d">mutant aa</span> at masked position) minus log P(<span class="d">wild-type aa</span> at masked position)</div>
+        <div class="sc-mean">Tests <b>sequence-context plausibility</b> learned from protein sequences.</div>
+      </div>
+      <div class="signal-card msa">
+        <div class="sc-top"><h4>MSA conservation</h4><span class="sc-kind">family-conservation signal</span></div>
+        <div class="sc-eq">score = log frequency(<span class="d">mutant aa</span> at aligned position) minus log frequency(<span class="d">wild-type aa</span> at aligned position)</div>
+        <div class="sc-mean">Tests whether the mutant is <b>tolerated or disfavored across a protein family.</b></div>
+      </div>
+      <div class="signal-card mpnn">
+        <div class="sc-top"><h4>ProteinMPNN</h4><span class="sc-kind">fixed-backbone structural signal</span></div>
+        <div class="sc-eq">score = log P(<span class="d">mutant aa</span> | backbone) minus log P(<span class="d">wild-type aa</span> | backbone)</div>
+        <div class="sc-mean">Tests whether the mutant residue is <b>compatible with a fixed backbone.</b></div>
+      </div>
+    </div>
+    <div class="caveat reveal d1">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 2 20h20L12 3Z" stroke="#E6A552" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 10v4M12 17v.01" stroke="#E6A552" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span><b>ProteinMPNN is not an enzyme activity model.</b> It does not know the ligand, transition state, assay, or catalytic chemistry. It is a structure-conditioned baseline, and it is read here as one.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PIPELINE ============================ -->
+<section class="cs-section tight" data-screen-label="Evaluation pipeline">
   <div class="wrap">
     <figure class="figure reveal">
       <div class="fig-head">
         <span class="fig-num">Figure 1</span>
-        <h3 class="fig-title">From DMS data to biological failure-mode audit</h3>
+        <h3 class="fig-title">From enzyme DMS to mechanism-sliced evaluation</h3>
       </div>
       <div class="pipe" data-screen-label="Pipeline">
-        <div class="pipe-node" data-reveal="The public deep-mutational-scanning dataset that grounds the benchmark in measured biology.">
+        <div class="pipe-node" data-reveal="Public measured fitness landscapes that ground the benchmark in real biology.">
           <div class="pipe-step">01</div>
-          <h4>ProteinGym TEM-1 DMS</h4>
-          <div class="pipe-sub">4,783 single amino-acid substitutions</div>
+          <h4>ProteinGym enzyme DMS</h4>
+          <div class="pipe-sub">public measured fitness landscapes</div>
         </div>
-        <div class="pipe-node" data-reveal="Every substitution is checked against the wild-type residue before it is scored.">
+        <div class="pipe-node" data-reveal="Every substitution is validated against the wild-type sequence before scoring.">
           <div class="pipe-step">02</div>
-          <h4>Mutation parsing</h4>
-          <div class="pipe-sub">validate substitution against wild-type sequence</div>
+          <h4>Single-mutant parsing</h4>
+          <div class="pipe-sub">validate substitutions against wild-type sequences</div>
         </div>
-        <div class="pipe-node" data-reveal="Residues are tagged by mechanistic role so performance can be read per biological region.">
+        <div class="pipe-node" data-reveal="Residues are tagged by mechanistic role so performance can be read per region.">
           <div class="pipe-step">03</div>
-          <h4>Residue annotation</h4>
-          <div class="pipe-sub">active site, substrate-binding, ligand contact, neighborhood</div>
+          <h4>Biological residue labels</h4>
+          <div class="pipe-sub">catalytic sites, metal sites, ligand contacts, neighborhoods, background</div>
         </div>
-        <div class="pipe-node" data-reveal="A zero-shot log-likelihood ratio at each masked position, with no training on this assay.">
+        <div class="pipe-node" data-reveal="Three families score the same variants: sequence context, family conservation, fixed backbone.">
           <div class="pipe-step">04</div>
-          <h4>ESM-2 scoring</h4>
-          <div class="pipe-sub">log P mutant minus log P wild type at masked position</div>
+          <h4>Model-family scoring</h4>
+          <div class="pipe-sub">ESM-2, MSA conservation, ProteinMPNN</div>
         </div>
-        <div class="pipe-node" data-reveal="Correlation, enrichment, and bootstrap intervals computed overall and per slice.">
+        <div class="pipe-node" data-reveal="Correlation and enrichment computed overall and per mechanism slice.">
           <div class="pipe-step">05</div>
           <h4>Slice metrics</h4>
-          <div class="pipe-sub">Spearman, enrichment, bootstrap confidence intervals</div>
+          <div class="pipe-sub">overall Spearman, mechanism-local Spearman, top-k enrichment</div>
         </div>
-        <div class="pipe-node" data-reveal="The step that turns numbers into a claim: where the model earns experimental trust.">
+        <div class="pipe-node" data-reveal="Position-matched and covariate-matched nulls guard against spurious residue-zone effects.">
           <div class="pipe-step">06</div>
-          <h4>Interpretation</h4>
-          <div class="pipe-sub">where the model earns experimental trust</div>
+          <h4>Matched controls</h4>
+          <div class="pipe-sub">position-matched and covariate-matched nulls</div>
+        </div>
+        <div class="pipe-node" data-reveal="The step that turns numbers into a claim: where the model earns trust or breaks.">
+          <div class="pipe-step">07</div>
+          <h4>Mechanism-aware interpretation</h4>
+          <div class="pipe-sub">where the model earns trust, weakens, or becomes ambiguous</div>
         </div>
       </div>
-      <figcaption class="fig-caption"><span class="fnum">Fig. 1</span>The benchmark asks a biological question, not only a modeling question: does zero-shot fitness prediction behave differently across regions of an enzyme with different mechanistic roles?</figcaption>
+      <figcaption class="fig-caption"><span class="fnum">Fig. 1</span>P0 asks a biological evaluation question: not only whether a model correlates with fitness, but where that correlation changes inside an enzyme.</figcaption>
     </figure>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ============================ 02 THE SYSTEM + ANNOTATION (METHOD) ============================ -->
-<section class="cs-section" id="method" data-screen-label="The system">
+<!-- ============================ FINDINGS ============================ -->
+<section class="cs-section" id="findings" data-screen-label="ESM-2 four-enzyme result">
   <div class="wrap">
     <div class="cs-head reveal">
-      <div class="cs-eyebrow">02 / The system</div>
-      <h2>The system</h2>
-    </div>
-    <div class="datacard reveal d1" style="margin-bottom:26px">
-      <div class="dc-row"><div class="dc-k">Protein</div><div class="dc-v">TEM-1 beta-lactamase</div></div>
-      <div class="dc-row"><div class="dc-k">Dataset</div><div class="dc-v"><span class="mono">ProteinGym BLAT_ECOLX_Firnberg_2014</span></div></div>
-      <div class="dc-row"><div class="dc-k">Assay context</div><div class="dc-v">growth under ampicillin selection</div></div>
-      <div class="dc-row"><div class="dc-k">Fitness target</div><div class="dc-v">ProteinGym <span class="mono">DMS_score</span></div></div>
-      <div class="dc-row"><div class="dc-k">Variants analyzed</div><div class="dc-v">4,783 single amino-acid substitutions</div></div>
-    </div>
-    <p class="body-copy reveal d1">TEM-1 beta-lactamase is a useful first benchmark because it has public DMS data and known active-site biology. That allows the evaluation to compare model scores against measured fitness while asking whether model behavior changes across mechanistic regions.</p>
-  </div>
-</section>
-
-<section class="cs-section tight" data-screen-label="The annotation logic">
-  <div class="wrap">
-    <div class="cs-head reveal">
-      <div class="cs-eyebrow">03 / The annotation logic</div>
-      <h2>The annotation logic</h2>
-    </div>
-    <div class="anno-grid reveal d1">
-      <div class="anno amber">
-        <div class="an-top"><h4>UniProt active site</h4><span class="an-n">57 variants</span></div>
-        <p>Positions <span class="pos">68, 71, 128, 164</span>. Exact catalytic core.</p>
-      </div>
-      <div class="anno amber">
-        <div class="an-top"><h4>UniProt substrate-binding site</h4><span class="an-n">55 variants</span></div>
-        <p>Positions <span class="pos">232 to 234</span>. Pocket residues adjacent to the catalytic core.</p>
-      </div>
-      <div class="anno amber">
-        <div class="an-top"><h4>PDB 1M40 ligand contact, 5 A</h4><span class="an-n">277 variants</span></div>
-        <p>Residues in chain A with any heavy atom within <span class="pos">5.0 A</span> of the CB4 inhibitor.</p>
-      </div>
-      <div class="anno amber">
-        <div class="an-top"><h4>Active-site neighborhood</h4><span class="an-n">461 variants</span></div>
-        <p>Broader mechanism-adjacent region around validated active-site and substrate-binding positions.</p>
-      </div>
-    </div>
-    <p class="limit-note reveal d1" style="margin-top:24px">The exact active-site group is intentionally narrow and biologically meaningful, but statistically small. The broader groups test whether the model captures constraints around the functional environment, not only the catalytic core.</p>
-  </div>
-</section>
-
-<!-- ============================ 04 SCORING METHOD ============================ -->
-<section class="cs-section" data-screen-label="The scoring method">
-  <div class="wrap">
-    <div class="cs-head reveal">
-      <div class="cs-eyebrow">04 / The scoring method</div>
-      <h2>The scoring method</h2>
-    </div>
-    <div class="formula reveal d1">
-      <div class="eq">score <span class="op">=</span> log P<span class="op">(</span><span class="term-mut">mutant aa</span> | masked wild-type context<span class="op">)</span> <span class="op">-</span> log P<span class="op">(</span><span class="term-wt">wild-type aa</span> | masked wild-type context<span class="op">)</span></div>
-      <div class="fkey">
-        <span><b class="kc">mutant aa</b>: proposed substitution</span>
-        <span><b class="ka">wild-type aa</b>: original residue</span>
-        <span>masked position: model sees context only</span>
-      </div>
-    </div>
-    <p class="body-copy reveal d1" style="margin-top:22px">For each mutation, I masked the wild-type position and asked ESM-2 how plausible the mutant amino acid was relative to the original residue in the same sequence context. The model was not trained on this DMS assay. This is a zero-shot variant-effect prediction test.</p>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ============================ 05 THE RESULTS ============================ -->
-<section class="cs-section" id="results" data-screen-label="The results">
-  <div class="wrap">
-    <div class="cs-head reveal">
-      <div class="cs-eyebrow">05 / The results</div>
-      <h2>The results</h2>
-      <p class="lead" style="margin-top:6px">The figures below show TEM-1 in depth; the four-enzyme summary follows. For TEM-1, overall Spearman improved from 0.4113 with ESM-2 8M to 0.5548 with ESM-2 35M. Exact UniProt active-site performance also improved, from 0.3023 to 0.4596, but remained below the non-active-site background. Broader ligand-contact and active-site-neighborhood slices showed stronger signal, reaching 0.7127 and 0.7027 with ESM-2 35M.</p>
-    </div>
-
-    <!-- FIGURE 2 -->
-    <figure class="figure reveal">
-      <div class="fig-head">
-        <span class="fig-num">Figure 2</span>
-        <h3 class="fig-title">ESM-2 improves with scale on TEM-1 DMS</h3>
-      </div>
-      <div class="fig-legend">
-        <span class="leg"><span class="sw gray"></span>placeholder baseline</span>
-        <span class="leg"><span class="sw" style="background:var(--cyan-dim)"></span>ESM-2 8M</span>
-        <span class="leg"><span class="sw cyan"></span>ESM-2 35M</span>
-      </div>
-      <div class="fig-plot" data-fig="overall"></div>
-      <figcaption class="fig-caption"><span class="fnum">Fig. 2</span>ESM-2 shows meaningful zero-shot signal, and the 35M model improves over the 8M model. The placeholder baseline stays near uninformative overall behavior.</figcaption>
-      <div class="fig-teach"><span>Aggregate performance is useful, but it is not enough. The rest of the page asks <b>where that performance comes from.</b></span></div>
-    </figure>
-
-    <!-- FIGURE 3 -->
-    <figure class="figure reveal">
-      <div class="fig-head">
-        <span class="fig-num">Figure 3</span>
-        <h3 class="fig-title">Aggregate performance hides residue-slice behavior</h3>
-        <p class="body-copy" style="margin-top:12px;font-size:15px">ESM-2 35M Spearman correlation across biological groups, with bootstrap 95% confidence intervals. Hover any row for n and interval.</p>
-      </div>
-      <div class="fig-legend">
-        <span class="leg"><span class="sw amber"></span>active-site and mechanism-adjacent</span>
-        <span class="leg"><span class="sw gray"></span>broad background</span>
-        <span class="leg"><span class="sw line" style="background:rgba(167,176,192,0.7)"></span>95% confidence interval</span>
-      </div>
-      <div class="fig-plot" data-fig="slices"></div>
-      <figcaption class="fig-caption"><span class="fnum">Fig. 3</span>The exact active-site-only slice is positive but uncertain because it contains only 57 variants. Broader mechanism-adjacent groups, especially ligand-contact and active-site-neighborhood residues, show stronger and more stable model signal.</figcaption>
-      <div class="fig-teach amber"><span>The result is not "ESM-2 fails at catalytic residues." The result is subtler: <b>model reliability changes depending on how biology is sliced.</b></span></div>
-    </figure>
-
-    <!-- FIGURE 4 - SCHEMATIC -->
-    <figure class="figure reveal" data-screen-label="Figure 4 schematic">
-      <div class="fig-head">
-        <span class="fig-num">Figure 4</span>
-        <h3 class="fig-title">Catalytic residues are not the whole active-site environment</h3>
-      </div>
-      <div class="schematic">
-        <div class="schematic-svg">
-          <svg viewBox="0 0 460 400" role="img" aria-label="Conceptual schematic of the enzyme active-site environment as concentric regions from catalytic core to neighborhood halo">
-            <defs>
-              <radialGradient id="halo" cx="42%" cy="52%" r="60%">
-                <stop offset="0%" stop-color="rgba(230,165,82,0.10)"/>
-                <stop offset="55%" stop-color="rgba(230,165,82,0.04)"/>
-                <stop offset="100%" stop-color="rgba(230,165,82,0)"/>
-              </radialGradient>
-            </defs>
-            <!-- neighborhood halo -->
-            <path d="M60 200 C 60 90, 180 46, 250 60 C 360 82, 420 150, 410 240 C 402 320, 320 366, 230 356 C 120 344, 60 300, 60 200 Z" fill="url(#halo)" stroke="rgba(107,118,137,0.45)" stroke-width="1.2" stroke-dasharray="4 6"/>
-            <text x="86" y="86" class="sch-region" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="10.5">neighborhood</text>
-            <!-- ligand-contact ring -->
-            <ellipse cx="196" cy="212" rx="120" ry="104" fill="none" stroke="rgba(230,165,82,0.5)" stroke-width="1.3" stroke-dasharray="3 5"/>
-            <text x="120" y="126" fill="#E6A552" font-family="'IBM Plex Mono',monospace" font-size="10.5" opacity="0.85">ligand contact, 5 A</text>
-            <!-- substrate-binding pocket -->
-            <path d="M150 212 C 150 168, 196 150, 234 166 C 268 180, 274 224, 250 252 C 224 282, 168 278, 152 244 C 146 232, 150 222, 150 212 Z" fill="rgba(230,165,82,0.06)" stroke="rgba(230,165,82,0.7)" stroke-width="1.4"/>
-            <text x="196" y="300" text-anchor="middle" fill="#E6A552" font-family="'IBM Plex Mono',monospace" font-size="10.5">substrate-binding</text>
-            <!-- catalytic core dots -->
-            <g>
-              <circle cx="186" cy="200" r="7" fill="#E6A552"/>
-              <circle cx="212" cy="192" r="7" fill="#E6A552"/>
-              <circle cx="200" cy="220" r="7" fill="#E6A552"/>
-              <circle cx="176" cy="222" r="7" fill="#E6A552"/>
-              <text x="186" y="184" text-anchor="middle" fill="#F5F7FA" font-family="'IBM Plex Mono',monospace" font-size="9">68</text>
-              <text x="230" y="188" fill="#F5F7FA" font-family="'IBM Plex Mono',monospace" font-size="9">71</text>
-              <text x="214" y="236" fill="#F5F7FA" font-family="'IBM Plex Mono',monospace" font-size="9">128</text>
-              <text x="150" y="238" fill="#F5F7FA" font-family="'IBM Plex Mono',monospace" font-size="9">164</text>
-            </g>
-            <!-- ligand marker -->
-            <g>
-              <path d="M300 150 l10 6 l0 12 l-10 6 l-10 -6 l0 -12 Z" fill="none" stroke="#9D7CFF" stroke-width="1.4"/>
-              <line x1="292" y1="168" x2="250" y2="200" stroke="rgba(157,124,255,0.5)" stroke-width="1" stroke-dasharray="2 3"/>
-              <text x="300" y="140" text-anchor="middle" fill="#9D7CFF" font-family="'IBM Plex Mono',monospace" font-size="9">CB4</text>
-            </g>
-            <!-- scattered contact + neighborhood dots -->
-            <circle cx="150" cy="170" r="3.5" fill="#E6A552" opacity="0.6"/>
-            <circle cx="256" cy="176" r="3.5" fill="#E6A552" opacity="0.6"/>
-            <circle cx="268" cy="248" r="3.5" fill="#E6A552" opacity="0.6"/>
-            <circle cx="140" cy="252" r="3.5" fill="#E6A552" opacity="0.6"/>
-            <circle cx="110" cy="200" r="3" fill="#6B7689"/>
-            <circle cx="300" cy="270" r="3" fill="#6B7689"/>
-            <circle cx="330" cy="200" r="3" fill="#6B7689"/>
-            <circle cx="200" cy="330" r="3" fill="#6B7689"/>
-            <circle cx="240" cy="110" r="3" fill="#6B7689"/>
-            <text x="330" y="360" text-anchor="middle" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="8.5">distance from catalytic core increases outward</text>
-          </svg>
-        </div>
-        <div class="env-legend">
-          <div class="env-item">
-            <span class="env-swatch" style="background:#E6A552"></span>
-            <div>
-              <div class="en-t"><span class="en-name">UniProt active site</span><span class="en-n">57 variants</span></div>
-              <div class="en-def">Positions <span class="pos">68, 71, 128, 164</span>. Tiny catalytic core.</div>
-              <div class="env-note">Ambler equivalents: Ser70, Lys73, Ser130, Glu166.</div>
-            </div>
-          </div>
-          <div class="env-item">
-            <span class="env-swatch" style="background:rgba(230,165,82,0.6)"></span>
-            <div>
-              <div class="en-t"><span class="en-name">Substrate-binding site</span><span class="en-n">55 variants</span></div>
-              <div class="en-def">Positions <span class="pos">232 to 234</span>. Nearby pocket residues.</div>
-            </div>
-          </div>
-          <div class="env-item">
-            <span class="env-swatch" style="background:transparent;border:1.4px dashed rgba(230,165,82,0.7)"></span>
-            <div>
-              <div class="en-t"><span class="en-name">PDB ligand contact, 5 A</span><span class="en-n">277 variants</span></div>
-              <div class="en-def">Heavy atom within 5.0 A of the CB4 inhibitor in PDB 1M40. A broader ring.</div>
-            </div>
-          </div>
-          <div class="env-item">
-            <span class="env-swatch" style="background:transparent;border:1.2px dashed rgba(107,118,137,0.6)"></span>
-            <div>
-              <div class="en-t"><span class="en-name">Active-site neighborhood</span><span class="en-n">461 variants</span></div>
-              <div class="en-def">Broader mechanism-adjacent region around active-site and binding annotations. A wider halo.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <figcaption class="fig-caption"><span class="fnum">Fig. 4</span>The active site is not only the catalytic core. A sequence model may capture structural and evolutionary constraints around the pocket better than the exact chemistry of catalytic residues.</figcaption>
-    </figure>
-
-    <!-- FIGURE 5 - SLOPE -->
-    <figure class="figure reveal">
-      <div class="fig-head">
-        <span class="fig-num">Figure 5</span>
-        <h3 class="fig-title">Scaling improves performance, but not all slices move the same way</h3>
-      </div>
-      <div class="fig-plot" data-fig="slope"></div>
-      <figcaption class="fig-caption"><span class="fnum">Fig. 5</span>The larger ESM-2 model improves performance across most slices. But the point is not only that scale helps. The point is that biologically meaningful slices reveal where that improvement matters.</figcaption>
-    </figure>
-
-    <!-- FIGURE 6 - MUTATION CLASS -->
-    <figure class="figure reveal">
-      <div class="fig-head">
-        <span class="fig-num">Figure 6</span>
-        <h3 class="fig-title">Model agreement also varies by mutation class</h3>
-      </div>
-      <div class="fig-plot" data-fig="mutclass"></div>
-      <figcaption class="fig-caption"><span class="fnum">Fig. 6</span>Residue location is not the only axis of model behavior. Mutation chemistry also changes how well model rankings agree with experimental fitness.</figcaption>
-    </figure>
-
-    <!-- SUPPLEMENTARY TABLE -->
-    <div class="reveal" style="margin-top:22px">
-      <div class="table-wrap" data-screen-label="Supplementary table">
-        <table class="sci">
-          <caption>Table 1. Residue-slice comparison across scorers (Spearman correlation, outside-group Spearman, n)</caption>
-          <thead>
-            <tr><th>Group</th><th>Spearman</th><th>Outside group</th><th>Variants</th></tr>
-          </thead>
-          <tbody id="sci-table-body"></tbody>
-        </table>
-      </div>
-      <p class="body-copy" style="margin-top:14px;color:var(--text-3);font-size:13px">Bootstrap 95% confidence intervals for ESM-2 35M are encoded as whiskers in Figure 3. Values are exact outputs from the TEM-1 P0 comparison run.</p>
-    </div>
-
-    <!-- FOUR-ENZYME AUDIT -->
-    <div class="cs-head reveal" style="margin-top:64px">
-      <div class="cs-eyebrow" style="color:var(--amber)">The four-enzyme audit</div>
-      <h2 style="font-size:clamp(24px,3.2vw,38px)">The same benchmark, read across four enzymes</h2>
-      <p class="lead" style="margin-top:6px">TEM-1 above is the worked example. Portfolio-complete v1 spans four enzymes and 19,013 single mutants, scored with ESM-2 8M and 35M, with matched-position null controls testing each residue-slice claim.</p>
+      <div class="cs-eyebrow">03 / Result one</div>
+      <h2>ESM-2 gives useful global signal, but exact sites vary</h2>
     </div>
     <div class="reveal d1">
-      <div class="table-wrap" data-screen-label="Four-enzyme results">
+      <div class="table-wrap" data-screen-label="ESM-2 four-enzyme table">
         <table class="sci">
-          <caption>Table 2. Four-enzyme results at ESM-2 35M (Spearman by region), with matched-position null read</caption>
-          <thead><tr><th>Enzyme</th><th>Overall</th><th>Exact site</th><th>AS neighborhood</th><th class="txt">Matched-null read</th></tr></thead>
+          <caption>Table 2. ESM-2 35M by enzyme (Spearman)</caption>
+          <thead><tr><th>Dataset</th><th>Overall Spearman</th><th>Exact catalytic or metal site</th><th>Background</th></tr></thead>
           <tbody>
-            <tr><td class="grp">TEM-1</td><td>0.5548</td><td>0.4596</td><td><span class="best">0.7027</span></td><td class="txt">Neighborhood clears null, p = 0.012</td></tr>
-            <tr><td class="grp">VIM-2</td><td>0.5280</td><td>0.3449</td><td>0.6133</td><td class="txt">Inside null, p = 0.142</td></tr>
-            <tr><td class="grp">AMIE</td><td>0.4082</td><td>0.0911</td><td>0.4335</td><td class="txt">Inside null, p = 0.778</td></tr>
-            <tr><td class="grp">Beta-glucosidase</td><td>0.4481</td><td>0.5105</td><td>0.4327</td><td class="txt">Inside null, p = 0.984</td></tr>
+            <tr><td class="grp">TEM-1</td><td>0.5548</td><td>0.4596</td><td>0.5428</td></tr>
+            <tr><td class="grp">VIM-2</td><td>0.5280</td><td>0.3449</td><td>0.5085</td></tr>
+            <tr><td class="grp">AMIE</td><td>0.4082</td><td><span class="hi">0.0911</span></td><td>0.3991</td></tr>
+            <tr><td class="grp">Beta-glucosidase</td><td>0.4481</td><td>0.5105</td><td>0.4434</td></tr>
           </tbody>
         </table>
       </div>
+      <p class="body-copy" style="margin-top:16px">ESM-2 35M gives useful global signal on all four enzymes. But exact catalytic or metal-site behavior is not uniformly strong. AMIE is the clearest warning case: exact catalytic-site Spearman is only 0.0911.</p>
     </div>
+    <p class="prominent reveal d1">Whole-protein correlation can look useful <span class="em">while the mechanism-local slice tells a different story.</span></p>
+  </div>
+</section>
+
+<section class="cs-section tight" data-screen-label="Mechanism neighborhoods vs exact sites">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">04 / Result two</div>
+      <h2>Mechanism neighborhoods are more informative than exact sites alone</h2>
+    </div>
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Neighborhoods table">
+        <table class="sci">
+          <caption>Table 3. Best ESM-2 35M mechanism slice per enzyme (raw Spearman)</caption>
+          <thead><tr><th>Dataset</th><th class="txt">Best ESM-2 35M mechanism slice</th><th>Spearman</th><th class="txt">Read</th></tr></thead>
+          <tbody>
+            <tr><td class="grp">TEM-1</td><td class="txt">PDB ligand contact</td><td>0.7127</td><td class="txt">Strong raw ligand-neighborhood signal</td></tr>
+            <tr><td class="grp">TEM-1</td><td class="txt">Active-site neighborhood</td><td>0.7027</td><td class="txt">Strongest matched-null active-neighborhood case</td></tr>
+            <tr><td class="grp">VIM-2</td><td class="txt">5ACX/WL3 inhibitor contact</td><td>0.6613</td><td class="txt">Strong raw pocket signal, but inside strict controls</td></tr>
+            <tr><td class="grp">VIM-2</td><td class="txt">Active-site neighborhood</td><td>0.6133</td><td class="txt">Strong raw mechanism-adjacent signal</td></tr>
+            <tr><td class="grp">AMIE</td><td class="txt">Active-site neighborhood</td><td>0.4335</td><td class="txt">Slightly above background, not strongly controlled</td></tr>
+            <tr><td class="grp">Beta-glucosidase</td><td class="txt">Active-site neighborhood</td><td>0.4327</td><td class="txt">Similar to background</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="body-copy" style="margin-top:16px">Exact catalytic residues are often too small and chemically specific. Broader mechanism neighborhoods give more stable readouts, but still need matched controls before becoming biological claims.</p>
+    </div>
+    <div class="caveat reveal d1">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 2 20h20L12 3Z" stroke="#E6A552" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 10v4M12 17v.01" stroke="#E6A552" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span><b>Do not turn a strong raw pocket signal into a mechanism claim without controls.</b> A high raw slice value is a hypothesis; the matched null is what decides whether it survives.</span>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section tight" data-screen-label="MSA conservation changes the story">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">05 / Result three</div>
+      <h2>MSA conservation changes the story</h2>
+    </div>
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="MSA table">
+        <table class="sci">
+          <caption>Table 4. ESM-2 35M versus MSA conservation (overall Spearman)</caption>
+          <thead><tr><th>Dataset</th><th>ESM-2 35M Overall</th><th>MSA Overall</th><th class="txt">Winner</th></tr></thead>
+          <tbody>
+            <tr><td class="grp">TEM-1</td><td>0.5548</td><td>0.4247</td><td class="txt">ESM-2</td></tr>
+            <tr><td class="grp">VIM-2</td><td>0.5280</td><td>0.4931</td><td class="txt">ESM-2, slightly</td></tr>
+            <tr><td class="grp">AMIE</td><td>0.4082</td><td>0.4306</td><td class="txt"><span style="color:var(--green)">MSA</span></td></tr>
+            <tr><td class="grp">Beta-glucosidase</td><td>0.4481</td><td>0.5615</td><td class="txt"><span style="color:var(--green)">MSA</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="body-copy" style="margin-top:16px">ESM-2 is not automatically better than a classical family-conservation signal. On AMIE and beta-glucosidase, the MSA baseline wins globally.</p>
+    </div>
+    <div class="fig-teach"><span>This avoids a shallow foundation-model-beats-everything story. <b>Different biological priors win in different enzyme landscapes.</b></span></div>
+  </div>
+</section>
+
+<section class="cs-section" data-screen-label="ProteinMPNN structure-conditioned test">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">06 / Result four</div>
+      <h2>ProteinMPNN adds a structure-conditioned test</h2>
+      <p class="lead" style="margin-top:6px">ProteinMPNN was run on the three target-aligned ready structures: VIM-2, AMIE, and beta-glucosidase. TEM-1 was excluded from this pass because 1M40.pdb is not target-aligned to the full 286-aa ProteinGym DMS sequence.</p>
+    </div>
+
+    <figure class="figure reveal d1">
+      <div class="fig-head">
+        <span class="fig-num">Figure 2</span>
+        <h3 class="fig-title">Three model signals, four enzymes</h3>
+        <p class="body-copy" style="margin-top:12px;font-size:15px">Overall Spearman for each model family per enzyme. No family wins everywhere: ESM-2 leads on TEM-1, ProteinMPNN on VIM-2, and MSA conservation on AMIE and beta-glucosidase.</p>
+      </div>
+      <div class="fig-legend">
+        <span class="leg"><span class="sw cyan"></span>ESM-2 35M</span>
+        <span class="leg"><span class="sw green"></span>MSA conservation</span>
+        <span class="leg"><span class="sw violet"></span>ProteinMPNN</span>
+      </div>
+      <div class="fig-plot" data-fig="family"></div>
+      <figcaption class="fig-caption"><span class="fnum">Fig. 2</span>ProteinMPNN tests fixed-backbone compatibility, not enzyme activity. Its performance reveals when structural compatibility helps global ranking (VIM-2) and when it does not (AMIE, beta-glucosidase). ProteinMPNN was not run on TEM-1.</figcaption>
+      <div class="fig-teach violet"><span>The comparison is the point: <b>each model family exposes a different inductive bias</b>, and none removes the need to look inside the enzyme.</span></div>
+    </figure>
+
     <div class="reveal d1" style="margin-top:22px">
-      <div class="table-wrap" data-screen-label="Scaling across enzymes">
+      <div class="table-wrap" data-screen-label="ProteinMPNN table">
         <table class="sci">
-          <caption>Table 3. Scaling from ESM-2 8M to 35M (overall Spearman)</caption>
-          <thead><tr><th>Dataset</th><th>8M overall</th><th>35M overall</th><th>Change</th></tr></thead>
+          <caption>Table 5. Overall Spearman across model families, with ProteinMPNN mechanism read</caption>
+          <thead><tr><th>Dataset</th><th>ESM-2 35M</th><th>MSA</th><th>ProteinMPNN</th><th class="txt">ProteinMPNN mechanism read</th></tr></thead>
           <tbody>
-            <tr><td class="grp">TEM-1</td><td>0.4113</td><td>0.5548</td><td><span class="delta">+0.1435</span></td></tr>
-            <tr><td class="grp">VIM-2</td><td>0.4305</td><td>0.5280</td><td><span class="delta">+0.0975</span></td></tr>
-            <tr><td class="grp">AMIE</td><td>0.3264</td><td>0.4082</td><td><span class="delta">+0.0818</span></td></tr>
-            <tr><td class="grp">Beta-glucosidase</td><td>0.1442</td><td>0.4481</td><td><span class="delta">+0.3039</span></td></tr>
+            <tr><td class="grp">VIM-2</td><td>0.5280</td><td>0.4931</td><td><span class="best">0.6259</span></td><td class="txt">Best overall, weak at curated metal site</td></tr>
+            <tr><td class="grp">AMIE</td><td>0.4082</td><td>0.4306</td><td>0.3457</td><td class="txt">Weakest overall</td></tr>
+            <tr><td class="grp">Beta-glucosidase</td><td>0.4481</td><td>0.5615</td><td>0.3618</td><td class="txt">High exact catalytic-site result, but tiny slice</td></tr>
           </tbody>
         </table>
       </div>
     </div>
-    <p class="limit-note reveal d1" style="margin-top:24px">Do not read this as a simple active-site failure story. The mature result: aggregate performance improves with scale on every enzyme, but mechanism-local behavior is enzyme-specific and requires matched controls. Only TEM-1's active-site neighborhood clears its matched-position null (p = 0.012); VIM-2, AMIE, and beta-glucosidase mechanism slices remain inside null expectations. The best claim P0 supports: <strong>ESM-2 scale improves aggregate DMS ranking, but mechanism-slice behavior is enzyme-specific.</strong></p>
+  </div>
+</section>
+
+<!-- ============================ VIM-2 CENTERPIECE ============================ -->
+<section class="cs-section" data-screen-label="VIM-2 ProteinMPNN centerpiece">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow" style="color:var(--violet)">07 / The centerpiece</div>
+      <h2>The cleanest model-family result: VIM-2 ProteinMPNN</h2>
+    </div>
+    <figure class="figure centerpiece reveal d1" data-screen-label="VIM-2 centerpiece figure">
+      <div class="fig-head">
+        <span class="fig-num">Figure 3</span>
+        <h3 class="fig-title">Strong globally, weak at the metal site</h3>
+        <p class="body-copy" style="margin-top:12px;font-size:15px">ProteinMPNN Spearman on VIM-2, split by biological region. Overall and non-metal background are high; the curated metal site is clearly lower; neighborhood and metal-site shell sit in between.</p>
+      </div>
+      <div class="fig-legend">
+        <span class="leg"><span class="sw cyan"></span>overall</span>
+        <span class="leg"><span class="sw gray"></span>non-mechanism background</span>
+        <span class="leg"><span class="sw amber"></span>mechanism-relevant region</span>
+      </div>
+      <div class="fig-plot" data-fig="vim2"></div>
+      <figcaption class="fig-caption"><span class="fnum">Fig. 3</span>ProteinMPNN is strong globally on VIM-2 but weak at metal-site residues. Fixed-backbone compatibility does not fully explain mechanism-local metal-site behavior.</figcaption>
+    </figure>
+    <p class="prominent violet reveal d1">This is the cleanest demonstration that <span class="em">global mutation ranking can hide a mechanism-local failure mode.</span></p>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ============================ 06 INTERPRETATION ============================ -->
-<section class="cs-section" id="interpretation" data-screen-label="What the result means">
+<!-- ============================ MAIN CONCLUSION ============================ -->
+<section class="cs-section" id="verdict" data-screen-label="Main scientific conclusion">
   <div class="wrap">
     <div class="cs-head reveal">
-      <div class="cs-eyebrow">06 / Interpretation</div>
-      <h2>What the result means</h2>
+      <div class="cs-eyebrow">08 / Main scientific conclusion</div>
+      <h2>Main scientific conclusion</h2>
     </div>
-    <p class="lead reveal">The strongest result is not a single number. It is the shape of the evaluation. ESM-2 captures meaningful constraints across all four enzymes, and scaling from 8M to 35M helps everywhere. But mechanism-slice behavior is enzyme-specific, and residue-zone claims only count when they clear a matched-position null. Aggregate performance hides the biological structure of the model's behavior. Exact catalytic residues are a small and uncertain slice. Broader active-site environments show strong signal. Mutation classes behave differently. The benchmark therefore moves the question from "does the model work?" to "where does the model earn trust?"</p>
+    <p class="lead reveal">Sequence-context, family-conservation, and fixed-backbone structure signals all help explain enzyme DMS fitness, but none of them remove the need for mechanism-sliced evaluation. A model can perform well globally while failing, weakening, or behaving ambiguously near catalytic, metal-binding, or active-site residues.</p>
+    <p class="prominent reveal d1">Evaluate protein models <span class="em">where the biology happens, not only across the whole sequence.</span></p>
   </div>
 </section>
 
 <section class="cs-section tight" data-screen-label="Pull quote">
   <div class="wrap-narrow">
-    <p class="pullq reveal">A model's average performance is not enough. <span class="dim">The engineering question is where the model deserves experimental trust.</span></p>
+    <p class="pullq reveal">No single model family wins. <span class="dim">The instrument is the mechanism-sliced comparison, not any one score.</span></p>
   </div>
 </section>
 
-<!-- ============================ 07 WHAT P0 PROVES ============================ -->
-<section class="cs-section" data-screen-label="What P0 proves">
+<!-- ============================ WHAT P0 PROVES ============================ -->
+<section class="cs-section" id="claims" data-screen-label="What P0 proves">
   <div class="wrap">
     <div class="cs-head reveal">
-      <div class="cs-eyebrow">07 / What P0 proves</div>
+      <div class="cs-eyebrow">09 / What P0 proves</div>
       <h2>What P0 proves</h2>
     </div>
     <div class="proof-cards reveal d1">
-      <div class="pcard">
-        <div class="pc-dot" style="background:var(--amber)"></div>
-        <h4>Biological evaluation</h4>
-        <p>The question was framed around enzyme mechanism, not only machine-learning performance.</p>
-      </div>
-      <div class="pcard">
-        <div class="pc-dot" style="background:var(--cyan)"></div>
-        <h4>Reproducible benchmark</h4>
-        <p>The project uses public DMS data, validated annotations, structure-derived labels, and rerunnable outputs.</p>
-      </div>
-      <div class="pcard">
-        <div class="pc-dot" style="background:var(--cyan)"></div>
-        <h4>Model behavior audit</h4>
-        <p>The model is evaluated by slice, uncertainty, mutation class, and biological interpretation.</p>
-      </div>
-      <div class="pcard">
-        <div class="pc-dot" style="background:var(--green)"></div>
-        <h4>Engineering quality</h4>
-        <p>The repo includes a CLI, typed data models, tests, GitHub Actions, Savio scripts, and documented artifacts.</p>
-      </div>
-      <div class="pcard">
-        <div class="pc-dot" style="background:var(--violet)"></div>
-        <h4>Communication</h4>
-        <p>The result is stated with limitations, not inflated into a claim the data cannot support.</p>
-      </div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--cyan)"></div><h4>ESM-2 gives useful zero-shot signal</h4><p>ESM-2 35M gives useful global signal on multiple enzyme DMS datasets.</p></div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--amber)"></div><h4>Performance differs by residue class</h4><p>Exact catalytic sites, metal sites, active-site neighborhoods, ligand contacts, and background residues can behave differently.</p></div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--amber)"></div><h4>Exact catalytic analysis is fragile</h4><p>Exact catalytic slices are often small and should not be overclaimed.</p></div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--amber)"></div><h4>Neighborhoods can be informative</h4><p>Broader active-site neighborhoods and ligand or metal shells can show stronger signal than exact catalytic residues alone.</p></div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--violet)"></div><h4>Matched controls are required</h4><p>Mechanism-slice lifts need null controls before becoming biological claims.</p></div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--green)"></div><h4>Classical baselines still matter</h4><p>MSA conservation can beat ESM-2 on some enzymes.</p></div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--violet)"></div><h4>Structure-conditioned scoring has limits</h4><p>ProteinMPNN can be strong overall while weak at mechanism-local residues.</p></div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--cyan)"></div><h4>Comparison reveals inductive biases</h4><p>ESM-2, MSA conservation, and ProteinMPNN each expose a different biological prior.</p></div>
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ============================ 08 THE ARTIFACT (ARCHITECTURE) ============================ -->
-<section class="cs-section" id="artifact" data-screen-label="The artifact">
+<!-- ============================ WHAT P0 DOES NOT PROVE ============================ -->
+<section class="cs-section" data-screen-label="What P0 does not prove">
   <div class="wrap">
     <div class="cs-head reveal">
-      <div class="cs-eyebrow">08 / The artifact</div>
+      <div class="cs-eyebrow" style="color:var(--text-3)">10 / The boundary of the claim</div>
+      <h2>What P0 does not prove</h2>
+    </div>
+    <ul class="limit-list reveal d1">
+      <li>ESM-2 understands catalysis.</li>
+      <li>ProteinMPNN understands enzyme activity.</li>
+      <li>Mechanism neighborhoods are always special.</li>
+      <li>Active-site residues always have lower model performance.</li>
+      <li>Retrospective DMS correlation is enough for enzyme design.</li>
+      <li>A single exact catalytic-site Spearman with tiny n is conclusive.</li>
+    </ul>
+    <p class="limit-note reveal d1">The value of P0 is not that it makes a universal claim. The value is that it prevents universal claims from being made too easily.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ ARTIFACT MAP ============================ -->
+<section class="cs-section" id="artifact" data-screen-label="Artifact map">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">11 / The artifact</div>
+      <h2>Artifact map</h2>
+      <p class="lead" style="margin-top:6px">Every claim on this page traces to a committed file: reports, figures, and machine-readable results.</p>
+    </div>
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Artifact map table">
+        <table class="sci">
+          <caption>Table 6. Canonical artifacts</caption>
+          <thead><tr><th>Artifact</th><th class="txt">Path</th><th class="txt">Purpose</th></tr></thead>
+          <tbody>
+            <tr><td class="grp">Final project package</td><td class="pth dim">docs/p0_final_project_package.md</td><td class="txt">canonical complete explanation</td></tr>
+            <tr><td class="grp">Final report</td><td class="pth dim">docs/p0_final_report.md</td><td class="txt">scientific report with methods and results</td></tr>
+            <tr><td class="grp">ProteinMPNN comparison</td><td class="pth dim">docs/protein_mpnn_model_family_comparison.md</td><td class="txt">model-family comparison result</td></tr>
+            <tr><td class="grp">Public writeup</td><td class="pth dim">docs/public_writeup.md</td><td class="txt">blog-style explanation</td></tr>
+            <tr><td class="grp">Portfolio card</td><td class="pth dim">docs/p0_portfolio_card.md</td><td class="txt">short portfolio-facing summary</td></tr>
+            <tr><td class="grp">ESM-2 35M figure</td><td class="pth dim">docs/assets/p0_four_enzyme_35m_portfolio_figure.svg</td><td class="txt">four-enzyme ESM-2 result visual</td></tr>
+            <tr><td class="grp">Model-family figure</td><td class="pth dim">docs/assets/p0_model_family_comparison.svg</td><td class="txt">ESM-2 vs MSA vs ProteinMPNN visual</td></tr>
+            <tr><td class="grp">Main comparison JSON</td><td class="pth dim">results/proteingym_ready_enzyme_model_family_comparison.json</td><td class="txt">machine-readable final comparison</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CODE ARCHITECTURE ============================ -->
+<section class="cs-section tight" data-screen-label="Code architecture">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">12 / Code architecture</div>
       <h2>A benchmark, not a loose notebook</h2>
     </div>
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Code architecture table">
+        <table class="sci">
+          <caption>Table 7. Package modules</caption>
+          <thead><tr><th>Area</th><th class="txt">Path</th><th class="txt">Role</th></tr></thead>
+          <tbody>
+            <tr><td class="grp">CLI</td><td class="pth">src/p0_zero_shot_fitness/cli.py</td><td class="txt">Parses commands and dispatches benchmark presets</td></tr>
+            <tr><td class="grp">Pipeline</td><td class="pth">src/p0_zero_shot_fitness/pipeline.py</td><td class="txt">Loads datasets, scores variants, writes outputs</td></tr>
+            <tr><td class="grp">Mutation parsing</td><td class="pth">src/p0_zero_shot_fitness/mutations.py</td><td class="txt">Validates strings like A42G against wild type</td></tr>
+            <tr><td class="grp">Data models</td><td class="pth">src/p0_zero_shot_fitness/models.py</td><td class="txt">Typed records for variants, scores, datasets</td></tr>
+            <tr><td class="grp">Metrics</td><td class="pth">src/p0_zero_shot_fitness/metrics.py</td><td class="txt">Spearman, top-k enrichment, subgroup metrics</td></tr>
+            <tr><td class="grp">Null controls</td><td class="pth">src/p0_zero_shot_fitness/nulls.py</td><td class="txt">Position and covariate-matched null logic</td></tr>
+            <tr><td class="grp">ESM scoring</td><td class="pth">src/p0_zero_shot_fitness/scorers.py</td><td class="txt">Placeholder and ESM-2 scorer interface</td></tr>
+            <tr><td class="grp">MSA conservation</td><td class="pth">src/p0_zero_shot_fitness/conservation.py</td><td class="txt">Alignment-derived conservation profile logic</td></tr>
+            <tr><td class="grp">Structure profiles</td><td class="pth">src/p0_zero_shot_fitness/structure_profiles.py</td><td class="txt">ProteinMPNN profile scoring</td></tr>
+            <tr><td class="grp">SVG plotting</td><td class="pth">src/p0_zero_shot_fitness/plotting/svg.py</td><td class="txt">Lightweight plot output</td></tr>
+            <tr><td class="grp">Tests</td><td class="pth">tests/</td><td class="txt">Unit and script-level regression tests</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="limit-note">P0 is packaged as a reproducible Python project with swappable scorers, residue labeling, null controls, model-family comparison, plots, tests, and HPC workflows.</p>
+    </div>
+  </div>
+</section>
 
-    <figure class="figure reveal d1" data-screen-label="Figure 7 architecture">
-      <div class="fig-head">
-        <span class="fig-num">Figure 7</span>
-        <h3 class="fig-title">Project architecture</h3>
+<!-- ============================ SCRIPT MAP ============================ -->
+<section class="cs-section tight" data-screen-label="Script map">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">13 / Scripts</div>
+      <h2>Scripts that make the benchmark inspectable</h2>
+    </div>
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Script map table">
+        <table class="sci">
+          <caption>Table 8. Inspection and build scripts</caption>
+          <thead><tr><th class="txt">Script</th><th class="txt">Role</th></tr></thead>
+          <tbody>
+            <tr><td class="pth">scripts/materialize_proteingym_dataset.py</td><td class="txt">pulls selected ProteinGym datasets from source archives</td></tr>
+            <tr><td class="pth">scripts/derive_position_covariates.py</td><td class="txt">builds residue-level covariates for controls</td></tr>
+            <tr><td class="pth">scripts/derive_msa_conservation.py</td><td class="txt">converts A2M alignments into conservation profiles</td></tr>
+            <tr><td class="pth">scripts/score_msa_conservation_baseline.py</td><td class="txt">scores DMS variants with MSA conservation</td></tr>
+            <tr><td class="pth">scripts/convert_proteinmpnn_npz_to_profile.py</td><td class="txt">converts ProteinMPNN npz probabilities into P0 profile JSON</td></tr>
+            <tr><td class="pth">scripts/score_structure_profile_baseline.py</td><td class="txt">scores variants using ProteinMPNN structure profiles</td></tr>
+            <tr><td class="pth">scripts/compare_model_family_metrics.py</td><td class="txt">compares ESM-2, MSA, and ProteinMPNN metrics</td></tr>
+            <tr><td class="pth">scripts/build_portfolio_figure.py</td><td class="txt">builds the four-enzyme ESM-2 visual</td></tr>
+            <tr><td class="pth">scripts/build_model_family_figure.py</td><td class="txt">builds the ESM-2 vs MSA vs ProteinMPNN visual</td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="arch">
-        <div class="arch-pane">
-          <div class="ap-title">src/p0_zero_shot_fitness/</div>
-          <div class="tree">
-            <div class="row"><span class="fn">cli.py</span><span class="cm">command-line entry point</span></div>
-            <div class="row"><span class="fn">pipeline.py</span><span class="cm">analysis flow</span></div>
-            <div class="row"><span class="fn">io.py</span><span class="cm">data loading and output writing</span></div>
-            <div class="row"><span class="fn">mutations.py</span><span class="cm">mutation parsing and validation</span></div>
-            <div class="row"><span class="fn">labeling.py</span><span class="cm">residue-group labeling</span></div>
-            <div class="row"><span class="fn">scorers.py</span><span class="cm">placeholder and ESM-2 scorers</span></div>
-            <div class="row"><span class="fn">metrics.py</span><span class="cm">Spearman, enrichment, subgroups, bootstrap</span></div>
-            <div class="row"><span class="fn">models.py</span><span class="cm">typed dataclasses</span></div>
-            <div class="row"><span class="fn">plotting/svg.py</span><span class="cm">lightweight plots</span></div>
-          </div>
-        </div>
-        <div class="arch-pane">
-          <div class="ap-title g">supporting folders</div>
-          <div class="tree">
-            <div class="row"><span class="dir">data/proteingym/</span></div>
-            <div class="row indent"><span class="desc">TEM-1 data, FASTA, annotations, structure labels</span></div>
-            <div class="row"><span class="dir">results/</span></div>
-            <div class="row indent"><span class="desc">metrics, scored variants, plots, comparison JSON</span></div>
-            <div class="row"><span class="dir">scripts/</span></div>
-            <div class="row indent"><span class="desc">structure contacts and metric comparison</span></div>
-            <div class="row"><span class="dir">hpc/</span></div>
-            <div class="row indent"><span class="desc">Savio runbook and SLURM scripts</span></div>
-            <div class="row"><span class="dir">tests/</span></div>
-            <div class="row indent"><span class="desc">pytest suite</span></div>
-            <div class="row"><span class="dir">docs/</span></div>
-            <div class="row indent"><span class="desc">public writeup and walkthroughs</span></div>
-          </div>
-        </div>
-      </div>
-      <figcaption class="fig-caption"><span class="fnum">Fig. 7</span>P0 was built as a small reproducible Python package, not a one-off notebook. That matters because scientific evaluation should be inspectable, rerunnable, and extensible.</figcaption>
-    </figure>
+    </div>
+  </div>
+</section>
 
-    <!-- ARTIFACT PANEL -->
-    <div class="artifact reveal d1" style="margin-top:22px" data-screen-label="Artifact panel">
-      <div class="artifact-top">
-        <div class="repo-name">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M9 19c-4 1.5-4-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.2 3.3 5.1 3.6 5.1 3.6a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 3.7 10c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21" stroke="#5CC8FF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          p0-zero-shot-fitness
-        </div>
-        <div class="repo-badges">
-          <span class="rbadge green">portfolio-complete v1</span>
-          <span class="rbadge cyan">4 enzymes · 19,013 mutants</span>
-          <span class="rbadge cyan">Savio ESM-2 35M run completed</span>
-          <span class="rbadge">outputs: JSON, CSV, SVG, writeup</span>
-        </div>
-      </div>
-      <div class="artifact-grid">
-        <div class="acell"><span class="adot"></span>Python package</div>
-        <div class="acell"><span class="adot"></span>CLI</div>
-        <div class="acell"><span class="adot"></span>ESM-2 scorer</div>
-        <div class="acell"><span class="adot"></span>residue annotations</div>
-        <div class="acell"><span class="adot"></span>metrics</div>
-        <div class="acell"><span class="adot"></span>plots</div>
-        <div class="acell"><span class="adot"></span>tests</div>
-        <div class="acell"><span class="adot"></span>GitHub Actions</div>
-        <div class="acell"><span class="adot"></span>Savio run scripts</div>
-        <div class="acell"><span class="adot"></span>public writeup</div>
-        <div class="acell"><span class="adot"></span>beginner code walkthrough</div>
-      </div>
+<!-- ============================ HPC + REPRODUCIBILITY ============================ -->
+<section class="cs-section tight" data-screen-label="HPC and reproducibility">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">14 / Reproducibility</div>
+      <h2>HPC execution and reproducibility</h2>
+      <p class="lead" style="margin-top:6px">The project includes Savio and LBNL-style HPC execution for ESM-2 35M scoring, ProteinMPNN profile generation, ProteinMPNN profile scoring, artifact transfer, and committed result outputs.</p>
+    </div>
+    <div class="artifact-grid reveal d1" style="max-width:760px">
+      <div class="acell"><span class="adot"></span>hpc/SAVIO.md</div>
+      <div class="acell"><span class="adot"></span>hpc/SAVIO_PROTEINMPNN.md</div>
+      <div class="acell"><span class="adot"></span>savio_esm2_35m_bgly.slurm</div>
+      <div class="acell"><span class="adot"></span>savio_generate_proteinmpnn_profiles.slurm</div>
+      <div class="acell"><span class="adot"></span>savio_score_proteinmpnn_profiles.slurm</div>
+    </div>
+    <div class="cmd-panel reveal d1">
+      <div class="cmd-h">Reproduce the model-family comparison</div>
+      <div class="cmd-row"><span class="pmt">$</span>python -m pytest<span class="tests">42 passed</span></div>
+      <div class="cmd-row"><span class="pmt">$</span>python scripts/compare_model_family_metrics.py</div>
+      <div class="cmd-row"><span class="pmt">$</span>python scripts/build_model_family_figure.py</div>
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ============================ FIGURE 8 + LIMITS ============================ -->
-<section class="cs-section" id="limits" data-screen-label="What P0 does and does not claim">
+<!-- ============================ HOW I EXPLAIN P0 ============================ -->
+<section class="cs-section" data-screen-label="How I explain P0">
   <div class="wrap">
     <div class="cs-head reveal">
-      <div class="cs-eyebrow">09 / The boundary of the claim</div>
-      <h2>What the artifact earns, and where it stops</h2>
+      <div class="cs-eyebrow">15 / Interview framing</div>
+      <h2>How I explain P0</h2>
     </div>
+    <p class="body-copy reveal" style="max-width:760px">I built P0 to test whether protein language models fail differently near enzyme catalytic residues. Instead of only reporting whole-protein DMS correlation, I split variants by catalytic sites, metal sites, ligand contacts, catalytic shells, active-site neighborhoods, and background residues. Then I added matched controls so I could avoid overclaiming tiny residue groups. The benchmark compares ESM-2, MSA conservation, and ProteinMPNN, which separates sequence-context, evolutionary-family, and fixed-backbone structural signals. The most interesting final result is VIM-2: ProteinMPNN is best overall with Spearman 0.6259, but weak at curated metal-site residues with Spearman 0.2583 versus 0.6197 outside that group. That shows global mutation ranking can look strong while mechanism-local behavior remains a distinct failure mode.</p>
+  </div>
+</section>
 
-    <figure class="figure reveal d1" data-screen-label="Figure 8 ledger">
-      <div class="fig-head">
-        <span class="fig-num">Figure 8</span>
-        <h3 class="fig-title">What P0 proves and does not prove</h3>
-      </div>
-      <div class="ledger">
-        <div class="ledger-col proves">
-          <h4><span style="width:9px;height:9px;border-radius:50%;background:var(--cyan);display:inline-block"></span>P0 proves</h4>
-          <ul>
-            <li>biologically framed model evaluation</li>
-            <li>public DMS benchmark use</li>
-            <li>validated residue annotation</li>
-            <li>structure-derived ligand-contact labels</li>
-            <li>zero-shot ESM-2 scoring</li>
-            <li>subgroup metrics and confidence intervals</li>
-            <li>matched-position null controls</li>
-            <li>four-enzyme audit across enzyme families</li>
-            <li>mutation-class analysis</li>
-            <li>production-style Python</li>
-            <li>CLI and tests</li>
-            <li>GitHub Actions</li>
-            <li>Savio HPC execution</li>
-            <li>scientific communication</li>
-          </ul>
-        </div>
-        <div class="ledger-col limits">
-          <h4><span style="width:9px;height:9px;border-radius:50%;background:var(--text-3);display:inline-block"></span>P0 does not prove</h4>
-          <ul>
-            <li>ESM-2 generally fails at all catalytic residues</li>
-            <li>four enzymes represent all enzyme families</li>
-            <li>mechanism slices universally clear matched-position nulls</li>
-            <li>ligand-contact performance generalizes across all structures</li>
-            <li>zero-shot scoring replaces experimental validation</li>
-            <li>this is a finished enzyme-design platform</li>
-          </ul>
-        </div>
-      </div>
-      <figcaption class="fig-caption"><span class="fnum">Fig. 8</span>Good scientific communication includes the boundary of the claim. P0 is a portfolio-complete evaluation layer, not a completed design platform.</figcaption>
-    </figure>
+<section class="cs-section tight" data-screen-label="Pull quote 2">
+  <div class="wrap-narrow">
+    <p class="pullq reveal">I built a benchmark showing that protein models can rank enzyme mutations well overall <span class="dim">while still behaving differently at catalytic or metal-site residues.</span></p>
+  </div>
+</section>
 
-    <div class="reveal d1" style="margin-top:44px">
-      <div class="cs-head" style="margin-bottom:24px">
-        <div class="cs-eyebrow" style="color:var(--text-3)">Limitations</div>
-        <h2 style="font-size:clamp(22px,2.6vw,32px)">What this does not claim</h2>
-      </div>
-      <ul class="limit-list">
-        <li>four enzymes, not all enzyme families</li>
-        <li>mixed assay contexts</li>
-        <li>one sequence-only model family</li>
-        <li>active-site-only group is small</li>
-        <li>ligand-contact group comes from one inhibitor-bound structure</li>
-        <li>DMS fitness is not pure catalytic chemistry</li>
-        <li>no structure-aware baseline yet</li>
-        <li>no prospective design campaign yet</li>
-      </ul>
-      <p class="limit-note">These limitations do not weaken the project. They make the claim precise.</p>
+<!-- ============================ BEST NEXT STEP ============================ -->
+<section class="cs-section" data-screen-label="Best next scientific step">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">16 / Best next scientific step</div>
+      <h2>Best next scientific step</h2>
+    </div>
+    <p class="lead reveal">The next scientific step is not to add models endlessly. The best next step is to design a prospective validation protocol where the P0 evaluation logic is used to choose variants before experimental or higher-fidelity computational validation.</p>
+    <p class="body-copy reveal d1" style="margin-top:18px">If staying retrospective, the highest-value additions are focused:</p>
+    <div class="steps reveal d1" style="margin-top:14px">
+      <div class="step"><span class="sn">1</span><p>Add a target-aligned TEM-1 ProteinMPNN profile.</p></div>
+      <div class="step"><span class="sn">2</span><p>Add one model-family summary table or figure for the website.</p></div>
+      <div class="step"><span class="sn">3</span><p>Add MSA Transformer only if it answers a specific unresolved question.</p></div>
     </div>
   </div>
 </section>
 
-<div class="divider"></div>
-
-<!-- ============================ 10 NEXT STEPS ============================ -->
-<section class="cs-section" data-screen-label="Next scientific steps">
-  <div class="wrap">
-    <div class="cs-head reveal">
-      <div class="cs-eyebrow">10 / Next scientific steps</div>
-      <h2>Next scientific steps</h2>
-    </div>
-    <div class="steps reveal d1">
-      <div class="step"><span class="sn">1</span><p>Run ESM-2 150M.</p></div>
-      <div class="step"><span class="sn">2</span><p>Add ESM-1v.</p></div>
-      <div class="step"><span class="sn">3</span><p>Add MSA-based baseline if setup allows.</p></div>
-      <div class="step"><span class="sn">4</span><p>Expand beyond the current four-enzyme panel.</p></div>
-      <div class="step"><span class="sn">5</span><p>Test contact-label robustness across multiple ligand-bound structures.</p></div>
-      <div class="step"><span class="sn">6</span><p>Compare residue-slice behavior across enzyme classes.</p></div>
-      <div class="step"><span class="sn">7</span><p>Turn P0 into a polished article and carousel.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ 11 FINAL TAKEAWAY ============================ -->
-<section class="cs-section" data-screen-label="The takeaway">
-  <div class="wrap">
-    <div class="cs-head reveal">
-      <div class="cs-eyebrow">11 / The takeaway</div>
-      <h2>The takeaway</h2>
-    </div>
-    <p class="lead reveal">P0 is a benchmark for asking whether protein language model performance changes near catalytic and mechanism-relevant regions of an enzyme.</p>
-    <p class="lead reveal d1">The main lesson is simple: overall model performance is not enough. In AI biology, the interesting question is where the model works, where it fails, and whether those failure modes line up with the biology a scientist actually cares about.</p>
-  </div>
-</section>
-
-<!-- ============================ CTA ============================ -->
-<section class="cs-section cs-cta" data-screen-label="Call to action">
+<!-- ============================ CTA / FINAL TAKEAWAY ============================ -->
+<section class="cs-section cs-cta" data-screen-label="Final takeaway">
   <div class="wrap-narrow">
     <h2 class="reveal">The model score is the beginning of the question, not the end of the experiment.</h2>
-    <p class="final-line reveal d1">P0 is four enzymes, mixed assay contexts, and one sequence-only model family. It is an evaluation layer, built with biological judgment, not a finished design platform.</p>
+    <p class="final-line reveal d1">P0 turns a vague concern, that protein models may fail near catalytic chemistry, into a concrete, reproducible, mechanism-sliced evaluation benchmark.</p>
     <div class="cta-actions reveal d1">
-      <a href="https://github.com/Bababongo/p0-zero-shot-fitness" data-repo-href class="btn btn-primary">View repository
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <a href="../index.html#projects" class="btn btn-primary">Back to projects
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8H4M8 4 4 8l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a href="../index.html#projects" class="btn btn-ghost">Back to projects</a>
-      <a href="https://ezeukabiala.substack.com/" target="_blank" rel="noopener noreferrer" class="btn-text">Read From Model to Mutant
+      <!-- repo href filled by p0.js (P0_REPO); best-guess slug, marked in code -->
+      <a href="https://github.com/Bababongo/p0-zero-shot-fitness" data-repo-href class="btn btn-ghost">View repository</a>
+      <a href="p1-data-efficiency.html" class="btn-text">Next project: P1
         <svg class="arrow" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
@@ -857,8 +741,8 @@
     <div>
       <div class="footer-name">Ezechinyere "Eze" Ukabiala</div>
       <div class="footer-role">AI protein-engineering campaign scientist · AI systems for experimental biology</div>
-      <div class="footer-brand">P0. Mechanism-sliced zero-shot fitness · portfolio-complete v1</div>
-      <div class="footer-note">This case study reports a model-evaluation artifact built on public data. Unpublished thesis details, exact designs, and active project results are intentionally withheld while the work is active.</div>
+      <div class="footer-brand">P0. Mechanism-sliced zero-shot protein fitness · completed portfolio artifact</div>
+      <div class="footer-note">This case study reports a model-evaluation artifact built on public benchmark data. It compares sequence-context, family-conservation, and fixed-backbone structural signals across enzyme DMS datasets. Unpublished thesis details and active project results are intentionally withheld while the work is active.</div>
     </div>
     <div class="footer-meta">
       © 2026 · A living scientific identity<br />

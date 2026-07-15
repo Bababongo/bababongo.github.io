@@ -427,34 +427,41 @@
     <div class="section-head reveal">
       <div class="eyebrow">06 / Public projects</div>
       <h2 class="section-title">Public projects</h2>
-      <p class="section-intro">The essays declare the identity. The projects make it inspectable. The public build has moved from roadmap to real artifacts: two connected projects that turn a model-to-bench question into inspectable proof. One artifact sits above the ladder.</p>
+      <p class="section-intro">The essays declare the identity. The projects make it inspectable. The public build has moved from roadmap to real artifacts: two connected projects that turn a model-to-measurement question into inspectable proof.</p>
     </div>
 
-    <article class="keystone reveal" id="keystone">
-      <div class="keystone-body">
-        <div class="keystone-top">
-          <span class="keystone-label">Keystone artifact</span>
-          <span class="ks-status"><span class="ks-status-dot"></span>Building in the open</span>
-        </div>
-        <h3>The loop, closed</h3>
-        <p class="keystone-lead">One end-to-end artifact: a model prediction wired to a real, measured wet-lab readout on a public or proxy system. It is the single proof that serves every reading of this site at once, and it is being built in the open.</p>
-        <div class="keystone-chain">
-          <span class="kc">Model prediction</span><span class="kc-arrow">&rarr;</span>
-          <span class="kc">Variant set</span><span class="kc-arrow">&rarr;</span>
-          <span class="kc">Assay</span><span class="kc-arrow">&rarr;</span>
-          <span class="kc">Measured readout</span><span class="kc-arrow">&rarr;</span>
-          <span class="kc kc-loop">Calibration</span>
-        </div>
-        <div class="keystone-serves">
-          <div class="ks-serve"><span class="ks-dot" style="background:var(--amber)"></span><b>Experimental biology for AI</b>measured feedback the next round can use.</div>
-          <div class="ks-serve"><span class="ks-dot" style="background:var(--violet)"></span><b>Life-science AI workflows</b>a validation and evaluation harness, not a leaderboard number.</div>
-          <div class="ks-serve"><span class="ks-dot" style="background:var(--cyan)"></span><b>AI protein engineering</b>a design-to-bench pass on a system anyone can inspect.</div>
-        </div>
-        <div class="keystone-note">What it proves, and where it breaks, reported honestly: a closed loop, not a demo.</div>
+    <div class="arc reveal" id="arc">
+      <div class="arc-head">
+        <div class="arc-kicker">The research arc</div>
+        <h3>From zero-shot diagnosis to label-efficient correction</h3>
+        <p>My current public build focuses on mechanism-aware protein ML: evaluating where protein models work, where they fail, and which experimental labels are worth buying next.</p>
       </div>
-    </article>
-
-    <p class="projects-summary reveal">My current public build focuses on mechanism-aware evaluation for protein language models. In P0, I built a four-enzyme zero-shot fitness benchmark showing that ESM-2 scale improves global mutation ranking, while mechanism-local claims require careful residue-slice controls. In P1, I extended that benchmark into a label-efficiency study that asks how many experimental fitness measurements are needed to improve on zero-shot predictions, and which labels are most valuable to measure next.</p>
+      <div class="arc-flow">
+        <div class="arc-node an-cyan">
+          <span class="arc-tag">P0 &middot; Diagnose</span>
+          <h4>Diagnose reliability</h4>
+          <p>Compare ESM-2, MSA conservation, and ProteinMPNN on enzyme DMS assays to ask where global mutation ranking hides mechanism-local behavior.</p>
+        </div>
+        <div class="arc-arrow">&rarr;</div>
+        <div class="arc-node an-violet">
+          <span class="arc-tag">P1 &middot; Correct</span>
+          <h4>Learn from measured labels</h4>
+          <p>Start from P0 zero-shot scores, hide most experimental labels, and test when supervised correction improves on the model prior.</p>
+        </div>
+        <div class="arc-arrow">&rarr;</div>
+        <div class="arc-node an-amber">
+          <span class="arc-tag">Next &middot; Acquire</span>
+          <h4>Acquire with diversity and mechanism coverage</h4>
+          <p>Build acquisition strategies that buy information, not just the highest-scoring variants.</p>
+        </div>
+      </div>
+      <div class="evidence-strip">
+        <div class="ev"><span class="ev-num">2</span><span class="ev-label">connected projects</span></div>
+        <div class="ev"><span class="ev-num">4</span><span class="ev-label">enzymes in P0</span></div>
+        <div class="ev"><span class="ev-num">19,013</span><span class="ev-label">single mutants scored</span></div>
+        <div class="ev"><span class="ev-num">384</span><span class="ev-label">key P1 label budget</span></div>
+      </div>
+    </div>
 
     <div class="tier-head reveal">
       <span class="tier-kicker">Shipped artifacts</span>
@@ -462,11 +469,11 @@
     </div>
     <div class="artifact-row">
       <a class="rm-card featured reveal rm-link" href="projects/p0-zero-shot-fitness.html">
-        <div class="rm-top"><span class="rm-code">P0</span><span class="rm-badges"><span class="rm-rating">8.3 / 10</span><span class="pub-status status-shipped">Portfolio-complete v1</span></span></div>
-        <h3>Mechanism-sliced zero-shot fitness</h3>
-        <p class="rm-sub">A four-enzyme biological failure-mode audit for protein language models.</p>
-        <p class="rm-copy">I built a reproducible Python benchmark that scores enzyme DMS mutations with ESM-2 and asks where inside enzymes the model works. Across TEM-1, VIM-2, AMIE, and beta-glucosidase, ESM-2 35M improves global mutation ranking, but mechanism-slice effects are enzyme-specific and require matched controls.</p>
-        <div class="echips"><span class="echip">4 enzymes</span><span class="echip">19,013 mutants</span><span class="echip">ESM-2 8M &rarr; 35M</span><span class="echip">matched nulls</span><span class="echip">Savio GPU runs</span><span class="echip">CLI · tests · CSV · JSON · SVG</span></div>
+        <div class="rm-top"><span class="rm-code">P0</span><span class="rm-badges"><span class="rm-rating">8.3 / 10</span><span class="pub-status status-shipped">Completed portfolio artifact</span></span></div>
+        <h3>Mechanism-sliced zero-shot protein fitness</h3>
+        <p class="rm-sub">A model-family benchmark for where protein models work inside enzymes.</p>
+        <p class="rm-copy">Built a reproducible Python benchmark comparing ESM-2, MSA conservation, and ProteinMPNN on enzyme DMS assays. The key result: global mutation ranking and mechanism-local behavior can diverge. On VIM-2, ProteinMPNN is strongest overall, but much weaker at curated metal-binding residues, showing that whole-protein performance can hide mechanism-local failure modes.</p>
+        <div class="echips"><span class="echip">4 enzymes</span><span class="echip">19,013 mutants</span><span class="echip">3 model families</span><span class="echip">matched controls</span><span class="echip">42 tests passed</span><span class="echip">HPC workflows</span></div>
         <span class="rm-cta">Read the case study <span class="arrow">&rarr;</span></span>
       </a>
       <a class="rm-card featured reveal d1 rm-link" href="projects/p1-data-efficiency.html">
@@ -477,39 +484,6 @@
         <div class="echips"><span class="echip">384-label regime</span><span class="echip">residual correction</span><span class="echip">true ESM delta embeddings</span><span class="echip">mechanism slices</span><span class="echip">iterative acquisition</span><span class="echip">diversity lesson</span></div>
         <span class="rm-cta">Read the case study <span class="arrow">&rarr;</span></span>
       </a>
-    </div>
-
-    <div class="arc reveal">
-      <div class="arc-head">
-        <div class="arc-kicker">The research arc</div>
-        <h3>From zero-shot diagnosis to label-efficient correction</h3>
-        <p>My current protein ML work asks a sequential question: first, where does the model deserve trust, and second, which experimental labels are worth buying to improve it?</p>
-      </div>
-      <div class="arc-flow">
-        <div class="arc-node an-cyan">
-          <span class="arc-tag">P0 · Diagnose</span>
-          <h4>Zero-shot diagnosis</h4>
-          <p>P0 scores mutations with ESM-2 and asks where inside enzymes the model works, where it fails, and which residue-zone claims survive matched controls.</p>
-        </div>
-        <div class="arc-arrow">&rarr;</div>
-        <div class="arc-node an-violet">
-          <span class="arc-tag">P1 · Correct</span>
-          <h4>Residual correction</h4>
-          <p>P1 hides most labels, trains correction models, and asks how many measured fitness values are needed before supervised learning improves on zero-shot prediction.</p>
-        </div>
-        <div class="arc-arrow">&rarr;</div>
-        <div class="arc-node an-amber">
-          <span class="arc-tag">Next · Acquire</span>
-          <h4>Mechanism-aware acquisition</h4>
-          <p>The next step is to decide which labels are worth buying when assay budget is finite, while preserving diversity and mechanism coverage.</p>
-        </div>
-      </div>
-      <div class="evidence-strip">
-        <div class="ev"><span class="ev-num">2</span><span class="ev-label">connected projects</span></div>
-        <div class="ev"><span class="ev-num">4</span><span class="ev-label">enzymes in P0</span></div>
-        <div class="ev"><span class="ev-num">19,013</span><span class="ev-label">single mutants scored</span></div>
-        <div class="ev"><span class="ev-num">384</span><span class="ev-label">key P1 label budget</span></div>
-      </div>
     </div>
 
     <div class="tier-head reveal" style="margin-top:44px">
