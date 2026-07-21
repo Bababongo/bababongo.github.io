@@ -828,16 +828,3 @@ a[data-repo-href] { position: relative; }
 /* left-aligned mono path cell for artifact / architecture / script tables */
 table.sci td.pth { text-align: left; white-space: nowrap; font-family: var(--font-mono); color: var(--cyan); font-size: 12px; }
 table.sci td.pth.dim { color: var(--text-2); }
-
-@media (max-width: 720px) {
-  .cs-nav .nav-inner { gap: 10px; }
-  .cs-nav .crumb { display: none; }
-  .cs-nav .brand-name span { display: none; }
-  .cs-nav .nav-actions .btn { padding: 10px 12px; font-size: 12px; }
-  .cs-section .wrap, .wrap-narrow { width: 100%; min-width: 0; }
-  .table-wrap { width: 100%; max-width: 100%; }
-  .signal-cards { grid-template-columns: minmax(0, 1fr); }
-  .signal-card { min-width: 0; max-width: 100%; }
-  .signal-card .sc-top { flex-wrap: wrap; }
-  .signal-card .sc-kind { white-space: normal; }
-}

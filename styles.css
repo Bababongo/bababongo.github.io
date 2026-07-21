@@ -1056,11 +1056,6 @@ a.article { display: block; text-decoration: none; color: inherit; }
 }
 @media (max-width: 720px) {
   body { font-size: 16px; }
-  .hero-grid, .hero-copy, .hero-visual { min-width: 0; }
-  .hero-copy, .hero-visual { width: 100%; max-width: 100%; }
-  .hero-visual { overflow: hidden; }
-  .hero-visual svg { overflow: hidden; }
-  .pill { max-width: 100%; white-space: normal; align-items: flex-start; }
   .work-grid { grid-template-columns: 1fr; }
   .articles { grid-template-columns: 1fr; }
   .lanes { grid-template-columns: 1fr; }
@@ -1286,3 +1281,58 @@ button:focus-visible,
 @media (max-width: 760px) {
   .roadmap.planned { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   RESEARCH: four sequenced beats (an argument, not a grid)
+   ============================================================ */
+.beats { position: relative; display: flex; flex-direction: column; margin-top: 4px; }
+.beat { position: relative; display: grid; grid-template-columns: 64px 1fr; gap: 30px; padding-bottom: 46px; }
+.beat:last-child { padding-bottom: 0; }
+.beat::before { content: ""; position: absolute; left: 31px; top: 66px; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--border-strong), var(--border) 84%, transparent); }
+.beat:last-child::before { display: none; }
+.beat-num { position: relative; z-index: 1; width: 64px; height: 64px; border-radius: 16px; display: grid; place-items: center; font-family: var(--font-mono); font-size: 13.5px; letter-spacing: 0.04em; color: var(--text-2); background: var(--bg-1); border: 1px solid var(--border-strong); transition: border-color .4s, box-shadow .4s, color .4s; }
+.beat:hover .beat-num { border-color: rgba(92,200,255,0.4); color: var(--text); }
+.beat-body { min-width: 0; padding-top: 4px; }
+.beat-kicker { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); margin-bottom: 13px; }
+.beat-claim { font-family: var(--font-display); font-weight: 500; font-size: clamp(20px, 2.15vw, 27px); line-height: 1.32; letter-spacing: -0.017em; color: var(--text); text-wrap: pretty; margin-bottom: 14px; }
+.beat-support { color: var(--text-2); font-size: clamp(15px, 1.45vw, 17px); line-height: 1.62; max-width: 660px; text-wrap: pretty; }
+.beat-support strong { color: var(--text); font-weight: 600; }
+.beat-link { color: var(--cyan); text-decoration: none; border-bottom: 1px solid rgba(92,200,255,0.35); white-space: nowrap; transition: border-color .25s, color .25s; }
+.beat-link:hover { border-color: var(--cyan); color: #8fd9ff; }
+.beat.is-crux .beat-kicker { color: var(--cyan); }
+.beat.is-crux .beat-num { color: #06121c; background: linear-gradient(140deg, var(--cyan), #8fd9ff); border-color: transparent; box-shadow: 0 8px 26px rgba(92,200,255,0.26); }
+@media (max-width: 640px) {
+  .beat { grid-template-columns: 46px 1fr; gap: 18px; padding-bottom: 36px; }
+  .beat-num { width: 46px; height: 46px; border-radius: 13px; font-size: 12px; }
+  .beat::before { left: 22px; top: 50px; }
+}
+
+/* ============================================================
+   TECHNICAL STACK: capability as claim, technique as evidence
+   ============================================================ */
+.stack { display: flex; flex-direction: column; gap: 14px; }
+.stack-row { display: grid; grid-template-columns: 232px 1fr; gap: 30px; align-items: start; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px 32px; transition: border-color .4s, background .4s; }
+.stack-row:hover { border-color: var(--border-strong); background: var(--panel-2); }
+.q-verb { font-family: var(--font-display); font-weight: 600; font-size: 21px; letter-spacing: -0.01em; color: var(--text); display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.q-verb .gdot { width: 9px; height: 9px; border-radius: 2px; transform: rotate(45deg); flex: none; }
+.q-sub { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.03em; color: var(--text-3); line-height: 1.5; }
+.stack-claim { font-size: clamp(15.5px, 1.55vw, 18px); line-height: 1.55; color: var(--text); text-wrap: pretty; margin-bottom: 16px; }
+.stack-eks { display: flex; flex-wrap: wrap; gap: 8px; }
+.stack-ek { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.02em; color: var(--text-2); padding: 6px 11px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.015); transition: border-color .25s, color .25s; }
+.stack-row:hover .stack-ek { border-color: var(--border-strong); }
+.stack-row.is-strong { background: radial-gradient(150% 130% at 0% 0%, var(--green-soft), transparent 52%), var(--panel); border-color: rgba(125,211,168,0.42); }
+.stack-row.is-strong .stack-claim { font-family: var(--font-display); font-weight: 500; font-size: clamp(17px, 1.85vw, 21px); letter-spacing: -0.01em; line-height: 1.42; }
+.stack-row.is-strong .stack-ek { border-color: rgba(125,211,168,0.28); color: var(--text); }
+.stack-limit { margin-top: 16px; border: 1px solid var(--border-strong); background: linear-gradient(120deg, var(--cyan-soft), transparent 62%), var(--panel); border-radius: var(--radius); padding: clamp(26px, 3vw, 40px); }
+.sl-kicker { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan); margin-bottom: 15px; }
+.stack-limit p { font-family: var(--font-display); font-weight: 500; font-size: clamp(19px, 2.15vw, 27px); line-height: 1.4; letter-spacing: -0.017em; color: var(--text); text-wrap: pretty; max-width: 840px; }
+@media (max-width: 760px) {
+  .stack-row, .stack-row.is-strong { grid-template-columns: 1fr; gap: 15px; padding: 24px; }
+}
+
+/* Essays: quiet closing note (replaces the essay roadmap) */
+.essays-note { margin-top: 30px; font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.03em; color: var(--text-3); }
+
+/* Keystone reframed as an owned gap, not a promise */
+.ks-status.is-gap { color: var(--text-2); background: rgba(255,255,255,0.03); border: 1px dashed var(--border-strong); }
+.ks-status.is-gap .ks-status-dot { background: var(--text-3); animation: none; box-shadow: none; }

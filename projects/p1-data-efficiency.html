@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>P1. Data-Efficiency Curves for Protein Fitness Learning · Eze Ukabiala</title>
-<meta name="description" content="P1, data-efficiency curves, strong prototype. A label-efficiency benchmark that starts from P0 zero-shot ESM scores, hides most experimental fitness labels, and asks how many measured labels are needed before supervised residual correction improves on zero-shot prediction. Around 384 labels, correction begins to beat zero-shot on real enzyme datasets." />
+<title>P1. Same-Assay Data-Budget Rule · Eze Ukabiala</title>
+<meta name="description" content="P1, same-assay data-budget rule, completed portfolio artifact. A leakage-controlled protein ML study that turned a failed low-data predictor into a retrospectively validated same-assay data-budget rule. The broad predictor failed, one-donor transfer was risky, and a balanced 500-label, 20-donor library plus 16 target labels improved unseen-position mutation ranking on all ten locked external targets, with zero harmful targets. Cross-assay usefulness remains unknown; prospective validation is frozen." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -20,15 +20,15 @@
 <!-- Open Graph / social share -->
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Eze Ukabiala" />
-<meta property="og:title" content="P1. Data-Efficiency Curves for Protein Fitness Learning" />
-<meta property="og:description" content="How many experimental labels does it take to beat zero-shot? A label-efficiency benchmark that starts from P0 zero-shot ESM scores and asks when supervised residual correction becomes worth the assay budget." />
+<meta property="og:title" content="P1. Same-Assay Data-Budget Rule" />
+<meta property="og:description" content="When does outside protein data help a new protein? A leakage-controlled protein ML study that turned a failed low-data predictor into a retrospectively validated same-assay data-budget rule, then froze the prospective test it would need next." />
 <meta property="og:url" content="https://bababongo.github.io/projects/p1-data-efficiency.html" />
 <meta property="og:image" content="https://bababongo.github.io/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="P1. Data-Efficiency Curves for Protein Fitness Learning" />
-<meta name="twitter:description" content="A label-efficiency benchmark: how many measured labels are needed before supervised correction beats zero-shot ESM scoring, and which labels are worth buying." />
+<meta name="twitter:title" content="P1. Same-Assay Data-Budget Rule" />
+<meta name="twitter:description" content="A leakage-controlled protein ML study: broad prediction failed, one-donor transfer was risky, balanced same-assay pooling worked. A planning result, not a universal design engine." />
 <meta name="twitter:image" content="https://bababongo.github.io/og-image.png" />
 </head>
 <body>
@@ -37,12 +37,16 @@
 <template id="__bundler_thumbnail" data-bg-color="#070A12">
   <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
     <rect width="1200" height="800" fill="#070A12"/>
-    <line x1="240" y1="470" x2="960" y2="470" stroke="rgba(107,118,137,0.6)" stroke-width="3" stroke-dasharray="10 12"/>
-    <path d="M260 640 C 420 610, 520 560, 620 470 S 820 320, 940 250" fill="none" stroke="#5CC8FF" stroke-width="10" stroke-linecap="round"/>
-    <circle cx="260" cy="640" r="14" fill="#5CC8FF"/>
-    <circle cx="620" cy="470" r="16" fill="#9D7CFF"/>
-    <circle cx="940" cy="250" r="14" fill="#7DD3A8"/>
-    <text x="628" y="530" fill="#9D7CFF" font-family="monospace" font-size="34">384</text>
+    <rect x="250" y="250" width="120" height="120" rx="10" fill="#E6A552" opacity="0.55"/>
+    <rect x="390" y="250" width="120" height="120" rx="10" fill="#7DD3A8" opacity="0.6"/>
+    <rect x="530" y="250" width="120" height="120" rx="10" fill="#7DD3A8" opacity="0.85"/>
+    <rect x="670" y="250" width="120" height="120" rx="10" fill="#7DD3A8"/>
+    <rect x="250" y="390" width="120" height="120" rx="10" fill="#7DD3A8" opacity="0.5"/>
+    <rect x="390" y="390" width="120" height="120" rx="10" fill="#7DD3A8" opacity="0.85"/>
+    <rect x="530" y="390" width="120" height="120" rx="10" fill="#7DD3A8"/>
+    <rect x="670" y="390" width="120" height="120" rx="10" fill="#5CC8FF"/>
+    <path d="M250 640 C 420 610, 560 560, 700 470 S 900 340, 960 300" fill="none" stroke="#5CC8FF" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="960" cy="300" r="15" fill="#5CC8FF"/>
   </svg>
 </template>
 
@@ -67,25 +71,21 @@
     <div class="crumb">
       <a href="../index.html#projects">Projects</a>
       <span class="sep">/</span>
-      <span class="here">P1. Data-efficiency curves</span>
+      <span class="here">P1. Same-assay data-budget rule</span>
     </div>
-    <div class="nav-actions">
-      <a href="https://github.com/Bababongo/p1-data-efficiency" data-repo-href class="btn btn-ghost">View repository
-        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3H3v10h10v-3M9 3h4v4M13 3 7 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
+    <div class="nav-actions"><span class="chip">Portfolio-safe summary</span></div>
   </div>
 </header>
 
 <!-- STICKY SECTION RAIL -->
 <nav class="rail" aria-label="Section navigation">
   <a href="#result"><span class="tick"></span>Result</a>
-  <a href="#connect"><span class="tick"></span>P0 to P1</a>
-  <a href="#correction"><span class="tick"></span>Correction</a>
-  <a href="#results"><span class="tick"></span>Results</a>
-  <a href="#embeddings"><span class="tick"></span>Embeddings</a>
-  <a href="#acquisition"><span class="tick"></span>Acquisition</a>
-  <a href="#artifact"><span class="tick"></span>Artifact</a>
+  <a href="#phases"><span class="tick"></span>Phases</a>
+  <a href="#controls"><span class="tick"></span>Controls</a>
+  <a href="#breadth"><span class="tick"></span>Breadth</a>
+  <a href="#budget"><span class="tick"></span>Budget map</a>
+  <a href="#advisor"><span class="tick"></span>Advisor</a>
+  <a href="#claim"><span class="tick"></span>Claim</a>
 </nav>
 
 <main class="cs-main" id="main">
@@ -94,112 +94,32 @@
 <section class="cs-section cs-hero" id="top" data-screen-label="Hero">
   <div class="wrap">
     <div class="hero-eyebrow-row reveal">
-      <span class="k">P1</span><span>·</span><span>data-efficiency curves</span><span>·</span><span class="proto">strong prototype</span>
+      <span class="k">P1</span><span>&middot;</span><span>same-assay data-budget rule</span><span>&middot;</span><span class="done">completed portfolio artifact</span>
     </div>
-    <h1 class="reveal">How many experimental labels does it take to <span class="grad">beat zero-shot?</span></h1>
-    <p class="subhero reveal d1">A label-efficiency benchmark that starts from P0 zero-shot ESM scores, hides most experimental fitness labels, and asks when supervised correction becomes worth the assay budget.</p>
-    <p class="thesis reveal d1">Zero-shot gives the first prior. Experimental labels teach the correction. <span class="em">The campaign question is which labels are worth buying.</span></p>
+    <h1 class="reveal">When does outside protein data <span class="grad">help a new protein?</span></h1>
+    <p class="subhero reveal d1">A leakage-controlled protein ML study that turned a failed low-data predictor into a retrospectively validated same-assay data-budget rule.</p>
+    <p class="thesis reveal d1">The broad predictor failed. The one-donor shortcut failed. <span class="em">Balanced same-assay pooling worked.</span></p>
 
     <div class="chips reveal d2">
-      <span class="chip"><span class="ck">Status</span> strong prototype</span>
-      <span class="chip"><span class="ck">Key budget</span> 384 labels</span>
-      <span class="chip"><span class="ck">Inputs</span> P0 zero-shot ESM scores</span>
-      <span class="chip"><span class="ck">Models</span> residual correction</span>
-      <span class="chip"><span class="ck">Features</span> mutation, mechanism, property, true ESM delta</span>
-      <span class="chip"><span class="ck">Loop</span> iterative acquisition</span>
+      <span class="chip"><span class="ck">Targets</span> 10 / 10 improved</span>
+      <span class="chip"><span class="ck">Mean gain</span> +0.167</span>
+      <span class="chip"><span class="ck">95% CI</span> +0.110 to +0.224</span>
+      <span class="chip"><span class="ck">Harm</span> 0 harmful targets</span>
+      <span class="chip"><span class="ck">Scope</span> same assay only</span>
+      <span class="chip"><span class="ck">Budget map</span> 33 cells</span>
+      <span class="chip"><span class="ck">Tests</span> 188 passed</span>
+      <span class="chip"><span class="ck">Custody</span> 128 hashed files</span>
     </div>
 
-    <div class="hero-actions reveal d2" style="margin-top:34px">
+    <div class="hero-caution reveal d2">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 2 20h20L12 3Z" stroke="#E6A552" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 10v4M12 17v.01" stroke="#E6A552" stroke-width="1.6" stroke-linecap="round"/></svg>
+      This is a planning result, not a universal protein design engine.
+    </div>
+
+    <div class="hero-actions reveal d2" style="margin-top:30px">
       <a href="../index.html#projects" class="btn btn-primary">Back to projects
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8H4M8 4 4 8l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a href="https://github.com/Bababongo/p1-data-efficiency" data-repo-href class="btn btn-ghost">View repository
-        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3H3v10h10v-3M9 3h4v4M13 3 7 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-
-    <!-- Hero diagram: zero-shot prior -> measured labels -> residual correction -->
-    <div class="hero-diagram reveal d2" data-screen-label="Hero diagram">
-      <div class="hd-caption">From zero-shot prior to label-efficient correction</div>
-      <div class="hd-flow">
-        <div class="hd-stage">
-          <div class="st-k">Input</div>
-          <div class="st-t">P0 zero-shot ESM scores</div>
-          <div class="hd-glyph">
-            <svg viewBox="0 0 150 68" aria-hidden="true">
-              <g>
-                <rect x="2" y="6"  width="120" height="8" rx="2" fill="#5CC8FF" opacity="0.85"/>
-                <rect x="2" y="20" width="96"  height="8" rx="2" fill="#5CC8FF" opacity="0.6"/>
-                <rect x="2" y="34" width="70"  height="8" rx="2" fill="#5CC8FF" opacity="0.45"/>
-                <rect x="2" y="48" width="48"  height="8" rx="2" fill="#5CC8FF" opacity="0.3"/>
-                <text x="132" y="12" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="8">rank</text>
-              </g>
-            </svg>
-          </div>
-          <div class="st-k" style="color:var(--cyan)">prior ranking</div>
-        </div>
-
-        <div class="hd-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-
-        <div class="hd-stage">
-          <div class="st-k">Reveal</div>
-          <div class="st-t">A finite label budget</div>
-          <div class="hd-glyph">
-            <svg viewBox="0 0 150 68" aria-hidden="true">
-              <g>
-                <rect x="2"  y="8"  width="13" height="13" rx="2" fill="#5CC8FF" opacity="0.9"/>
-                <rect x="19" y="8"  width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
-                <rect x="36" y="8"  width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
-                <rect x="53" y="8"  width="13" height="13" rx="2" fill="#7DD3A8" opacity="0.85"/>
-                <rect x="70" y="8"  width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
-                <rect x="2"  y="25" width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
-                <rect x="19" y="25" width="13" height="13" rx="2" fill="#5CC8FF" opacity="0.9"/>
-                <rect x="36" y="25" width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
-                <rect x="53" y="25" width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
-                <rect x="70" y="25" width="13" height="13" rx="2" fill="#7DD3A8" opacity="0.85"/>
-                <rect x="2"  y="42" width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
-                <rect x="19" y="42" width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
-                <rect x="36" y="42" width="13" height="13" rx="2" fill="#5CC8FF" opacity="0.9"/>
-                <rect x="53" y="42" width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
-                <rect x="70" y="42" width="13" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
-                <text x="92" y="30" fill="#9D7CFF" font-family="'IBM Plex Mono',monospace" font-size="13">384</text>
-                <text x="92" y="44" fill="#6B7689" font-family="'IBM Plex Mono',monospace" font-size="8">measured</text>
-              </g>
-            </svg>
-          </div>
-          <div class="st-k" style="color:var(--violet)">measured labels</div>
-        </div>
-
-        <div class="hd-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-
-        <div class="hd-stage">
-          <div class="st-k">Model</div>
-          <div class="st-t">Residual correction</div>
-          <div class="hd-glyph">
-            <svg viewBox="0 0 150 68" aria-hidden="true">
-              <g font-family="'IBM Plex Mono',monospace">
-                <text x="75" y="26" text-anchor="middle" fill="#A7B0C0" font-size="12">pred = zs + &#916;</text>
-                <path d="M8 54 C 40 52, 60 50, 80 44 S 120 30, 142 22" fill="none" stroke="#7DD3A8" stroke-width="1.8"/>
-                <path d="M8 54 H142" stroke="rgba(107,118,137,0.5)" stroke-width="1" stroke-dasharray="3 4"/>
-                <text x="122" y="62" fill="#7DD3A8" font-size="8">learned</text>
-              </g>
-            </svg>
-          </div>
-          <div class="st-k" style="color:var(--green)">label-efficient prediction</div>
-        </div>
-      </div>
-
-      <div class="hd-loop">
-        <svg viewBox="0 0 16 16" fill="none"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3" stroke="#9D7CFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Acquisition loop: which labels are worth buying next feeds back into the measured set, under a finite assay budget.
-      </div>
-      <div class="hd-tags">
-        <span class="hd-tag c">zero-shot prior</span>
-        <span class="hd-tag g">measured labels</span>
-        <span class="hd-tag c">residual correction</span>
-        <span class="hd-tag a">mechanism slices</span>
-        <span class="hd-tag g">acquisition</span>
-      </div>
     </div>
   </div>
 </section>
@@ -212,312 +132,622 @@
       <h2>The result in one minute</h2>
     </div>
     <div class="reveal">
-      <p class="lead">P1 extends P0 from model evaluation into experimental-design logic. P0 asks where zero-shot ESM scoring is reliable. P1 asks how many measured labels are needed before a supervised correction model can improve on that zero-shot score.</p>
-      <p class="lead">Around 384 measured labels, residual correction begins to reliably beat zero-shot scoring on real enzyme datasets. But the gain is not automatic at tiny label counts, and naive model-guided acquisition can underperform when it loses diversity.</p>
+      <p class="lead">P1 tried to learn useful mutation rankings from very few measurements. The broad predictor failed. A narrower strategy succeeded: combine a small number of measurements from the new protein with a balanced library drawn from many previously measured proteins in the same assay family.</p>
+      <p class="lead">The supported result is retrospective, same-assay, position-disjoint transfer for compact domains. The frozen reference uses 16 target labels plus 500 donor labels allocated across 20 donors, ridge regression, ten seeds, and protein-level uncertainty.</p>
     </div>
-    <p class="prominent violet reveal d1">Labels help, but label value depends on <span class="em">budget, selection strategy, mechanism region, and coverage of the mutation landscape.</span></p>
+
+    <div class="result-strip reveal d1">
+      <div class="rs"><span class="rs-num ok">10 / 10</span><span class="rs-label">successful external targets</span></div>
+      <div class="rs"><span class="rs-num ok">+0.167</span><span class="rs-label">combined mean gain</span></div>
+      <div class="rs"><span class="rs-num" style="font-size:18px">+0.110 to +0.224</span><span class="rs-label">95% CI, mean gain</span></div>
+      <div class="rs"><span class="rs-num cy">0.445</span><span class="rs-label">absolute pooled rho</span></div>
+      <div class="rs"><span class="rs-num gy">0.278</span><span class="rs-label">target-only rho</span></div>
+      <div class="rs"><span class="rs-num ok">0</span><span class="rs-label">harmful targets</span></div>
+      <div class="rs"><span class="rs-num" style="font-size:18px">same assay</span><span class="rs-label">final scope</span></div>
+    </div>
+
+    <p class="prominent cyan reveal d1">P1 is closer to an experiment-budget planning tool than a <span class="em">universal mutation oracle.</span></p>
+    <p class="body-copy reveal d1">Finishing the project means preserving that boundary, not continuing to tune the same retrospective outcomes.</p>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ============================ FROM P0 TO P1 ============================ -->
-<section class="cs-section" id="connect" data-screen-label="From P0 to P1">
+<!-- ============================ THE CLAIM NARROWED ============================ -->
+<section class="cs-section" id="phases" data-screen-label="The claim narrowed when evidence failed">
   <div class="wrap">
     <div class="cs-head reveal">
-      <div class="cs-eyebrow">01 / The connection</div>
-      <h2>From P0 to P1</h2>
-      <p class="lead" style="margin-top:6px">P0 produced the raw material: every variant carries an experimental fitness, a zero-shot ESM score, and residue-group labels. P1 asks what those experimental labels are worth.</p>
+      <div class="cs-eyebrow">01 / The shape of the project</div>
+      <h2>The claim narrowed when evidence failed</h2>
+      <p class="lead" style="margin-top:6px">Six branches were opened under locked rules. The claim did not stay broad and hope for the best; it contracted to the branch that survived.</p>
     </div>
-    <div class="flow reveal d1">
-      <div class="flow-row">
-        <div class="fl-step"><span class="fl-n">01</span><span class="fl-k">P0 scores mutations</span></div>
-        <div class="fl-v">Each variant gets experimental fitness, a zero-shot ESM score, and residue-group labels.</div>
+
+    <figure class="figure reveal d1">
+      <div class="fig-head"><span class="fig-num">Figure 1</span><h3 class="fig-title">Phase map: what stayed failed, what survived</h3></div>
+      <div class="phasemap" data-screen-label="Phase map">
+        <div class="phase is-fail"><span class="ph-code">P1A</span><span class="ph-name">Prediction</span><span class="ph-status">closed &middot; neg / mixed</span><span class="ph-result">A few labels did not reliably support broad untouched-position prediction.</span></div>
+        <div class="phase is-stop"><span class="ph-code">P1B</span><span class="ph-name">One donor</span><span class="ph-status">stopped</span><span class="ph-result">A router helped safely, but balanced pooling was much better.</span></div>
+        <div class="phase is-ok"><span class="ph-code">P1C</span><span class="ph-name">Balanced pool</span><span class="ph-status">validated</span><span class="ph-result">Fixed-budget donor breadth worked on confirmation and blind targets.</span></div>
+        <div class="phase is-nogo"><span class="ph-code">P1E</span><span class="ph-name">Cross-assay</span><span class="ph-status">no-go</span><span class="ph-result">No eligible safe independent cohort, so no model was run.</span></div>
+        <div class="phase is-complete"><span class="ph-code">P1F</span><span class="ph-name">Budget map</span><span class="ph-status">complete</span><span class="ph-result">The validated point became a 33-cell retrospective planning map.</span></div>
+        <div class="phase is-nostart"><span class="ph-code">P1D</span><span class="ph-name">Prospective</span><span class="ph-status">no-start</span><span class="ph-result">Only 2 of 13 readiness items exist.</span></div>
       </div>
-      <div class="flow-row">
-        <div class="fl-step"><span class="fl-n">02</span><span class="fl-k">P1 hides most labels</span></div>
-        <div class="fl-v">The benchmark simulates having only 24, 96, 384, or 1000 measured labels.</div>
-      </div>
-      <div class="flow-row">
-        <div class="fl-step"><span class="fl-n">03</span><span class="fl-k">P1 trains correction models</span></div>
-        <div class="fl-v">The model learns what the experiment teaches that zero-shot ESM missed.</div>
-      </div>
-      <div class="flow-row">
-        <div class="fl-step"><span class="fl-n">04</span><span class="fl-k">P1 evaluates acquisition</span></div>
-        <div class="fl-v">Different label-buying strategies are compared on held-out mutations.</div>
-      </div>
-    </div>
-    <p class="limit-note reveal d1">P1 treats experimental labels as a finite campaign resource, not as an unlimited training set.</p>
+      <figcaption class="fig-caption"><span class="fnum">Fig. 1</span>The strength of P1 is not that every branch worked. The strength is that failed branches stayed failed and the claim narrowed to the evidence.</figcaption>
+    </figure>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ============================ RESIDUAL CORRECTION ============================ -->
-<section class="cs-section" id="correction" data-screen-label="Residual correction">
+<!-- ============================ LEAKAGE CONTROLS ============================ -->
+<section class="cs-section" id="controls" data-screen-label="How P1 tried to avoid fooling itself">
   <div class="wrap">
     <div class="cs-head reveal">
-      <div class="cs-eyebrow">02 / Residual correction</div>
-      <h2>Residual correction</h2>
+      <div class="cs-eyebrow">02 / Scientific rules</div>
+      <h2>How P1 tried to avoid fooling itself</h2>
+      <p class="lead" style="margin-top:6px">Every method received the same exam. The controls below are what make a small-label result something other than a lucky draw.</p>
     </div>
-    <div class="formula reveal d1">
-      <div class="eq">prediction <span class="op">=</span> <span class="term-mut">zero-shot score</span> <span class="op">+</span> <span class="term-wt">learned experimental correction</span></div>
-      <div class="fkey">
-        <span><b class="kc">zero-shot score</b>: the P0 ESM-2 prior, free before any assay</span>
-        <span><b class="ka">learned correction</b>: what measured labels add on top</span>
-      </div>
+    <div class="rules reveal d1">
+      <div class="rule"><h4>Predefine the hypothesis</h4><p>Write the question before seeing the answer.</p><div class="rule-impl"><b>How:</b> locked protocols and machine-readable implementation hashes.</div></div>
+      <div class="rule"><h4>Match the budget</h4><p>Do not let one method win by receiving more measurements.</p><div class="rule-impl"><b>How:</b> identical target and total donor label counts.</div></div>
+      <div class="rule"><h4>Hold out positions</h4><p>Do not test on a location the model already sampled.</p><div class="rule-impl"><b>How:</b> residue-position-disjoint pilot and test sets.</div></div>
+      <div class="rule"><h4>Match randomness</h4><p>Give competing policies the same exam.</p><div class="rule-impl"><b>How:</b> frozen seeds, pilot positions, donor draws, and test rows.</div></div>
+      <div class="rule"><h4>Use rival explanations</h4><p>Try to explain the result without the preferred story.</p><div class="rule-impl"><b>How:</b> target-only, fixed, random, nearest, oracle, and shuffled controls.</div></div>
+      <div class="rule"><h4>Count harm</h4><p>Do not hide failed proteins inside a mean.</p><div class="rule-impl"><b>How:</b> protein-level harmful-target threshold.</div></div>
+      <div class="rule"><h4>Stop when a gate fails</h4><p>Do not rescue a favored idea after the score is known.</p><div class="rule-impl"><b>How:</b> P1A, P1B, and P1E stopped under locked rules.</div></div>
+      <div class="rule"><h4>Keep blind roles sealed</h4><p>Do not use future answers to choose the method.</p><div class="rule-impl"><b>How:</b> separate development, confirmation, blind, and prospective roles.</div></div>
     </div>
-    <p class="body-copy reveal d1" style="margin-top:22px">The most important P1 model family starts with the ESM zero-shot score, then learns a correction from a small number of measured labels. This is stronger than throwing away the pretrained model, because it asks exactly what experimental data adds beyond zero-shot prediction.</p>
+    <p class="prominent cyan reveal d1">A negative result is useful when it rules out a tempting shortcut. P1's strongest signal is that <span class="em">failed branches remained failed.</span></p>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ============================ FEATURES + STRATEGIES ============================ -->
-<section class="cs-section" id="features" data-screen-label="Features and strategies">
+<!-- ============================ P1A ============================ -->
+<section class="cs-section" id="p1a" data-screen-label="P1A broad prediction failed">
   <div class="wrap">
     <div class="cs-head reveal">
-      <div class="cs-eyebrow">03 / Inputs and choices</div>
-      <h2>What the correction model sees, and which labels it buys</h2>
+      <div class="cs-eyebrow">03 / P1A</div>
+      <h2>Broad low-data prediction failed</h2>
+      <p class="lead" style="margin-top:6px">P1A asked whether a tiny experiment could train a predictor for mutations at untouched residue positions. Early supervised learning and smart selection were inconsistent. More features, small embeddings, full embeddings, feature processing, and simple 3D context did not rescue the claim. A local position-memory clue appeared, but the independent replication showed it was not dependable enough for practical use.</p>
+    </div>
+
+    <div class="faillist reveal d1" data-screen-label="Failed shortcut stack">
+      <div class="fl-item"><span class="fl-t">Smart selection</span><span class="fl-d">no dependable advantage across ten seeds and multiple objectives</span></div>
+      <div class="fl-item"><span class="fl-t">More features</span><span class="fl-d">no reliable rescue</span></div>
+      <div class="fl-item"><span class="fl-t">ESM-2 8M embeddings</span><span class="fl-d">no reliable improvement</span></div>
+      <div class="fl-item"><span class="fl-t">Full 320 dimensions</span><span class="fl-d">worse on both development proteins</span></div>
+      <div class="fl-item"><span class="fl-t">3D context</span><span class="fl-d">helped one protein, harmed another</span></div>
+      <div class="fl-item"><span class="fl-t">Position memory</span><span class="fl-d">real local signal, practical gain uncertain</span></div>
+    </div>
+
+    <div class="result-strip reveal d1">
+      <div class="rs"><span class="rs-num gy">80</span><span class="rs-label">Phase 6 evaluations</span></div>
+      <div class="rs"><span class="rs-num gy">0 / 4</span><span class="rs-label">passing arms</span></div>
+      <div class="rs"><span class="rs-num">0</span><span class="rs-label">implementation drift</span></div>
+      <div class="rs"><span class="rs-num" style="font-size:16px">neg / mixed</span><span class="rs-label">Phase 11 replication</span></div>
+    </div>
+
+    <p class="prominent reveal d1">A bigger representation is not automatically a better scientific model. Extra dimensions can add noise faster than a small-label experiment can <span class="em">estimate their effects.</span></p>
+    <div class="caveat reveal d1">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 2 20h20L12 3Z" stroke="#E6A552" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 10v4M12 17v.01" stroke="#E6A552" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span><b>Do not present P1A as successful active learning or dependable low-label prediction.</b> It is evidence that selection and representation claims need repeated, budget-matched evaluation.</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ P1B ============================ -->
+<section class="cs-section" id="p1b" data-screen-label="P1B one-donor transfer was risky">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">04 / P1B</div>
+      <h2>Helpful teachers existed, but harmful teachers were common</h2>
+      <p class="lead" style="margin-top:6px">P1B first asked whether one donor protein could help another. The oracle experiment showed that helpful teachers existed, but harmful teachers were common. That made single-donor transfer risky.</p>
     </div>
 
     <div class="reveal d1">
-      <div class="table-wrap" data-screen-label="Feature groups">
+      <div class="table-wrap" data-screen-label="Teacher quantities">
         <table class="sci">
-          <caption>Table 1. Feature groups given to the correction model</caption>
-          <thead>
-            <tr><th>Feature group</th><th class="txt">Examples</th><th class="txt">Why it matters</th></tr>
-          </thead>
+          <caption>Table 1. Do useful single-donor teachers exist?</caption>
+          <thead><tr><th>Quantity</th><th>Result</th><th class="txt">Meaning</th></tr></thead>
           <tbody>
-            <tr><td class="grp">Mutation features</td><td class="txt">wild-type residue, mutant residue, position, mutation class</td><td class="txt">Basic interpretable signal.</td></tr>
-            <tr><td class="grp">Mechanism features</td><td class="txt">active site, binding pocket, neighborhood, distance proxy</td><td class="txt">Connects ML to enzyme mechanism.</td></tr>
-            <tr><td class="grp">Property embeddings</td><td class="txt">deterministic amino-acid property vectors</td><td class="txt">Simple embedding baseline.</td></tr>
-            <tr><td class="grp">True ESM delta embeddings</td><td class="txt">mutant-minus-wild-type ESM-2 residue embeddings</td><td class="txt">Tests whether learned PLM representations improve label efficiency.</td></tr>
+            <tr><td class="grp">Targets with a convincing teacher</td><td>14 / 20</td><td class="txt">Useful teachers existed often enough to test transfer.</td></tr>
+            <tr><td class="grp">Reliable helpful pairs</td><td><span class="win">96 / 380</span></td><td class="txt">Some donor-target pairs helped.</td></tr>
+            <tr><td class="grp">Reliable harmful pairs</td><td><span class="neg">57 / 380</span></td><td class="txt">Transfer was not free.</td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
     <div class="reveal d1" style="margin-top:22px">
-      <div class="table-wrap" data-screen-label="Label-selection strategies">
+      <div class="table-wrap" data-screen-label="Deployable-policy comparison">
         <table class="sci">
-          <caption>Table 2. Which labels are worth buying? Label-selection strategies</caption>
-          <thead>
-            <tr><th>Strategy</th><th class="txt">Meaning</th></tr>
-          </thead>
+          <caption>Table 2. Deployable one-donor policies vs balanced pooling</caption>
+          <thead><tr><th>Method</th><th>Mean gain</th><th class="txt">95% interval</th><th>Harmful targets</th></tr></thead>
           <tbody>
-            <tr><td class="term v">random</td><td class="txt">Randomly sample variants.</td></tr>
-            <tr><td class="term v">score_diverse</td><td class="txt">Cover the zero-shot score range.</td></tr>
-            <tr><td class="term v">mechanism_enriched</td><td class="txt">Prefer mechanism-sensitive residues.</td></tr>
-            <tr><td class="term v">mechanism_balanced</td><td class="txt">Round-robin across mechanism and background regions.</td></tr>
-            <tr><td class="term v">model_top</td><td class="txt">Acquire variants the current model predicts to be best.</td></tr>
-            <tr><td class="term v">mechanism_model_top</td><td class="txt">Acquire high-predicted variants while prioritizing mechanism regions.</td></tr>
+            <tr><td class="grp">Learned router</td><td>+0.044</td><td class="txt">+0.023 to +0.065</td><td>0 / 20</td></tr>
+            <tr><td class="grp">Fixed global teacher</td><td>+0.067</td><td class="txt">+0.026 to +0.109</td><td><span class="warn">2 / 20</span></td></tr>
+            <tr><td class="grp">Nearest structure</td><td>+0.058</td><td class="txt">+0.013 to +0.102</td><td><span class="warn">3 / 20</span></td></tr>
+            <tr><td class="grp">Balanced pooled donors</td><td><span class="best">+0.152</span></td><td class="txt">+0.130 to +0.174</td><td>0 / 20</td></tr>
+            <tr><td class="grp">Oracle best donor</td><td>+0.150</td><td class="txt">+0.124 to +0.176</td><td>0 / 20</td></tr>
           </tbody>
         </table>
       </div>
+      <p class="body-copy" style="margin-top:14px">The careful one-donor router helped safely, but the balanced pooled baseline won outright, matching the oracle without needing to know the best donor in advance. That failure created the P1C hypothesis.</p>
+    </div>
+
+    <div class="caveat reveal d1">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 2 20h20L12 3Z" stroke="#E6A552" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 10v4M12 17v.01" stroke="#E6A552" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span><b>Locked decision:</b> stop P1B before validation. Treat balanced pooling as a new P1C hypothesis, not as a post hoc P1B success.</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ CAUSAL PIVOT ============================ -->
+<section class="cs-section" id="pivot" data-screen-label="Why pooling became a new experiment">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">05 / The causal pivot</div>
+      <h2>Why pooling became a new experiment</h2>
+    </div>
+    <p class="prominent violet reveal">At the same total donor-label budget, spreading measurements across multiple protein domains produces a more transferable shared lesson than <span class="em">concentrating them in one donor.</span></p>
+
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Explanation and control table">
+        <table class="sci">
+          <caption>Table 3. Every rival explanation gets a control</caption>
+          <thead><tr><th class="txt">Possible explanation</th><th class="txt">Control needed</th></tr></thead>
+          <tbody>
+            <tr><td class="txt">Pooling had more data.</td><td class="txt">Hold total donor labels exactly at 500.</td></tr>
+            <tr><td class="txt">One excellent donor drove the result.</td><td class="txt">Compare multiple pool sizes, fixed teacher, random teacher, and oracle.</td></tr>
+            <tr><td class="txt">Similar proteins drove the result.</td><td class="txt">Use frozen sequence- and structure-nearest controls.</td></tr>
+            <tr><td class="txt">The model benefited even if labels were meaningless.</td><td class="txt">Shuffle outcomes within donors.</td></tr>
+            <tr><td class="txt">Development proteins were unusually favorable.</td><td class="txt">Use new confirmation and blind target populations.</td></tr>
+            <tr><td class="txt">New roles were chosen after seeing scores.</td><td class="txt">Freeze roles from identities and metadata without decoding outcomes.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="body-copy reveal d1" style="margin-top:22px">P1C changes one main knob: source breadth. Total donor labels, model family, target pilot, seeds, and evaluation split remain fixed. That makes the result interpretable even though the model is simple.</p>
+    <div class="callout reveal d1">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" stroke="#9D7CFF" stroke-width="1.4" stroke-linecap="round"/><circle cx="12" cy="12" r="3" stroke="#9D7CFF" stroke-width="1.4"/></svg>
+      <span><b>Novelty boundary.</b> The general idea that learning from many proteins can help is not new. P1C's distinctive contribution is the fixed-budget source-breadth ablation plus confirmation, blind testing, harm gates, and negative controls.</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ P1C DONOR BREADTH ============================ -->
+<section class="cs-section" id="breadth" data-screen-label="Donor breadth result">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">06 / P1C</div>
+      <h2>Broader experience helped at the same 500-label budget</h2>
+      <p class="lead" style="margin-top:6px">Every row below used exactly 500 donor labels. The only thing that changed was how many proteins those labels came from.</p>
+    </div>
+
+    <figure class="figure reveal d1">
+      <div class="fig-head"><span class="fig-num">Figure 2</span><h3 class="fig-title">Improvement rises with donor breadth, then plateaus after eight donors</h3></div>
+      <div class="fig-legend">
+        <span class="leg"><span class="sw cyan"></span>mean Spearman gain over target-only</span>
+        <span class="leg"><span class="sw line" style="background:rgba(167,176,192,0.55)"></span>95% CI (endpoints)</span>
+      </div>
+      <div class="fig-plot" data-fig="breadth"></div>
+      <figcaption class="fig-caption"><span class="fnum">Fig. 2</span>The result is not "more data helped." Every row used 500 donor labels; improvement increased when those labels represented more proteins, then largely plateaued after eight donors.</figcaption>
+      <div class="fig-teach"><span>One donor: <b>+0.016</b> (CI &minus;0.005 to +0.037). Eight donors: <b>+0.145</b>, the smallest adequate pool. Nineteen donors: <b>+0.152</b> (CI +0.130 to +0.174).</span></div>
+    </figure>
+
+    <p class="prominent green reveal d1">Breadth mattered because the label budget was spread across proteins, <span class="em">not because the model received more total donor labels.</span></p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ CONFIRMATION + BLIND ============================ -->
+<section class="cs-section" id="confirm" data-screen-label="Confirmation and blind tests">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">07 / Confirmation and blind</div>
+      <h2>The frozen policy passed confirmation and blind testing</h2>
+      <p class="lead" style="margin-top:6px">The 16 / 500 / 20 policy was locked, then run unchanged on two fresh target populations it had never seen.</p>
+    </div>
+
+    <div class="evpanels reveal d1">
+      <div class="evpanel" data-screen-label="Confirmation panel">
+        <div class="evp-k">Confirmation &middot; 5 held-out targets</div>
+        <div class="evp-stat">
+          <div class="evp-big"><span class="b">5 / 5</span><span class="k">positive targets</span></div>
+          <div class="evp-big"><span class="b">0</span><span class="k">harmful targets</span></div>
+          <div class="evp-big"><span class="b">+0.160</span><span class="k">mean gain</span></div>
+        </div>
+        <div class="evp-ci">95% CI <b>+0.102 to +0.218</b></div>
+        <div class="table-wrap">
+          <table class="sci" style="min-width:0">
+            <thead><tr><th>Target</th><th>Pool gain</th></tr></thead>
+            <tbody>
+              <tr><td class="grp">ARGR</td><td><span class="win">+0.225</span></td></tr>
+              <tr><td class="grp">ODP2</td><td>+0.129</td></tr>
+              <tr><td class="grp">PSAE</td><td>+0.134</td></tr>
+              <tr><td class="grp">SDA</td><td>+0.194</td></tr>
+              <tr><td class="grp">YAIA</td><td>+0.119</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="evpanel blind" data-screen-label="Blind panel">
+        <div class="evp-k">Blind &middot; 5 sealed targets</div>
+        <div class="evp-stat">
+          <div class="evp-big"><span class="b">5 / 5</span><span class="k">positive targets</span></div>
+          <div class="evp-big"><span class="b">0</span><span class="k">harmful targets</span></div>
+          <div class="evp-big"><span class="b">+0.174</span><span class="k">mean gain</span></div>
+        </div>
+        <div class="evp-ci">95% CI <b>+0.037 to +0.311</b></div>
+        <div class="table-wrap">
+          <table class="sci" style="min-width:0">
+            <thead><tr><th>Blind target</th><th>Pool gain</th></tr></thead>
+            <tbody>
+              <tr><td class="grp">BCHB</td><td>+0.128</td></tr>
+              <tr><td class="grp">DN7A</td><td><span class="win">+0.343</span></td></tr>
+              <tr><td class="grp">RL20</td><td>+0.172</td></tr>
+              <tr><td class="grp">RS15</td><td><span class="warn">+0.040</span></td></tr>
+              <tr><td class="grp">YNZC</td><td>+0.187</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal d1" style="margin-top:22px">
+      <div class="table-wrap" data-screen-label="Confirmation comparator">
+        <table class="sci">
+          <caption>Table 4. Confirmation comparators against the balanced pool</caption>
+          <thead><tr><th>Policy</th><th>Mean gain</th><th class="txt">Important result</th></tr></thead>
+          <tbody>
+            <tr><td class="grp">All-20 pool</td><td><span class="best">+0.160</span></td><td class="txt">5 / 5 positive, 0 harmful</td></tr>
+            <tr><td class="grp">Fixed teacher</td><td>+0.084</td><td class="txt">useful, but clearly weaker</td></tr>
+            <tr><td class="grp">Nearest sequence</td><td>+0.001</td><td class="txt"><span class="neg">2 harmful targets</span></td></tr>
+            <tr><td class="grp">Nearest structure</td><td>+0.023</td><td class="txt"><span class="neg">1 harmful target</span></td></tr>
+            <tr><td class="grp">Shuffled pool</td><td><span class="neg">&minus;0.040</span></td><td class="txt">0 / 5 positive</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="caveat reveal d1">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 2 20h20L12 3Z" stroke="#E6A552" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 10v4M12 17v.01" stroke="#E6A552" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span>The RS15 gain was small, which prevents the result from being oversold as uniformly strong. The blind interval is wide because <b>only five proteins define blind uncertainty</b> &mdash; do not treat 50 seed runs as 50 independent proteins.</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ COMBINED EVIDENCE ============================ -->
+<section class="cs-section" id="combined" data-screen-label="Combined evidence">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">08 / Combined evidence</div>
+      <h2>Improvement and absolute accuracy must be reported together</h2>
+      <p class="lead" style="margin-top:6px">A gain in ordering is only half the story. The absolute ranking quality decides what the tool is allowed to claim.</p>
+    </div>
+
+    <figure class="figure reveal d1">
+      <div class="fig-head"><span class="fig-num">Figure 3</span><h3 class="fig-title">Absolute mean Spearman: target-only vs pooled</h3></div>
+      <div class="fig-legend">
+        <span class="leg"><span class="sw gray"></span>target-only</span>
+        <span class="leg"><span class="sw cyan"></span>pooled, 20 donors</span>
+      </div>
+      <div class="fig-plot" data-fig="combined"></div>
+      <figcaption class="fig-caption"><span class="fnum">Fig. 3</span>The study group reliably improved the ordering, but the final ranking is still imperfect. Absolute Spearman around 0.445 supports assisted ranking and planning, not exact stability prediction or autonomous mutation selection.</figcaption>
+    </figure>
+
+    <div class="result-strip reveal d1">
+      <div class="rs"><span class="rs-num ok">+0.167</span><span class="rs-label">combined mean gain</span></div>
+      <div class="rs"><span class="rs-num" style="font-size:18px">+0.110 to +0.224</span><span class="rs-label">95% CI</span></div>
+      <div class="rs"><span class="rs-num ok">10 / 10</span><span class="rs-label">targets positive</span></div>
+      <div class="rs"><span class="rs-num cy">0.445</span><span class="rs-label">absolute pooled rho</span></div>
+      <div class="rs"><span class="rs-num gy">0.278</span><span class="rs-label">target-only rho</span></div>
     </div>
 
     <div class="callout reveal d1">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" stroke="#9D7CFF" stroke-width="1.4" stroke-linecap="round"/><circle cx="12" cy="12" r="3" stroke="#9D7CFF" stroke-width="1.4"/></svg>
-      <span>P1 is closer to campaign design than simple model training. It simulates <b>which variants a scientist should measure next</b> when assay budget is finite.</span>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5v14" stroke="#9D7CFF" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <span><b>Final P1C claim.</b> For the tested compact domains in one cDNA-display proteolysis stability assay, a model combining 16 new-protein labels with a balanced 500-label, 20-donor library improved unseen-position mutation ranking over target-only learning on all ten locked confirmation and blind targets, with no harmful targets by the predefined threshold.</span>
     </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ============================ MAIN RESULTS AT 384 LABELS ============================ -->
-<section class="cs-section" id="results" data-screen-label="Main results at 384 labels">
-  <div class="wrap">
-    <div class="cs-head reveal">
-      <div class="cs-eyebrow">04 / The results</div>
-      <h2>Label budgets, and when correction starts to pay</h2>
-      <p class="lead" style="margin-top:6px">A supervised correction layer is useless with too few labels and useful once the budget is large enough. On real enzyme data, the turn happens around a few hundred measured labels.</p>
-    </div>
-
-    <!-- FIGURE 1 - fixture sanity -->
-    <figure class="figure reveal">
-      <div class="fig-head">
-        <span class="fig-num">Figure 1</span>
-        <h3 class="fig-title">Tiny label budgets are unstable</h3>
-      </div>
-      <div class="fig-legend">
-        <span class="leg"><span class="sw line" style="background:var(--gray)"></span>zero-shot reference</span>
-        <span class="leg"><span class="sw cyan"></span>hybrid model (zero-shot + correction)</span>
-      </div>
-      <div class="fig-plot" data-fig="fixture"></div>
-      <figcaption class="fig-caption"><span class="fnum">Fig. 1</span>In the fixture sanity check, the hybrid model only becomes useful once there are enough labels for the correction layer to learn. Tiny label budgets are unstable: at 4 labels it collapses, at 24 it passes zero-shot.</figcaption>
-      <div class="fig-teach"><span>The correction layer does not fail because the idea is wrong. It fails because <b>there is not yet enough measured data to learn from.</b></span></div>
-    </figure>
-
-    <!-- FIGURE 2 - real P0 inputs at 384 -->
-    <figure class="figure reveal">
-      <div class="fig-head">
-        <span class="fig-num">Figure 2</span>
-        <h3 class="fig-title">At 384 labels, residual correction starts beating zero-shot</h3>
-        <p class="body-copy" style="margin-top:12px;font-size:15px">ESM-2 zero-shot baseline versus residual correction with property embeddings and with true ESM delta embeddings, on real P0 enzyme data at a 384-label budget.</p>
-      </div>
-      <div class="fig-legend">
-        <span class="leg"><span class="sw gray"></span>zero-shot</span>
-        <span class="leg"><span class="sw" style="background:var(--cyan-dim)"></span>residual + property embedding</span>
-        <span class="leg"><span class="sw cyan"></span>residual + true ESM embedding</span>
-      </div>
-      <div class="fig-plot" data-fig="main384"></div>
-      <figcaption class="fig-caption"><span class="fnum">Fig. 2</span>At 384 labels, residual correction models begin to beat zero-shot on real enzyme datasets. True ESM delta embeddings produce modest additional global gains over the property-embedding baseline.</figcaption>
-    </figure>
-
-    <!-- supplementary table for Fig 2 -->
-    <div class="reveal" style="margin-top:22px">
-      <div class="table-wrap" data-screen-label="384-label table">
-        <table class="sci">
-          <caption>Table 3. Spearman at 384 labels (real P0 inputs)</caption>
-          <thead>
-            <tr><th>Dataset</th><th class="txt">Selection</th><th>Zero-shot</th><th>Residual mechanism</th><th>+ property</th><th>+ true ESM</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="grp">TEM-1</td><td class="txt">random</td><td>0.559</td><td>0.590</td><td>0.606</td><td><span class="best">0.622</span></td></tr>
-            <tr><td class="grp">TEM-1</td><td class="txt">score_diverse</td><td>0.559</td><td>n/a</td><td>0.597</td><td><span class="best">0.612</span></td></tr>
-            <tr><td class="grp">VIM-2</td><td class="txt">random</td><td>0.418</td><td>0.491</td><td>0.510</td><td><span class="best">0.513</span></td></tr>
-            <tr><td class="grp">VIM-2</td><td class="txt">score_diverse</td><td>0.418</td><td>n/a</td><td>0.513</td><td><span class="best">0.515</span></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="body-copy" style="margin-top:14px;color:var(--text-3);font-size:13px">Residual-mechanism-only values are reported for the random selection; score_diverse rows use the embedding correction models. Values are exact outputs from the P1 real-data run.</p>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ============================ TRUE ESM EMBEDDINGS + MECHANISM SLICES ============================ -->
-<section class="cs-section" id="embeddings" data-screen-label="True ESM embedding results">
-  <div class="wrap">
-    <div class="cs-head reveal">
-      <div class="cs-eyebrow">05 / Learned representations</div>
-      <h2>ESM delta embeddings help most when the question is local</h2>
-      <p class="lead" style="margin-top:6px">True ESM delta embeddings do not radically change global performance. Their value shows up when the evaluation asks a biology-local question, inside mechanism-sensitive regions.</p>
-    </div>
-
-    <figure class="figure reveal" data-screen-label="Figure 3">
-      <div class="fig-head">
-        <span class="fig-num">Figure 3</span>
-        <h3 class="fig-title">Global gains are modest; mechanism-slice gains are stronger</h3>
-      </div>
-      <div class="panels">
-        <div class="panel">
-          <div class="panel-label">Panel A · global result at 384 labels</div>
-          <h4>True ESM embeddings add a small global delta</h4>
-          <div class="table-wrap">
-            <table class="sci">
-              <thead>
-                <tr><th>Dataset</th><th class="txt">Selection</th><th>Zero-shot</th><th>Property</th><th>True ESM</th><th>ESM delta</th></tr>
-              </thead>
-              <tbody>
-                <tr><td class="grp">TEM-1</td><td class="txt">random</td><td>0.559</td><td>0.606</td><td>0.622</td><td><span class="delta">+0.016</span></td></tr>
-                <tr><td class="grp">TEM-1</td><td class="txt">score_diverse</td><td>0.559</td><td>0.597</td><td>0.612</td><td><span class="delta">+0.015</span></td></tr>
-                <tr><td class="grp">VIM-2</td><td class="txt">random</td><td>0.418</td><td>0.510</td><td>0.513</td><td><span class="delta">+0.003</span></td></tr>
-                <tr><td class="grp">VIM-2</td><td class="txt">score_diverse</td><td>0.418</td><td>0.513</td><td>0.515</td><td><span class="delta">+0.002</span></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-label v">Panel B · mechanism-slice result at 384 labels</div>
-          <h4>Correction is strongest inside mechanism-sensitive regions</h4>
-          <div class="fig-legend">
-            <span class="leg"><span class="sw amber"></span>mean Spearman, best selection per region</span>
-            <span class="leg"><span class="sw" style="background:var(--green);height:2px;width:18px"></span>delta vs zero-shot (right)</span>
-          </div>
-          <div class="fig-plot" data-fig="mechslice"></div>
-        </div>
-      </div>
-      <figcaption class="fig-caption"><span class="fnum">Fig. 3</span>True ESM delta embeddings do not radically change global performance, but they strengthen mechanism-specific correction. Learned representations are most useful when the evaluation asks a biology-local question, such as the binding pocket (TEM-1, +0.153) or the active site (VIM-2, +0.154).</figcaption>
-      <div class="fig-teach amber"><span>The same lesson as P0, seen from the other side: <b>mechanism-local structure is where the interesting signal lives</b>, and where learned representations earn their keep.</span></div>
-    </figure>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ============================ ITERATIVE ACQUISITION ============================ -->
-<section class="cs-section" id="acquisition" data-screen-label="Iterative acquisition result">
-  <div class="wrap">
-    <div class="cs-head reveal">
-      <div class="cs-eyebrow">06 / Acquisition</div>
-      <h2>Naive model-guided acquisition can lose to diversity</h2>
-      <p class="lead" style="margin-top:6px">The agentic-looking strategies did not win. When the model only buys variants it already predicts to be best, it over-exploits narrow regions and loses the diversity it needs to keep learning.</p>
-    </div>
-
-    <figure class="figure reveal">
-      <div class="fig-head">
-        <span class="fig-num">Figure 4</span>
-        <h3 class="fig-title">Diversity-preserving acquisition outperforms naive model-guided selection</h3>
-      </div>
-      <div class="fig-legend">
-        <span class="leg"><span class="sw cyan"></span>diversity-preserving (random, score_diverse)</span>
-        <span class="leg"><span class="sw amber"></span>mechanism_balanced</span>
-        <span class="leg"><span class="sw gray"></span>naive model-guided (model_top, mechanism_model_top)</span>
-      </div>
-      <div class="fig-plot" data-fig="acq"></div>
-      <figcaption class="fig-caption"><span class="fnum">Fig. 4</span>Naive model-guided acquisition over-exploits narrow regions and loses diversity, trailing random and score-diverse sampling on both Spearman and top-k enrichment. Good enzyme-engineering acquisition must manage exploitation, diversity, and mechanism coverage at the same time.</figcaption>
-      <div class="fig-teach"><span>This is the sharpest result in P1, and it points at the next project: <b>acquisition that buys information, not confidence.</b></span></div>
-    </figure>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ============================ SCIENTIFIC LESSON ============================ -->
-<section class="cs-section" id="lesson" data-screen-label="The scientific lesson">
-  <div class="wrap">
-    <div class="cs-head reveal">
-      <div class="cs-eyebrow">07 / The scientific lesson</div>
-      <h2>The scientific lesson</h2>
-    </div>
-    <p class="lead reveal">The lesson is not that active learning failed. The lesson is that naive acquisition is not campaign design. If the model only buys variants it already thinks are best, it can lose coverage of the landscape it needs to learn. In enzyme engineering, useful acquisition has to preserve diversity, cover mechanism-sensitive regions, and still exploit what the model has learned.</p>
-    <p class="prominent reveal d1">The next experiment is not simply the highest-scoring variant. <span class="em">It is the variant that teaches the campaign what it needs to know next.</span></p>
   </div>
 </section>
 
 <section class="cs-section tight" data-screen-label="Pull quote">
   <div class="wrap-narrow">
-    <p class="pullq reveal">Labels are a budget. <span class="dim">The question is not how many you can run, but which ones are worth buying.</span></p>
+    <p class="pullq reveal">A gain in ranking is not a guarantee of truth. <span class="dim">Absolute accuracy decides what the tool is allowed to claim.</span></p>
   </div>
 </section>
 
-<!-- ============================ WHAT P1 PROVES ============================ -->
-<section class="cs-section" id="proves" data-screen-label="What P1 proves">
+<!-- ============================ CROSS-ASSAY ============================ -->
+<section class="cs-section" id="crossassay" data-screen-label="Cross-assay stopped at the data gate">
   <div class="wrap">
     <div class="cs-head reveal">
-      <div class="cs-eyebrow">08 / What P1 proves</div>
-      <h2>What P1 proves</h2>
+      <div class="cs-eyebrow">09 / P1E</div>
+      <h2>The cross-assay question stopped at the data gate</h2>
+      <p class="lead" style="margin-top:6px">P1E asked whether the rule extends to a different assay. It never reached a model: the eligible, safe, independent cohort did not exist.</p>
+    </div>
+
+    <div class="result-strip reveal d1">
+      <div class="rs"><span class="rs-num">9</span><span class="rs-label">raw coverage passers (PDB entries)</span></div>
+      <div class="rs"><span class="rs-num warn" style="color:var(--amber)">6</span><span class="rs-label">independent groups, below minimum 8</span></div>
+      <div class="rs"><span class="rs-num gy">0</span><span class="rs-label">eligible after safety screen</span></div>
+    </div>
+
+    <div class="reveal d1" style="margin-top:8px">
+      <div class="table-wrap" data-screen-label="Cross-assay gate table">
+        <table class="sci">
+          <caption>Table 5. Where the cross-assay cohort was lost</caption>
+          <thead><tr><th>Gate stage</th><th class="txt">What happened</th><th class="txt">Why it matters</th></tr></thead>
+          <tbody>
+            <tr><td class="grp">Coverage</td><td class="txt">Nine entries had enough mutation and position coverage.</td><td class="txt">A single mutation-rich protein is not enough.</td></tr>
+            <tr><td class="grp">Independence</td><td class="txt">Repeated barnase, nuclease, and T4 lysozyme entries collapsed to six groups.</td><td class="txt">PDB IDs are not independent proteins.</td></tr>
+            <tr><td class="grp">Safety</td><td class="txt">All remaining entries triggered the locked conservative exclusions.</td><td class="txt">The scope required a no-flag cohort.</td></tr>
+            <tr><td class="grp">Outcome firewall</td><td class="txt">Outcome columns were not decoded, parsed, or stored.</td><td class="txt">No result-driven cohort selection occurred.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="caveat reveal d1">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 2 20h20L12 3Z" stroke="#E6A552" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 10v4M12 17v.01" stroke="#E6A552" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span><b>Cross-assay usefulness remains unknown, not disproven.</b> P1E is a negative feasibility result, not a negative model result. The correct sentence is "cross-assay usefulness remains unknown," never "cross-assay transfer failed."</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ P1F BUDGET MAP ============================ -->
+<section class="cs-section" id="budget" data-screen-label="33-cell budget map">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">10 / P1F</div>
+      <h2>The successful point became a 33-cell budget map</h2>
+      <p class="lead" style="margin-top:6px">P1C validated one operating point: 16 target labels, 500 donor labels, 20 donors. P1F reused already-open safe same-assay data to map planning boundaries without claiming new independent validation.</p>
+    </div>
+
+    <div class="result-strip reveal d1">
+      <div class="rs"><span class="rs-num cy">33</span><span class="rs-label">grid cells</span></div>
+      <div class="rs"><span class="rs-num">3,300</span><span class="rs-label">matched evaluations</span></div>
+      <div class="rs"><span class="rs-num ok">0.0</span><span class="rs-label">reference reproduction error</span></div>
+    </div>
+
+    <div class="reveal d1" style="margin-bottom:22px">
+      <ul class="limit-list">
+        <li>Target labels: 8, 16, 24 positions</li>
+        <li>Total donor labels: 100, 500, 1,000</li>
+        <li>Donor proteins: 1, 4, 8, 20, subject to feasible cells</li>
+        <li>Same features, ridge method, splits, metric, harmful threshold</li>
+      </ul>
+    </div>
+
+    <figure class="figure reveal d1">
+      <div class="fig-head"><span class="fig-num">Figure 4</span><h3 class="fig-title">Retrospective planning calibration across the budget grid</h3></div>
+      <div class="budget-legend">
+        <span class="bl"><span class="bl-sw" style="background:#7DD3A8"></span>green &middot; 23 cells</span>
+        <span class="bl"><span class="bl-sw" style="background:#E6A552;opacity:0.7"></span>yellow &middot; 9 cells</span>
+        <span class="bl"><span class="bl-sw" style="background:#E0736B"></span>red &middot; 1 cell</span>
+        <span class="bl"><span class="bl-sw" style="border:2px solid #5CC8FF;background:transparent"></span>validated reference (16 / 500 / 20)</span>
+      </div>
+      <div class="fig-plot" data-fig="budget"></div>
+      <figcaption class="fig-caption"><span class="fnum">Fig. 4</span>Each value is pooled minus target-only mean Spearman. A green protein-level mean is not a guarantee for one donor draw or one experimental run; operational variability remains important. This is retrospective planning calibration, not independent validation.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ QUANTITY + BREADTH ============================ -->
+<section class="cs-section" id="quantity" data-screen-label="Quantity and breadth must work together">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">11 / Reading the map</div>
+      <h2>Quantity and breadth must work together</h2>
+    </div>
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Quantity and breadth table">
+        <table class="sci">
+          <caption>Table 6. What the budget map does and does not license</caption>
+          <thead><tr><th class="txt">Question</th><th class="txt">Answer</th><th class="txt">Evidence</th></tr></thead>
+          <tbody>
+            <tr><td class="txt">Are more donors automatically better?</td><td class="txt"><span class="neg">No.</span></td><td class="txt">At 100 total donor labels, 20 donors did not beat one; five labels per donor was too thin.</td></tr>
+            <tr><td class="txt">Do more target labels help?</td><td class="txt"><span class="win">Yes for target-only.</span></td><td class="txt">Mean rho rose 0.225 to 0.278 to 0.315, while transfer advantage shrank in all 11 matched settings.</td></tr>
+            <tr><td class="txt">Do more donor labels help?</td><td class="txt"><span class="win">Yes across several donors.</span></td><td class="txt">For 4, 8, and 20 donors, 100 to 1,000 improved all nine matched contrasts with intervals above zero.</td></tr>
+            <tr><td class="txt">Does more data from one donor solve the problem?</td><td class="txt"><span class="neg">No reliable evidence.</span></td><td class="txt">Increasing one-donor labels from 100 to 500 did not reliably help.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="plancards reveal d1">
+      <div class="plan"><div class="pl-k">Validated default</div><div class="pl-v">16 / 500 / 20</div><div class="pl-d">pooled rho 0.445; gain +0.167</div></div>
+      <div class="plan"><div class="pl-k">Efficiency candidate</div><div class="pl-v">8 / 500 / 8</div><div class="pl-d">rho 0.446; gain +0.220</div></div>
+      <div class="plan"><div class="pl-k">Strongest retrospective</div><div class="pl-v">8 / 1000 / 20</div><div class="pl-d">rho 0.480; gain +0.254</div></div>
+    </div>
+
+    <div class="caveat reveal d1">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 2 20h20L12 3Z" stroke="#E6A552" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 10v4M12 17v.01" stroke="#E6A552" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span><b>Single-donor warning.</b> The 8 / 100 / 1 cell looked green at the protein-mean level, yet 20 of 100 observed target-seed runs were harmful and the worst delta was &minus;0.326. Use the target-level gate for evidence and the run-level audit for operational warnings.</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ ADVISOR ============================ -->
+<section class="cs-section" id="advisor" data-screen-label="Protein Data Budget Advisor">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">12 / The tool</div>
+      <h2>What the Protein Data Budget Advisor can and cannot do</h2>
+      <p class="lead" style="margin-top:6px">A scientist has a safe compact domain, a small set of stability measurements made with the tested assay family, and access to a compatible donor library. They want to decide whether collecting more target labels or assembling broader donor data is likely to be worthwhile.</p>
+    </div>
+
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Advisor IO table">
+        <table class="sci">
+          <caption>Table 7. Inputs, outputs, and the decision each supports</caption>
+          <thead><tr><th class="txt">Input</th><th class="txt">Output</th><th class="txt">Decision supported</th></tr></thead>
+          <tbody>
+            <tr><td class="txt">Same versus different assay</td><td class="txt">Evidence scope or refuse</td><td class="txt">Whether P1 applies at all</td></tr>
+            <tr><td class="txt">8, 16, or 24 target labels</td><td class="txt">Target-only and pooled rho</td><td class="txt">Value of the target pilot</td></tr>
+            <tr><td class="txt">100, 500, or 1,000 donor labels</td><td class="txt">Mean transfer gain and interval</td><td class="txt">Value of outside data quantity</td></tr>
+            <tr><td class="txt">1, 4, 8, or 20 donors</td><td class="txt">Evidence tier and lottery warning</td><td class="txt">Value of source breadth</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.01em;color:var(--text);margin:28px 0 14px" class="reveal d1">Required refusals</h3>
+    <div class="refuse-list reveal d1">
+      <div class="refuse">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#E6A552" stroke-width="1.5"/><path d="M6 6l12 12" stroke="#E6A552" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <p><b>Different assay:</b> refuse because P1E did not establish an eligible test cohort.</p>
+      </div>
+      <div class="refuse">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#E6A552" stroke-width="1.5"/><path d="M6 6l12 12" stroke="#E6A552" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <p><b>Unavailable grid cell:</b> show no estimate rather than interpolate.</p>
+      </div>
+      <div class="refuse">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#E6A552" stroke-width="1.5"/><path d="M6 6l12 12" stroke="#E6A552" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <p><b>One donor or 100 labels:</b> warn about lottery behavior.</p>
+      </div>
+      <div class="refuse">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#E6A552" stroke-width="1.5"/><path d="M6 6l12 12" stroke="#E6A552" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <p><b>Mutation request:</b> refuse to convert the budget map into mutation design or wet-lab instructions.</p>
+      </div>
+    </div>
+
+    <div class="callout reveal d1">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" stroke="#9D7CFF" stroke-width="1.4" stroke-linecap="round"/><circle cx="12" cy="12" r="3" stroke="#9D7CFF" stroke-width="1.4"/></svg>
+      <span><b>Product boundary: planning, not design.</b> The tool helps allocate measurements. It does not tell a scientist which mutation to construct, promise exact stability values, or claim universal transfer.</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ STATISTICS ============================ -->
+<section class="cs-section" id="stats" data-screen-label="Statistics and uncertainty">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">13 / Uncertainty</div>
+      <h2>How P1 turns many mutation rows into honest evidence</h2>
     </div>
     <div class="proof-cards reveal d1">
-      <div class="pcard">
-        <div class="pc-dot" style="background:var(--cyan)"></div>
-        <h4>Zero-shot is a useful prior</h4>
-        <p>The pretrained model provides a real starting point before assay labels are available.</p>
+      <div class="pcard"><div class="pc-dot" style="background:var(--cyan)"></div><h4>Absolute Spearman</h4><p>How well are hidden mutations ranked? Pooled reference 0.445 is useful signal, not perfection.</p></div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--green)"></div><h4>Delta Spearman</h4><p>How much did transfer improve the matched target-only model? Combined P1C gain +0.167.</p></div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--violet)"></div><h4>Paired interval</h4><p>Does the method win on the same proteins and seeds? Differences are paired before uncertainty.</p></div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--violet)"></div><h4>Protein-level CI</h4><p>Would the gain survive variation between proteins? Proteins, not mutation rows, define external uncertainty.</p></div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--green)"></div><h4>Positive targets</h4><p>How often is the target mean above zero? P1C combined 10 / 10.</p></div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--amber)"></div><h4>Harmful targets</h4><p>How often is target mean at most &minus;0.05? P1C combined 0.</p></div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--gray)"></div><h4>Shuffled control</h4><p>Does performance survive destroyed label meaning? P1C shuffled pools were negative.</p></div>
+      <div class="pcard"><div class="pc-dot" style="background:var(--cyan)"></div><h4>Implementation drift</h4><p>Did new code reproduce the frozen reference? P1F maximum absolute error 0.0.</p></div>
+    </div>
+    <div class="caveat reveal d1">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 2 20h20L12 3Z" stroke="#E6A552" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 10v4M12 17v.01" stroke="#E6A552" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span>Ten seeds repeat sampling within the same biological target. They measure operational variability, but they do not create ten new proteins. <b>Treating them as independent would make confidence look falsely narrow.</b></span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ REPRODUCIBILITY ============================ -->
+<section class="cs-section tight" id="repro" data-screen-label="Reproducibility">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">14 / Reproducibility</div>
+      <h2>How to audit the final package</h2>
+    </div>
+    <div class="result-strip reveal d1" style="margin-top:0">
+      <div class="rs"><span class="rs-num ok">188</span><span class="rs-label">executable tests passed</span></div>
+      <div class="rs"><span class="rs-num ok">17 / 17</span><span class="rs-label">completion checks</span></div>
+      <div class="rs"><span class="rs-num cy">128</span><span class="rs-label">hashed files</span></div>
+    </div>
+    <div class="cmd-panel reveal d1">
+      <div class="cmd-h">One-command verification</div>
+      <div class="cmd-row"><span class="pmt">$</span>cd p1-private-portfolio</div>
+      <div class="cmd-row"><span class="pmt">$</span>python scripts/verify_portfolio.py<span class="tests">188 passed</span></div>
+    </div>
+    <p class="body-copy reveal d1" style="margin-top:18px">The command rebuilds consolidated evidence and the 33-cell advisor data from canonical results; runs the P1A core and later locked tests plus P1B, P1C, P1E, P1F, P1D, and portfolio suites; verifies negative and positive results, absolute performance, reference reproduction, sealed boundaries, cross-assay refusal, PDF existence, and deliverable paths; then writes a completion audit and a SHA-256 artifact manifest.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ SAFETY BOUNDARY ============================ -->
+<section class="cs-section" id="safety" data-screen-label="Safety and public boundary">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">15 / Boundary</div>
+      <h2>What the project deliberately does not produce</h2>
+    </div>
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Safety boundary table">
+        <table class="sci">
+          <caption>Table 8. Sealed and not-performed outputs</caption>
+          <thead><tr><th>Boundary</th><th class="txt">Status</th><th class="txt">Meaning</th></tr></thead>
+          <tbody>
+            <tr><td class="grp">Mutation generation</td><td class="txt"><span class="neg">Not performed</span></td><td class="txt">No new sequences or candidate mutations proposed.</td></tr>
+            <tr><td class="grp">Wet-lab instructions</td><td class="txt"><span class="neg">Not produced</span></td><td class="txt">No construction, assay, or optimization protocol.</td></tr>
+            <tr><td class="grp">AMIE / BGLY outcomes</td><td class="txt">Sealed</td><td class="txt">Not opened to rescue a failed gate.</td></tr>
+            <tr><td class="grp">P1B validation / blind</td><td class="txt">Sealed</td><td class="txt">Router failure stopped outcome access.</td></tr>
+            <tr><td class="grp">ESM-2 35M embeddings</td><td class="txt">Not generated</td><td class="txt">Phase 6 did not justify the compute.</td></tr>
+            <tr><td class="grp">Cross-assay model</td><td class="txt">Not run</td><td class="txt">P1E cohort gate failed first.</td></tr>
+            <tr><td class="grp">Prospective outcomes</td><td class="txt">None read</td><td class="txt">P1D activation gate is closed.</td></tr>
+            <tr><td class="grp">Public release</td><td class="txt">Portfolio-safe summary only</td><td class="txt">Do not expose private-only files or sealed details.</td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="pcard">
-        <div class="pc-dot" style="background:var(--cyan)"></div>
-        <h4>Labels become useful at sufficient budget</h4>
-        <p>Supervised correction is weak at tiny label counts but becomes useful around 384 labels.</p>
+    </div>
+    <div class="callout reveal d1">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="#9D7CFF" stroke-width="1.4"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="#9D7CFF" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <span><b>Operational rule.</b> The advisor compares data budgets only. Turning its outputs into mutation recommendations would be a different project requiring new safety, scientific, and experimental authorization.</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ PROVES / DOES NOT PROVE ============================ -->
+<section class="cs-section" id="proves" data-screen-label="What P1 proves and does not prove">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">16 / The claim ledger</div>
+      <h2>What P1 proves, and what it does not</h2>
+    </div>
+    <div class="ledger reveal d1">
+      <div class="ledger-col proves">
+        <h4>What P1 proves</h4>
+        <ul>
+          <li>Balanced same-assay pooling improved ranking on all ten locked external targets.</li>
+          <li>At a fixed 500-label budget, donor breadth beat donor concentration.</li>
+          <li>The gain survived confirmation, blind testing, and a harmful-target gate.</li>
+          <li>Failed branches (broad prediction, one-donor routing, cross-assay) stayed failed under locked rules.</li>
+          <li>The result reproduces: 188 tests, 17 / 17 checks, reference error 0.0.</li>
+        </ul>
       </div>
-      <div class="pcard">
-        <div class="pc-dot" style="background:var(--amber)"></div>
-        <h4>Embeddings help locally</h4>
-        <p>True ESM embeddings produce modest global gains and stronger mechanism-slice gains.</p>
-      </div>
-      <div class="pcard">
-        <div class="pc-dot" style="background:var(--violet)"></div>
-        <h4>Label selection matters</h4>
-        <p>The value of a label depends on selection strategy, biological region, and landscape coverage.</p>
-      </div>
-      <div class="pcard">
-        <div class="pc-dot" style="background:var(--violet)"></div>
-        <h4>Naive active learning can fail</h4>
-        <p>Model-guided acquisition can underperform random or score-diverse sampling when it loses diversity.</p>
+      <div class="ledger-col limits">
+        <h4>What P1 does not prove</h4>
+        <ul>
+          <li>That the rule holds across different assays &mdash; that cohort never existed.</li>
+          <li>That the model predicts absolute stability, not just improved ranking.</li>
+          <li>That any prospective, future-outcome experiment would confirm it.</li>
+          <li>That the map licenses one donor draw or one experimental run.</li>
+          <li>That P1 designs, recommends, or constructs any mutation.</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -525,131 +755,143 @@
 
 <div class="divider"></div>
 
-<!-- ============================ WHAT P1 DOES NOT PROVE YET ============================ -->
-<section class="cs-section" id="limits" data-screen-label="What P1 does not prove yet">
+<!-- ============================ USEFULNESS + NOVELTY ============================ -->
+<section class="cs-section" data-screen-label="Where P1 is strong and where it is modest">
   <div class="wrap">
     <div class="cs-head reveal">
-      <div class="cs-eyebrow">09 / The boundary of the claim</div>
-      <h2>What P1 does not prove yet</h2>
+      <div class="cs-eyebrow">17 / Honest assessment</div>
+      <h2>Where P1 is strong and where it is modest</h2>
     </div>
-    <ul class="limit-list reveal d1">
-      <li>that 384 labels is universal across enzymes</li>
-      <li>a full real-data panel: AMIE and beta-glucosidase are not yet included</li>
-      <li>diversity-constrained model-guided acquisition</li>
-      <li>explicit uncertainty-aware acquisition</li>
-      <li>cost-per-label or plate-size-aware economics</li>
-      <li>a finished active-learning platform: this is a strong prototype</li>
-    </ul>
-    <p class="limit-note reveal d1">The project is strong because it exposes the next problem clearly: label acquisition has to be diversity-aware, mechanism-aware, and uncertainty-aware.</p>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ============================ THE ARTIFACT ============================ -->
-<section class="cs-section" id="artifact" data-screen-label="The artifact">
-  <div class="wrap">
-    <div class="cs-head reveal">
-      <div class="cs-eyebrow">10 / The artifact</div>
-      <h2>A benchmark package, not a loose notebook</h2>
-      <p class="lead" style="margin-top:6px">P1 is a pyproject-based Python package with separated data loading, modeling, selection, evaluation, and orchestration, plus Savio workflows for the true ESM delta embeddings.</p>
-    </div>
-
-    <div class="modmap reveal d1" data-screen-label="Module map">
-      <div class="mod">
-        <div class="mod-k">CLI</div>
-        <div class="mod-files">src/p1_data_efficiency/cli.py</div>
-        <div class="mod-desc">Runs fixture, real-data, embedding, and acquisition benchmarks.</div>
-      </div>
-      <div class="mod">
-        <div class="mod-k">Data and features</div>
-        <div class="mod-files">data.py · io.py · features.py · embeddings.py</div>
-        <div class="mod-desc">Loads P0 outputs and builds mutation, mechanism, and embedding features.</div>
-      </div>
-      <div class="mod">
-        <div class="mod-k">Models</div>
-        <div class="mod-files">models.py · linear.py</div>
-        <div class="mod-desc">Ridge-style supervised baselines and residual correction models.</div>
-      </div>
-      <div class="mod">
-        <div class="mod-k">Selection</div>
-        <div class="mod-files">selection.py · acquisition.py</div>
-        <div class="mod-desc">One-shot and iterative label-selection policies.</div>
-      </div>
-      <div class="mod">
-        <div class="mod-k">Evaluation</div>
-        <div class="mod-files">evaluation.py · metrics.py · economics.py</div>
-        <div class="mod-desc">Repeated splits, label-value curves, mechanism economics.</div>
-      </div>
-      <div class="mod">
-        <div class="mod-k">HPC</div>
-        <div class="mod-files">scripts/build_esm2_variant_embeddings.py · hpc/*.slurm</div>
-        <div class="mod-desc">True ESM-2 delta embedding generation on Savio.</div>
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Usefulness and novelty table">
+        <table class="sci">
+          <caption>Table 9. Strength and modesty, by dimension</caption>
+          <thead><tr><th class="txt">Dimension</th><th class="txt">Honest assessment</th><th class="txt">Why</th></tr></thead>
+          <tbody>
+            <tr><td class="txt">Scientific usefulness</td><td class="txt"><span class="warn">Moderate and narrow</span></td><td class="txt">Useful same-assay budget guidance; cross-assay and prospective value unknown.</td></tr>
+            <tr><td class="txt">Method novelty</td><td class="txt"><span class="warn">Limited</span></td><td class="txt">Multi-source transfer is known; P1 did not invent pooling or ridge regression.</td></tr>
+            <tr><td class="txt">Experimental-design novelty</td><td class="txt"><span class="win">Meaningful</span></td><td class="txt">Total donor labels were fixed while source breadth changed, with confirmation and blind roles.</td></tr>
+            <tr><td class="txt">Tool usefulness</td><td class="txt">Planning, not design</td><td class="txt">Reports evidence tiers, absolute accuracy, uncertainty, warnings, and refusal.</td></tr>
+            <tr><td class="txt">Portfolio value</td><td class="txt"><span class="win">Strong</span></td><td class="txt">Shows hypotheses, leakage controls, outcome custody, matched baselines, negative results, and reproducible code.</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
-
-    <div class="artifact reveal d1" style="margin-top:22px" data-screen-label="Artifact panel">
-      <div class="artifact-top">
-        <div class="repo-name">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M9 19c-4 1.5-4-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.2 3.3 5.1 3.6 5.1 3.6a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 3.7 10c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21" stroke="#5CC8FF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          p1-data-efficiency
-        </div>
-        <div class="repo-badges">
-          <span class="rbadge" style="color:var(--violet);border-color:rgba(157,124,255,0.3);background:var(--violet-soft)">strong prototype</span>
-          <span class="rbadge cyan">true ESM delta embeddings on Savio</span>
-          <span class="rbadge">outputs: CSV, JSON, SVG</span>
-        </div>
-      </div>
-      <div class="artifact-grid">
-        <div class="acell"><span class="adot"></span>pyproject package</div>
-        <div class="acell"><span class="adot"></span>CLI workflow</div>
-        <div class="acell"><span class="adot"></span>deterministic fixtures</div>
-        <div class="acell"><span class="adot"></span>test suite</div>
-        <div class="acell"><span class="adot"></span>residual correction models</div>
-        <div class="acell"><span class="adot"></span>selection policies</div>
-        <div class="acell"><span class="adot"></span>label-value curves</div>
-        <div class="acell"><span class="adot"></span>mechanism economics</div>
-        <div class="acell"><span class="adot"></span>Savio ESM-2 workflows</div>
-        <div class="acell"><span class="adot"></span>CSV / JSON / SVG outputs</div>
-      </div>
+    <div class="callout reveal d1">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5M4 19h16M8 15l4-5 3 3 4-6" stroke="#9D7CFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span><b>Relationship to FolDE.</b> FolDE addresses iterative activity optimization and batch selection using target measurements plus a model-derived prior. P1 studies stability ranking and how a fixed budget of measured donor labels should be distributed across proteins. P1 was built independently from scratch; FolDE co-authorship is background experience, not reused project ownership or code.</span>
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ============================ HIGHEST-VALUE UPGRADES ============================ -->
-<section class="cs-section" id="upgrades" data-screen-label="Highest-value next upgrades">
+<!-- ============================ LIMITATIONS ============================ -->
+<section class="cs-section" data-screen-label="The reasons not to oversell the result">
   <div class="wrap">
     <div class="cs-head reveal">
-      <div class="cs-eyebrow">11 / Highest-value next upgrades</div>
-      <h2>Highest-value next upgrades</h2>
+      <div class="cs-eyebrow">18 / Limitations</div>
+      <h2>The reasons not to oversell the result</h2>
     </div>
-    <div class="steps reveal d1">
-      <div class="step"><span class="sn">1</span><p>Standardize P1 against final P0 35M outputs.</p></div>
-      <div class="step"><span class="sn">2</span><p>Add beta-glucosidase and AMIE to the P1 real-data panel.</p></div>
-      <div class="step"><span class="sn">3</span><p>Build diversity-constrained model-guided acquisition.</p></div>
-      <div class="step"><span class="sn">4</span><p>Add uncertainty-aware acquisition.</p></div>
-      <div class="step"><span class="sn">5</span><p>Add explicit cost-per-label or plate-size-aware economics.</p></div>
-      <div class="step"><span class="sn">6</span><p>Report global performance and mechanism-slice rescue separately.</p></div>
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Limitations table">
+        <table class="sci">
+          <caption>Table 10. Each limitation and how P1 responds</caption>
+          <thead><tr><th class="txt">Limitation</th><th class="txt">Why it matters</th><th class="txt">Current response</th></tr></thead>
+          <tbody>
+            <tr><td class="txt">Single assay family</td><td class="txt">The shared signal may partly reflect assay behavior.</td><td class="txt">Advisor refuses different-assay estimates; P1E records no eligible test.</td></tr>
+            <tr><td class="txt">Ten external proteins</td><td class="txt">Encouraging but small; the blind interval is wide.</td><td class="txt">Report target table and protein-level intervals.</td></tr>
+            <tr><td class="txt">Absolute rho about 0.445</td><td class="txt">Improvement does not equal exact prediction.</td><td class="txt">Position as planning and ranking assistance.</td></tr>
+            <tr><td class="txt">Retrospective outcomes</td><td class="txt">Blind roles reduce tuning but are not future experiments.</td><td class="txt">P1D separates prospective evidence.</td></tr>
+            <tr><td class="txt">Simple frozen model</td><td class="txt">Not an absolute state-of-the-art comparison.</td><td class="txt">Treat modern model adaptation as separate future work.</td></tr>
+            <tr><td class="txt">Mechanism unknown</td><td class="txt">Breadth may average biological rules and assay quirks.</td><td class="txt">State the operational result without causal overreach.</td></tr>
+            <tr><td class="txt">Budget-map reuse</td><td class="txt">P1F cells are not new confirmation.</td><td class="txt">Label every non-reference cell retrospective.</td></tr>
+            <tr><td class="txt">No prospective partner</td><td class="txt">The strongest real-world evidence is unavailable.</td><td class="txt">Keep P1D no-start at 2 / 13.</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="callout reveal d1" style="margin-top:26px">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M12 2v6M12 22v-6M4.9 4.9l4.2 4.2M19.1 19.1l-4.2-4.2M2 12h6M22 12h-6M4.9 19.1l4.2-4.2M19.1 4.9l-4.2 4.2" stroke="#9D7CFF" stroke-width="1.4" stroke-linecap="round"/></svg>
-      <span><b>Best next move: build diversity-constrained acquisition.</b> That directly answers the sharpest lesson from P1: naive model-guided selection can lose because it buys confidence instead of information.</span>
+    <p class="limit-note reveal d1"><b>Scientific stopping rule:</b> do not add another retrospective P1 model phase. More tuning on opened data would increase activity without increasing evidential independence.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ FINAL CLAIM LANGUAGE ============================ -->
+<section class="cs-section" id="claim" data-screen-label="Final claim language">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">19 / Claim language</div>
+      <h2>What may be said, and what must not be said</h2>
+    </div>
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Supported vs avoid wording">
+        <table class="sci">
+          <caption>Table 11. Supported wording vs wording to avoid</caption>
+          <thead><tr><th class="txt">Supported wording</th><th class="txt">Wording to avoid</th></tr></thead>
+          <tbody>
+            <tr><td class="ok">Validated retrospectively inside one assay</td><td class="avoid"><s>Universally validated</s></td></tr>
+            <tr><td class="ok">Improved mutation ranking</td><td class="avoid"><s>Predicts stability accurately</s></td></tr>
+            <tr><td class="ok">Same-assay data-budget advisor</td><td class="avoid"><s>Universal protein design engine</s></td></tr>
+            <tr><td class="ok">Candidate budget region</td><td class="avoid"><s>Guaranteed minimum budget</s></td></tr>
+            <tr><td class="ok">10 / 10 external targets improved</td><td class="avoid"><s>Works on every protein</s></td></tr>
+            <tr><td class="ok">Cross-assay usefulness unknown</td><td class="avoid"><s>Cross-assay transfer failed</s></td></tr>
+            <tr><td class="ok">Prospective protocol frozen, no-start</td><td class="avoid"><s>Prospective study underway</s></td></tr>
+            <tr><td class="ok">Independent project built from scratch</td><td class="avoid"><s>New version of FolDE</s></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="prominent cyan reveal d1" style="max-width:44ch">For the tested compact domains in one cDNA-display proteolysis stability assay, a model combining 16 new-protein labels with a balanced 500-label, 20-donor library improved unseen-position mutation ranking over target-only learning on all ten locked confirmation and blind targets, with <span class="em">no harmful targets by the predefined threshold.</span></p>
+    <p class="limit-note reveal d1"><b>Final decision:</b> P1 is complete as a personal research and portfolio project. The only meaningful scientific extension is prospective validation after all 13 readiness requirements genuinely pass.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================ ARTIFACT ROUTE ============================ -->
+<section class="cs-section" id="artifact" data-screen-label="Artifact route">
+  <div class="wrap">
+    <div class="cs-head reveal">
+      <div class="cs-eyebrow">20 / Artifact route</div>
+      <h2>Where to inspect the evidence</h2>
+      <p class="lead" style="margin-top:6px">Every claim traces to a committed artifact. Private-only files are shown as internal paths, not public links.</p>
+    </div>
+    <div class="reveal d1">
+      <div class="table-wrap" data-screen-label="Artifact route table">
+        <table class="sci">
+          <caption>Table 12. Canonical P1 artifacts</caption>
+          <thead><tr><th class="txt">Artifact</th><th class="txt">Purpose</th></tr></thead>
+          <tbody>
+            <tr><td class="pth">FINAL_PROJECT_STATUS.md</td><td class="txt">Top-level completion decision and evidence map.</td></tr>
+            <tr><td class="pth">P1_PROJECT_INDEX.md</td><td class="txt">Route across P1A, P1B, P1C, P1D, P1E, and P1F.</td></tr>
+            <tr><td class="pth">advisor/index.html</td><td class="txt">Local interactive Protein Data Budget Advisor.</td></tr>
+            <tr><td class="pth">docs/final_claim_boundary.md</td><td class="txt">Required claim language and prohibited overclaims.</td></tr>
+            <tr><td class="pth">docs/private_case_study.md</td><td class="txt">Short narrative companion to the 10-page PDF.</td></tr>
+            <tr><td class="pth">docs/resume_and_interview_kit.md</td><td class="txt">Resume bullets, explanations, and likely interview questions.</td></tr>
+            <tr><td class="pth">data/evidence_summary.json</td><td class="txt">Machine-readable consolidated phase outcomes.</td></tr>
+            <tr><td class="pth">data/budget_advisor_data.json</td><td class="txt">All 33 P1F planning cells.</td></tr>
+            <tr><td class="pth">results/completion_audit.json</td><td class="txt">Seventeen final evidence and boundary checks.</td></tr>
+            <tr><td class="pth">results/artifact_manifest.json</td><td class="txt">SHA-256 hashes for packaged artifacts.</td></tr>
+            <tr><td class="pth">scripts/verify_portfolio.py</td><td class="txt">One-command evidence build, tests, and audit.</td></tr>
+            <tr><td class="pth">output/pdf/p1_granular_private_report.pdf</td><td class="txt">Complete granular explanation.</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============================ CTA ============================ -->
-<section class="cs-section cs-cta" data-screen-label="Call to action">
+<!-- ============================ FINAL TAKEAWAY / CTA ============================ -->
+<section class="cs-section cs-cta" data-screen-label="Final takeaway">
   <div class="wrap-narrow">
-    <h2 class="reveal">Zero-shot gives the first prior. Labels teach the correction. Acquisition decides whether the campaign buys information or only buys confidence.</h2>
-    <p class="final-line reveal d1">P1 is a strong prototype: it shows that labels help once the budget is large enough, and that naive model-guided acquisition can lose to diversity. It is not a finished active-learning platform.</p>
+    <p class="prominent green reveal" style="max-width:none;border-left:none;padding:0;text-align:center;margin:0 auto 30px">Broad low-data prediction failed. One-donor routing failed its matched gate. Balanced same-assay pooling succeeded. Cross-assay evidence was unavailable. The budget map defined a candidate operating region. Prospective validation remains gated.</p>
+    <h2 class="reveal">The next experiment is not simply the highest-scoring mutation. It is the evidence structure that tells the campaign what it is allowed to believe.</h2>
+    <p class="final-line reveal d1">P1 is a completed, leakage-controlled same-assay data-budget study: the broad predictor failed, the one-donor shortcut failed, and balanced pooling succeeded under fixed-budget, confirmation, blind, harm-gated evaluation.</p>
     <div class="cta-actions reveal d1">
       <a href="../index.html#projects" class="btn btn-primary">Back to projects
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8H4M8 4 4 8l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a href="https://github.com/Bababongo/p1-data-efficiency" data-repo-href class="btn btn-ghost">View repository</a>
       <a href="p0-zero-shot-fitness.html" class="btn-text">Previous project: P0
         <svg class="arrow" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8H4M8 4 4 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
@@ -664,8 +906,8 @@
     <div>
       <div class="footer-name">Ezechinyere "Eze" Ukabiala</div>
       <div class="footer-role">AI protein-engineering campaign scientist · AI systems for experimental biology</div>
-      <div class="footer-brand">P1. Data-efficiency curves · strong prototype</div>
-      <div class="footer-note">This case study reports a label-efficiency benchmark built on the P0 outputs and public enzyme data. It is a strong prototype, not a finished active-learning platform. Unpublished thesis details and active project results are intentionally withheld.</div>
+      <div class="footer-brand">P1. Same-assay data-budget rule · completed portfolio artifact</div>
+      <div class="footer-note">This case study reports a leakage-controlled same-assay data-budget study built on the P0 outputs and public enzyme data. The supported claim is retrospective and same-assay: cross-assay usefulness is unknown and prospective validation is frozen. It is planning, not design. Unpublished thesis details, sealed outcomes, and mutation-level content are intentionally withheld.</div>
     </div>
     <div class="footer-meta">
       © 2026 · A living scientific identity<br />
